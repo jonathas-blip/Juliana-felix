@@ -533,21 +533,21 @@ section.block{ padding:96px 0; }
 
 /* ---------- POP-UP DE PROMOÇÃO ---------- */
 .promo{
-  --rose:#B5656F;
-  --rose-deep:#9A4E59;
-  --olive:#3F4A35;
+  --rose:var(--accent);
+  --rose-deep:var(--accent-hover);
+  --olive:var(--green-deep);
   border:0; padding:0;
   width:min(720px, calc(100vw - 32px));
   max-height:calc(100dvh - 32px);
   border-radius:24px;
   overflow:hidden;
   background:
-    radial-gradient(70% 45% at 105% 62%, rgba(229,170,170,0.55), transparent 70%),
-    radial-gradient(60% 40% at -5% 100%, rgba(226,166,168,0.5), transparent 70%),
-    radial-gradient(60% 35% at 30% 0%, rgba(255,255,255,0.8), transparent 70%),
-    linear-gradient(165deg, #FCF3EE 0%, #F7E5DF 55%, #F2D6D0 100%);
+    radial-gradient(70% 40% at 105% 30%, rgba(241,222,223,0.95), transparent 70%),
+    radial-gradient(60% 40% at -5% 75%, rgba(241,222,223,0.8), transparent 70%),
+    radial-gradient(60% 30% at 20% 0%, rgba(198,161,91,0.14), transparent 70%),
+    linear-gradient(170deg, #FBF9F5 0%, var(--bg) 60%, #F3ECE3 100%);
   color:var(--text);
-  box-shadow:0 40px 90px -30px rgba(22,36,31,0.6), inset 0 0 0 1px rgba(198,161,91,0.35);
+  box-shadow:0 40px 90px -30px rgba(22,36,31,0.6), inset 0 0 0 1px rgba(198,161,91,0.55);
 }
 .promo[open]{ display:flex; animation:promo-in .5s ease both; }
 .promo::backdrop{ background:rgba(22,36,31,0.62); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
@@ -558,11 +558,11 @@ section.block{ padding:96px 0; }
 .promo-close{
   position:absolute; top:14px; right:14px; z-index:3;
   width:42px; height:42px; border-radius:50%;
-  border:0; background:rgba(255,255,255,0.55); color:var(--rose-deep);
+  border:1px solid rgba(198,161,91,0.5); background:rgba(255,255,255,0.7); color:var(--green-deep);
   display:flex; align-items:center; justify-content:center; cursor:pointer;
   transition:background-color .2s ease, color .2s ease;
 }
-.promo-close:hover{ background:var(--rose-deep); color:#fff; }
+.promo-close:hover{ background:var(--green-deep); color:#fff; }
 .promo-close svg{ width:22px; height:22px; }
 
 /* logo */
@@ -576,7 +576,7 @@ section.block{ padding:96px 0; }
 /* laço */
 .promo-laco{
   position:absolute; top:92px; right:-30px; width:190px; height:auto;
-  pointer-events:none; filter:drop-shadow(0 18px 22px rgba(150,80,90,0.25));
+  pointer-events:none; filter:drop-shadow(0 18px 22px rgba(35,72,61,0.22));
 }
 
 /* título */
@@ -588,7 +588,7 @@ section.block{ padding:96px 0; }
 .promo-t2{
   position:relative; display:inline-flex; align-items:flex-end; align-self:flex-start;
   font-size:clamp(3.6rem, 11.5vw, 5.8rem); letter-spacing:.01em; text-transform:uppercase;
-  background:linear-gradient(180deg, #CF8D93 0%, var(--rose) 45%, var(--rose-deep) 100%);
+  background:linear-gradient(180deg, #C27C85 0%, var(--accent) 50%, var(--accent-hover) 100%);
   -webkit-background-clip:text; background-clip:text; color:transparent;
 }
 .promo-coracao{ width:clamp(90px, 22vw, 150px); height:auto; color:var(--rose); margin:0 0 .12em .1em; }
@@ -608,20 +608,20 @@ section.block{ padding:96px 0; }
 .promo-card{
   display:grid; grid-template-columns:64px 1fr; gap:0 16px; align-items:center;
   grid-template-areas:"icone nome" "oferta oferta";
-  background:linear-gradient(160deg, rgba(255,255,255,0.72), rgba(255,246,243,0.5));
-  border:1px solid rgba(198,161,91,0.6);
+  background:linear-gradient(160deg, rgba(255,255,255,0.92), rgba(255,255,255,0.7));
+  border:1px solid rgba(198,161,91,0.7);
   border-radius:18px;
   padding:18px 18px 18px;
-  box-shadow:0 14px 30px -24px rgba(150,80,90,0.5);
+  box-shadow:0 16px 30px -24px rgba(35,72,61,0.45);
   backdrop-filter:blur(2px);
 }
 .promo-icon{
   grid-area:icone;
   width:64px; height:64px; border-radius:50%;
-  background:radial-gradient(circle at 35% 30%, #D59AA0, var(--rose) 70%);
-  color:#fff;
+  background:radial-gradient(circle at 35% 30%, var(--green-soft), var(--green-deep) 70%);
+  color:#E2C68F;
   display:flex; align-items:center; justify-content:center;
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,0.25);
+  box-shadow:inset 0 0 0 1.5px rgba(198,161,91,0.75), 0 0 0 3px rgba(198,161,91,0.18);
 }
 .promo-icon svg{ width:34px; height:34px; }
 .promo-card h3{
@@ -650,19 +650,24 @@ section.block{ padding:96px 0; }
 .promo-comp{ font-size:1.05rem; color:var(--olive); margin-top:2px; }
 
 /* rodapé */
-.promo-foot{ position:relative; display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center; }
-.promo-sep{ display:flex; align-items:center; gap:10px; width:min(420px, 100%); color:var(--rose); }
+.promo-foot{
+  position:relative; display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center;
+  margin:0 -44px -28px; padding:22px 44px 24px;
+  background:radial-gradient(ellipse at 15% 0%, rgba(198,161,91,0.22), transparent 60%), var(--green-deep);
+  border-top:1px solid var(--gold);
+}
+.promo-sep{ display:flex; align-items:center; gap:10px; width:min(420px, 100%); color:var(--gold); }
 .promo-sep::before, .promo-sep::after{ content:''; flex:1; height:1px; background:linear-gradient(90deg, transparent, var(--gold)); }
 .promo-sep::after{ transform:scaleX(-1); }
 .promo-sep svg{ width:18px; height:18px; }
-.promo-aviso{ font-family:var(--font-title); font-size:1.05rem; color:var(--olive); margin-bottom:6px; }
-.promo-foot .btn-primary{ background:var(--rose-deep); }
-.promo-foot .btn-primary:hover{ background:#86424D; }
+.promo-aviso{ font-family:var(--font-title); font-size:1.05rem; color:#fff; margin-bottom:6px; }
+.promo-foot .btn-primary{ box-shadow:0 12px 30px -12px rgba(0,0,0,0.45); }
 .promo-skip{
   background:none; border:0; cursor:pointer; padding:6px 12px;
   font-family:var(--font-body); font-size:0.76rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--olive); text-decoration:underline; text-underline-offset:4px; text-decoration-color:var(--gold);
+  color:#CFE0D8; text-decoration:underline; text-underline-offset:4px; text-decoration-color:var(--gold);
 }
+.promo-skip:hover{ color:#fff; }
 
 /* ---------- ANIMAÇÃO DE ENTRADA ---------- */
 /* Só ativa com JavaScript; sem JS, tudo aparece normalmente. */
@@ -755,5 +760,7 @@ section.block{ padding:96px 0; }
   .promo-rs, .promo-cent{ font-size:1.1rem; }
   .promo-comp{ font-size:0.95rem; }
   .promo-aviso{ font-size:0.95rem; }
+  .promo-foot{ margin:0 -18px -22px; padding:20px 18px 22px; }
+  .promo-linha-topo{ display:none; }
   .promo-foot .btn{ width:100%; }
 }
