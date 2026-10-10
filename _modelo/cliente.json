@@ -1,0 +1,114 @@
+{
+  "site": {
+    "url": "https://julianafelix.com.br",
+    "titulo": "Juliana Felix Beauté | Estética Avançada no Tatuapé",
+    "descricao": "Harmonização facial, preenchimento labial, toxina botulínica (Botox) e bioestimuladores no Tatuapé, São Paulo. Atendimento personalizado com Juliana Felix, enfermeira especialista em estética avançada.",
+    "imagemCompartilhamento": "assets/img/og-image.jpg"
+  },
+
+  "marca": {
+    "nome": "Juliana Felix",
+    "nomeCompleto": "Juliana Felix Beauté",
+    "profissional": "Juliana Felix",
+    "primeiroNome": "Juliana",
+    "titulo": "Enfermeira especialista em Estética Avançada",
+    "registro": "",
+    "slogan": "Beleza, cuidado e naturalidade em cada detalhe.",
+    "logoSimbolo": "assets/img/logo-simbolo.png",
+    "logoNome": "assets/img/logo-nome.png"
+  },
+
+  "cores": {
+    "principal": "#23483D",
+    "principalSuave": "#2F5B4C",
+    "principalClaro": "#E7EEEA",
+    "destaque": "#A35F68",
+    "destaqueHover": "#8F5059",
+    "destaqueTexto": "#A9636D",
+    "destaqueSuave": "#F1DEDF",
+    "dourado": "#C6A15B",
+    "douradoTexto": "#8A6A2F",
+    "fundo": "#F8F5EF"
+  },
+
+  "contato": {
+    "whatsapp": "5511927274120",
+    "whatsappExibicao": "(11) 92727-4120",
+    "mensagemWhatsapp": "Olá, Juliana! Conheci seu trabalho pelo site e gostaria de saber mais sobre os procedimentos e agendar um atendimento.",
+    "mensagemProcedimento": "Olá, Juliana! Vi no site e gostaria de saber mais sobre {procedimento}.",
+    "instagram": "drajuliannafelix",
+    "endereco": "Rua Catiguá, 159 – Tatuapé",
+    "cidade": "São Paulo - SP",
+    "bairro": "Tatuapé",
+    "cep": "03065-030",
+    "horario": "Das 8h às 22h, pelo WhatsApp",
+    "googleAvaliacoes": ""
+  },
+
+  "hero": {
+    "selo": "Estética · Cuidado · Beleza",
+    "tituloHtml": "Realce sua beleza.<br><em>Valorize quem você é.</em>",
+    "texto": "Um cuidado personalizado para realçar sua beleza, respeitando sua individualidade e valorizando resultados naturais.",
+    "imagem": "assets/img/juliana-hero.jpg",
+    "imagemAlt": "Juliana Felix, especialista em estética avançada, em seu espaço de atendimento",
+    "cartao": "+15 anos de experiência",
+    "diferenciais": ["Cuidado personalizado", "Resultados naturais", "Procedimentos seguros"]
+  },
+
+  "frase": {
+    "citacaoHtml": "“Beleza não é sobre transformar quem você é.<br>É sobre revelar o melhor de você.”",
+    "texto": "Cada pessoa possui uma beleza única. Nosso propósito é cuidar dela com atenção, técnica e naturalidade."
+  },
+
+  "procedimentosIntro": "Cada pele possui necessidades diferentes. Por isso, os tratamentos são escolhidos de forma personalizada, respeitando suas características, objetivos e momento.",
+  "procedimentos": [
+    { "icone": "rosto",    "titulo": "Harmonização Facial",          "texto": "Protocolos personalizados que equilibram traços e realçam a harmonia natural do rosto." },
+    { "icone": "labios",   "titulo": "Preenchimento Labial",         "texto": "Hidratação, definição e volume para lábios com resultado natural e sofisticado." },
+    { "icone": "brilho",   "titulo": "Toxina Botulínica (Botox)",    "texto": "Suaviza linhas de expressão da testa e da região dos olhos, com aspecto descansado e natural." },
+    { "icone": "perfil",   "titulo": "Contorno de Mandíbula",        "texto": "Definição do ângulo mandibular para um perfil mais harmonioso e aspecto rejuvenescido." },
+    { "icone": "colageno", "titulo": "Bioestimuladores de Colágeno", "texto": "Estímulo gradual e natural de colágeno para firmeza e viço da pele ao longo do tempo." },
+    { "icone": "gota",     "titulo": "Skincare Avançado",            "texto": "Renove sua pele e recupere a sensação de frescor, luminosidade e cuidado contínuo." }
+  ],
+
+  "resultados": [
+    { "imagem": "assets/img/resultado-labial-1.jpg",  "largura": 1012, "altura": 518, "titulo": "Preenchimento Labial",  "texto": "Mais volume, contorno definido e hidratação." },
+    { "imagem": "assets/img/resultado-mandibula.jpg", "largura": 984,  "altura": 504, "titulo": "Contorno de Mandíbula", "texto": "Definição do perfil com aspecto natural e harmonioso." },
+    { "imagem": "assets/img/resultado-labial-2.jpg",  "largura": 996,  "altura": 490, "titulo": "Preenchimento Labial",  "texto": "Resultado natural que respeita o formato original dos lábios." },
+    { "imagem": "assets/img/resultado-labial-3.jpg",  "largura": 1008, "altura": 526, "titulo": "Preenchimento Labial",  "texto": "Harmonia labial com hidratação e naturalidade." }
+  ],
+
+  "sobre": {
+    "imagem": "assets/img/juliana-sobre.jpg",
+    "imagemAlt": "Juliana Felix de jaleco branco, sorrindo, em seu espaço de atendimento",
+    "titulo": "Prazer, eu sou a Juliana Felix.",
+    "citacao": "Meu propósito é fazer com que cada pessoa que passa pelo meu atendimento se sinta cuidada, valorizada e mais confiante com a própria beleza.",
+    "fatos": [
+      { "rotulo": "Formação",        "valor": "Enfermagem" },
+      { "rotulo": "Especialização",  "valor": "Pós-graduação e especialização em Estética Avançada" },
+      { "rotulo": "Experiência",     "valor": "Mais de 15 anos na área da saúde e estética" },
+      { "rotulo": "Filosofia",       "valor": "Cuidado individualizado, técnica e naturalidade em cada atendimento" }
+    ]
+  },
+
+  "etapasImagem": "assets/img/procedimento.jpg",
+  "etapasImagemAlt": "Juliana Felix realizando procedimento de preenchimento labial",
+  "etapas": [
+    { "titulo": "Fale conosco",           "texto": "Chame no WhatsApp, tire suas dúvidas e escolha o melhor horário para você." },
+    { "titulo": "Avaliação individual",   "texto": "Escutamos seus objetivos e analisamos suas características com atenção." },
+    { "titulo": "Protocolo sob medida",   "texto": "Indicação personalizada e um atendimento acolhedor, seguro e sem pressa." },
+    { "titulo": "Acompanhamento",         "texto": "Retorno e orientações para cuidar do seu resultado ao longo do tempo." }
+  ],
+
+  "_avisoDepoimentos": "IMPORTANTE: os depoimentos abaixo são exemplos. Substitua por avaliações reais (de preferência do Google) antes de publicar. Para esconder a seção, deixe a lista vazia: []",
+  "depoimentos": [
+    { "nome": "Ana",     "procedimento": "Preenchimento Labial",  "texto": "Fiz o preenchimento labial e o resultado ficou exatamente como eu queria: natural, sem exagero. Me senti super à vontade durante todo o atendimento." },
+    { "nome": "Thais",   "procedimento": "Harmonização Facial",   "texto": "A harmonização facial mudou a forma como eu me vejo no espelho. Nada de artificial, só realçaram o que eu já tinha de bonito." },
+    { "nome": "Jenifer", "procedimento": "Skincare Avançado",     "texto": "O acompanhamento com o skincare avançado deixou minha pele muito mais viçosa. Sinto que finalmente encontrei um cuidado pensado pra mim." },
+    { "nome": "Eliete",  "procedimento": "Contorno de Mandíbula", "texto": "Fiz o contorno de mandíbula e o resultado foi muito harmonioso. Atendimento cuidadoso do início ao fim, me senti acolhida em cada etapa." }
+  ],
+
+  "desenvolvedor": {
+    "nome": "",
+    "url": ""
+  }
+}

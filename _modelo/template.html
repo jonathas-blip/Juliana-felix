@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Arquivo gerado por _modelo/build.ps1 — edite _modelo/cliente.json e _modelo/template.html, não este arquivo. -->
+<title>{{site.titulo}}</title>
+<meta name="description" content="{{site.descricao}}">
+<link rel="canonical" href="{{site.url}}/">
+<meta name="theme-color" content="{{cores.principal}}">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="{{marca.nomeCompleto}}">
+<meta property="og:title" content="{{site.titulo}}">
+<meta property="og:description" content="{{site.descricao}}">
+<meta property="og:url" content="{{site.url}}/">
+<meta property="og:image" content="{{site.url}}/{{site.imagemCompartilhamento}}">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/png" href="{{marca.logoSimbolo}}">
+<link rel="apple-touch-icon" href="{{marca.logoSimbolo}}">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="{{hero.imagem}}" fetchpriority="high">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+  :root{
+    --green-deep:{{cores.principal}};
+    --green-soft:{{cores.principalSuave}};
+    --green-pale:{{cores.principalClaro}};
+    --accent:{{cores.destaque}};
+    --accent-hover:{{cores.destaqueHover}};
+    --accent-text:{{cores.destaqueTexto}};
+    --accent-light:{{cores.destaqueSuave}};
+    --gold:{{cores.dourado}};
+    --gold-text:{{cores.douradoTexto}};
+    --bg:{{cores.fundo}};
+  }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HealthAndBeautyBusiness",
+  "name": "{{marca.nomeCompleto}}",
+  "description": "{{site.descricao}}",
+  "url": "{{site.url}}/",
+  "image": "{{site.url}}/{{site.imagemCompartilhamento}}",
+  "logo": "{{site.url}}/{{marca.logoSimbolo}}",
+  "telephone": "+{{contato.whatsapp}}",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "{{contato.endereco}}",
+    "addressLocality": "{{contato.cidade}}",
+    "postalCode": "{{contato.cep}}",
+    "addressCountry": "BR"
+  },
+  "sameAs": ["https://www.instagram.com/{{contato.instagram}}"]
+}
+</script>
+</head>
+<body>
+
+<!-- Ícones (usados com <svg><use href="#i-nome"/></svg>) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-rosto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-3.6 0-6 2.8-6 6.6 0 2.6.8 4.9 2.2 6.6 1 1.2 2.4 2.3 3.8 2.3s2.8-1.1 3.8-2.3c1.4-1.7 2.2-4 2.2-6.6C18 5.8 15.6 3 12 3Z"/><path d="M9.5 10.5h.01M14.5 10.5h.01M10 15c1.2.8 2.8.8 4 0"/><path d="M8 21h8"/></symbol>
+  <symbol id="i-labios" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12c2.2-2.8 4.3-4.4 6.2-4.4 1.2 0 2 .6 2.8 1.4.8-.8 1.6-1.4 2.8-1.4 1.9 0 4 1.6 6.2 4.4-2.4 3.3-5.4 5-9 5s-6.6-1.7-9-5Z"/><path d="M3 12h18"/></symbol>
+  <symbol id="i-brilho" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 3l1.6 4.9L17.5 9.5l-4.9 1.6L11 16l-1.6-4.9L4.5 9.5l4.9-1.6L11 3Z"/><path d="M18 14l.8 2.2L21 17l-2.2.8L18 20l-.8-2.2L15 17l2.2-.8L18 14Z"/></symbol>
+  <symbol id="i-perfil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3c-3.5 0-6 2.6-6 6 0 1-.6 1.9-1.6 3l1.6.8V15c0 1.1.9 2 2 2h1.5l.5 4"/><path d="M14 3c2.8 0 5 2.2 5 5 0 2.6-1.2 4.2-2 5.5L17 21"/></symbol>
+  <symbol id="i-colageno" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></symbol>
+  <symbol id="i-gota" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c2.5 3.4 6 7 6 11a6 6 0 0 1-12 0c0-4 3.5-7.6 6-11Z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.2"/></symbol>
+  <symbol id="i-relogio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><circle cx="16.8" cy="7.2" r="1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-whatsapp" viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.35.63 4.55 1.73 6.45L4 29l7.73-1.68A11.94 11.94 0 0 0 16 27c6.627 0 12-5.373 12-12S22.628 3 16.001 3Zm0 21.6a9.55 9.55 0 0 1-4.87-1.33l-.35-.21-4.06.88.88-3.96-.23-.36A9.56 9.56 0 1 1 25.56 15a9.57 9.57 0 0 1-9.56 9.6Zm5.3-7.15c-.29-.15-1.72-.85-1.99-.94-.27-.1-.46-.15-.66.15-.2.29-.76.94-.93 1.13-.17.2-.34.22-.63.07-.29-.15-1.23-.45-2.34-1.44-.86-.77-1.45-1.72-1.62-2.01-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.2-.29.29-.49.1-.2.05-.37-.02-.51-.07-.15-.66-1.6-.91-2.19-.24-.58-.48-.5-.66-.51h-.56c-.2 0-.51.07-.78.37-.27.29-1.02 1-1.02 2.44 0 1.44 1.05 2.83 1.19 3.02.15.2 2.06 3.14 4.99 4.41.7.3 1.24.48 1.67.61.7.22 1.34.19 1.84.11.56-.08 1.72-.7 1.96-1.38.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.34Z"/></symbol>
+  <symbol id="i-fechar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-anterior" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-proximo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></symbol>
+</svg>
+
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <a href="#inicio" class="logo" aria-label="{{marca.nomeCompleto}} — início">
+      <img class="logo-simbolo" src="{{marca.logoSimbolo}}" alt="" width="232" height="238">
+      <img class="logo-nome" src="{{marca.logoNome}}" alt="{{marca.nomeCompleto}}" width="333" height="88">
+    </a>
+    <nav class="main-nav" aria-label="Principal">
+      <ul>
+        <li><a href="#procedimentos">Procedimentos</a></li>
+        <li><a href="#resultados">Resultados</a></li>
+        <li><a href="#quem-sou">Quem Sou</a></li>
+        <li><a href="#como-funciona">Como Funciona</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a href="{{calc.whatsappLink}}" class="btn btn-primary btn-sm btn-desktop" target="_blank" rel="noopener">Agendar avaliação</a>
+      <button class="burger" id="burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobilePanel">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-panel" id="mobilePanel">
+  <nav aria-label="Menu">
+    <a href="#procedimentos">Procedimentos</a>
+    <a href="#resultados">Resultados</a>
+    <a href="#quem-sou">Quem Sou</a>
+    <a href="#como-funciona">Como Funciona</a>
+    <a href="#contato">Contato</a>
+  </nav>
+  <a href="{{calc.whatsappLink}}" class="btn btn-primary" target="_blank" rel="noopener">
+    <svg class="ic" aria-hidden="true"><use href="#i-whatsapp"/></svg> Agendar avaliação
+  </a>
+</div>
+
+<main id="conteudo">
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <p class="eyebrow">{{hero.selo}}</p>
+        <h1>{{{hero.tituloHtml}}}</h1>
+        <p class="lead">{{hero.texto}}</p>
+        <div class="hero-ctas">
+          <a href="{{calc.whatsappLink}}" class="btn btn-primary" target="_blank" rel="noopener">
+            <svg class="ic" aria-hidden="true"><use href="#i-whatsapp"/></svg> Agendar avaliação
+          </a>
+          <a href="#procedimentos" class="btn btn-outline">Ver procedimentos</a>
+        </div>
+        <ul class="hero-badges">
+          {{#hero.diferenciais}}<li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>{{.}}</li>{{/hero.diferenciais}}
+        </ul>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-frame">
+          <img src="{{hero.imagem}}" alt="{{hero.imagemAlt}}" width="516" height="756" fetchpriority="high">
+        </div>
+        <div class="hero-card">
+          <img src="{{marca.logoSimbolo}}" alt="" width="44" height="45">
+          <div>
+            <strong>{{marca.profissional}}</strong>
+            <span>{{marca.titulo}}</span>
+            <span class="hero-card-tag">{{hero.cartao}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FRASE -->
+  <section class="positioning">
+    <div class="container reveal">
+      <p class="quote">{{{frase.citacaoHtml}}}</p>
+      <div class="divider" aria-hidden="true"></div>
+      <p>{{frase.texto}}</p>
+    </div>
+  </section>
+
+  <!-- PROCEDIMENTOS -->
+  <section class="block" id="procedimentos">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Procedimentos</p>
+        <h2>Cuidados pensados para você</h2>
+        <p>{{procedimentosIntro}}</p>
+      </div>
+      <div class="procedures-grid">
+        {{#procedimentos}}
+        <article class="proc-card reveal">
+          <div class="proc-icon"><svg aria-hidden="true"><use href="#i-{{icone}}"/></svg></div>
+          <h3>{{titulo}}</h3>
+          <p>{{texto}}</p>
+          <a class="proc-link" href="{{whatsappLink}}" target="_blank" rel="noopener">Quero saber mais <svg aria-hidden="true"><use href="#i-seta"/></svg></a>
+        </article>
+        {{/procedimentos}}
+      </div>
+      <div class="proc-note reveal">
+        <p><strong>Não sabe qual é o ideal para você?</strong> Todo atendimento começa com uma avaliação individual — sem compromisso.</p>
+        <a href="{{calc.whatsappLink}}" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Agendar avaliação</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTADOS -->
+  <section class="block results" id="resultados">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Resultados</p>
+        <h2>Resultados que contam histórias.</h2>
+        <p>Toque nas fotos para ampliar.</p>
+      </div>
+      <div class="results-grid">
+        {{#resultados}}
+        <figure class="result-card reveal">
+          <button class="result-zoom" type="button" data-full="{{imagem}}" data-caption="{{titulo}} — {{texto}}" aria-label="Ampliar foto: {{titulo}}">
+            <img src="{{imagem}}" alt="Antes e depois — {{titulo}}" width="{{largura}}" height="{{altura}}" loading="lazy">
+          </button>
+          <figcaption><h3>{{titulo}}</h3><p>{{texto}}</p></figcaption>
+        </figure>
+        {{/resultados}}
+      </div>
+      <p class="results-note">Resultados individuais podem variar de acordo com as características de cada pessoa. Imagens publicadas com autorização das pacientes.</p>
+    </div>
+  </section>
+
+  <!-- QUEM SOU -->
+  <section class="block about" id="quem-sou">
+    <div class="container about-grid">
+      <div class="about-img reveal">
+        <img src="{{sobre.imagem}}" alt="{{sobre.imagemAlt}}" width="900" height="1080" loading="lazy">
+      </div>
+      <div class="about-text reveal">
+        <p class="eyebrow">Quem Sou</p>
+        <h2>{{sobre.titulo}}</h2>
+        <blockquote class="lead-quote">“{{sobre.citacao}}”</blockquote>
+        <dl class="about-facts">
+          {{#sobre.fatos}}<div><dt>{{rotulo}}</dt><dd>{{valor}}</dd></div>{{/sobre.fatos}}
+          {{#marca.registro}}<div><dt>Registro</dt><dd>{{marca.registro}}</dd></div>{{/marca.registro}}
+        </dl>
+        <a href="{{calc.whatsappLink}}" class="btn btn-outline" target="_blank" rel="noopener">Agendar com a {{marca.primeiroNome}}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMO FUNCIONA -->
+  <section class="block steps" id="como-funciona">
+    <div class="container steps-grid">
+      <div class="steps-text">
+        <div class="section-head section-head-left reveal">
+          <p class="eyebrow">Como funciona</p>
+          <h2>Um cuidado que começa antes do procedimento.</h2>
+        </div>
+        <ol class="steps-list">
+          {{#etapas}}
+          <li class="reveal">
+            <span class="step-num" aria-hidden="true">{{@num}}</span>
+            <div><h3>{{titulo}}</h3><p>{{texto}}</p></div>
+          </li>
+          {{/etapas}}
+        </ol>
+      </div>
+      <div class="steps-img reveal">
+        <img src="{{etapasImagem}}" alt="{{etapasImagemAlt}}" width="900" height="1350" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- DEPOIMENTOS (some automaticamente se a lista estiver vazia) -->
+  {{#calc.temDepoimentos}}
+  <section class="block testimonials" id="depoimentos">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Depoimentos</p>
+        <h2>O que elas dizem</h2>
+      </div>
+      <div class="test-track" id="testTrack" tabindex="0" aria-label="Depoimentos — deslize para ver mais">
+        {{#depoimentos}}
+        <figure class="test-card">
+          <div class="stars" aria-label="5 de 5 estrelas">★★★★★</div>
+          <blockquote>{{texto}}</blockquote>
+          <figcaption><strong>{{nome}}</strong><span>{{procedimento}}</span></figcaption>
+        </figure>
+        {{/depoimentos}}
+      </div>
+      <div class="test-dots" id="testDots" aria-hidden="true"></div>
+      {{#contato.googleAvaliacoes}}<p class="test-more"><a href="{{contato.googleAvaliacoes}}" target="_blank" rel="noopener">Ver todas as avaliações no Google <svg aria-hidden="true"><use href="#i-seta"/></svg></a></p>{{/contato.googleAvaliacoes}}
+    </div>
+  </section>
+  {{/calc.temDepoimentos}}
+
+  <!-- CTA -->
+  <section class="cta-block">
+    <div class="container reveal">
+      <h2>Pronta para começar a cuidar de você?</h2>
+      <p>Agende sua avaliação e descubra um cuidado pensado para você.</p>
+      <a href="{{calc.whatsappLink}}" class="btn btn-primary btn-on-dark" target="_blank" rel="noopener">
+        <svg class="ic" aria-hidden="true"><use href="#i-whatsapp"/></svg> Agendar pelo WhatsApp
+      </a>
+      <p class="fine">Atendimento personalizado · Horários mediante disponibilidade</p>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section class="block contact" id="contato">
+    <div class="container contact-grid">
+      <div class="contact-text reveal">
+        <p class="eyebrow">Contato</p>
+        <h2>Vamos conversar?</h2>
+        <ul class="contact-list">
+          <li>
+            <span class="ic-circle"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg></span>
+            <div><b>WhatsApp</b><a href="{{calc.whatsappLink}}" target="_blank" rel="noopener">{{contato.whatsappExibicao}}</a></div>
+          </li>
+          <li>
+            <span class="ic-circle"><svg aria-hidden="true"><use href="#i-instagram"/></svg></span>
+            <div><b>Instagram</b><a href="https://www.instagram.com/{{contato.instagram}}" target="_blank" rel="noopener">@{{contato.instagram}}</a></div>
+          </li>
+          <li>
+            <span class="ic-circle"><svg aria-hidden="true"><use href="#i-pin"/></svg></span>
+            <div><b>Endereço</b><a href="{{calc.mapsLink}}" target="_blank" rel="noopener">{{contato.endereco}}<br>{{contato.cidade}} · CEP {{contato.cep}}</a></div>
+          </li>
+          <li>
+            <span class="ic-circle"><svg aria-hidden="true"><use href="#i-relogio"/></svg></span>
+            <div><b>Horário de atendimento</b><span>{{contato.horario}}</span></div>
+          </li>
+        </ul>
+        <a href="{{calc.whatsappLink}}" class="btn btn-primary" target="_blank" rel="noopener">
+          <svg class="ic" aria-hidden="true"><use href="#i-whatsapp"/></svg> Falar pelo WhatsApp
+        </a>
+      </div>
+      <div class="map-box reveal">
+        <iframe src="{{calc.mapsEmbed}}" title="Mapa: {{calc.enderecoCompleto}}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="{{marca.logoSimbolo}}" alt="" width="56" height="57">
+        <div>
+          <p class="flogo">{{marca.nomeCompleto}}</p>
+          <p>{{marca.slogan}}</p>
+          <p class="footer-meta">{{marca.profissional}} · {{marca.titulo}}{{#marca.registro}}<br>{{marca.registro}}{{/marca.registro}}</p>
+        </div>
+      </div>
+      <div>
+        <h2 class="footer-h">Navegação</h2>
+        <ul>
+          <li><a href="#procedimentos">Procedimentos</a></li>
+          <li><a href="#resultados">Resultados</a></li>
+          <li><a href="#quem-sou">Quem Sou</a></li>
+          <li><a href="#como-funciona">Como Funciona</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="footer-h">Atendimento</h2>
+        <ul>
+          <li><a href="{{calc.whatsappLink}}" target="_blank" rel="noopener">WhatsApp {{contato.whatsappExibicao}}</a></li>
+          <li><a href="https://www.instagram.com/{{contato.instagram}}" target="_blank" rel="noopener">Instagram @{{contato.instagram}}</a></li>
+          <li><a href="{{calc.mapsLink}}" target="_blank" rel="noopener">{{contato.endereco}}, {{contato.cidade}}</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; {{calc.ano}} {{marca.nomeCompleto}}. Todos os direitos reservados.</span>
+      {{#desenvolvedor.nome}}<span>Site desenvolvido por <a href="{{desenvolvedor.url}}" target="_blank" rel="noopener">{{desenvolvedor.nome}}</a></span>{{/desenvolvedor.nome}}
+    </div>
+  </div>
+</footer>
+
+<a class="wa-float" href="{{calc.whatsappLink}}" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+  <span class="wa-tooltip">Fale conosco</span>
+  <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>
+</a>
+
+<dialog class="lightbox" id="lightbox" aria-label="Foto ampliada">
+  <button class="lb-btn lb-close" type="button" aria-label="Fechar"><svg aria-hidden="true"><use href="#i-fechar"/></svg></button>
+  <button class="lb-btn lb-prev" type="button" aria-label="Foto anterior"><svg aria-hidden="true"><use href="#i-anterior"/></svg></button>
+  <figure>
+    <img src="" alt="">
+    <figcaption></figcaption>
+  </figure>
+  <button class="lb-btn lb-next" type="button" aria-label="Próxima foto"><svg aria-hidden="true"><use href="#i-proximo"/></svg></button>
+</dialog>
+
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>
