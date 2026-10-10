@@ -531,6 +531,96 @@ section.block{ padding:96px 0; }
 .lb-prev{ left:18px; top:50%; transform:translateY(-50%); }
 .lb-next{ right:18px; top:50%; transform:translateY(-50%); }
 
+/* ---------- POP-UP DE PROMOÇÃO ---------- */
+.promo{
+  border:0; padding:0;
+  width:min(760px, calc(100vw - 32px));
+  max-height:calc(100dvh - 32px);
+  border-radius:22px;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(241,222,223,0.9), transparent 55%),
+    radial-gradient(ellipse at 0% 100%, rgba(198,161,91,0.12), transparent 50%),
+    #FFFCF9;
+  color:var(--text);
+  box-shadow:0 40px 90px -30px rgba(22,36,31,0.55);
+}
+.promo[open]{ display:flex; animation:promo-in .45s ease both; }
+.promo::backdrop{ background:rgba(22,36,31,0.62); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
+@keyframes promo-in{ from{ opacity:0; transform:translateY(16px) scale(.97); } to{ opacity:1; transform:none; } }
+.promo-box{ flex:1; overflow-y:auto; padding:30px 40px 24px; overscroll-behavior:contain; }
+.promo-box:focus{ outline:none; }
+.promo-close{
+  position:absolute; top:14px; right:14px; z-index:2;
+  width:42px; height:42px; border-radius:50%;
+  border:1px solid rgba(35,72,61,0.18); background:rgba(255,255,255,0.9); color:var(--green-deep);
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  transition:background-color .2s ease, color .2s ease;
+}
+.promo-close:hover{ background:var(--green-deep); color:#fff; }
+.promo-close svg{ width:20px; height:20px; }
+
+.promo-head{ text-align:center; margin-bottom:22px; }
+.promo-laco{ width:34px; height:34px; color:var(--accent); margin:0 auto 8px; display:block; }
+.promo-head .eyebrow{ margin-bottom:8px; }
+.promo-head h2{
+  font-size:clamp(2.3rem, 6vw, 3.4rem);
+  text-transform:uppercase; letter-spacing:.04em; line-height:1.05;
+  color:var(--green-deep); margin-bottom:12px;
+}
+.promo-head h2 em{ font-style:italic; color:var(--accent-text); }
+.promo-sub{ font-family:var(--font-title); font-size:clamp(1.1rem, 2.6vw, 1.35rem); color:var(--text); }
+.promo-sub em{ color:var(--accent-text); }
+
+.promo-grid{ list-style:none; margin:0 0 20px; padding:0; display:grid; grid-template-columns:repeat(2, 1fr); gap:14px; }
+.promo-card{
+  display:grid; grid-template-columns:52px 1fr; gap:4px 14px; align-items:center;
+  grid-template-areas:"icone nome" "oferta oferta";
+  background:rgba(255,255,255,0.78);
+  border:1px solid rgba(198,161,91,0.45);
+  border-radius:16px;
+  padding:16px 20px 16px;
+}
+.promo-icon{
+  grid-area:icone;
+  width:52px; height:52px; border-radius:50%;
+  background:var(--accent-light); color:var(--accent);
+  display:flex; align-items:center; justify-content:center;
+}
+.promo-icon svg{ width:26px; height:26px; }
+.promo-card h3{
+  grid-area:nome;
+  font-family:var(--font-body); font-weight:700;
+  font-size:0.8rem; letter-spacing:.08em; text-transform:uppercase; line-height:1.4;
+  color:var(--green-deep);
+}
+.promo-oferta{
+  grid-area:oferta;
+  display:flex; flex-direction:column; align-items:center; text-align:center;
+  margin-top:10px; padding-top:12px; border-top:1px solid rgba(198,161,91,0.35);
+}
+.promo-rotulo{ font-family:var(--font-title); font-style:italic; color:var(--text-soft); font-size:1rem; }
+.promo-destaque{
+  font-family:var(--font-title); font-weight:500;
+  font-size:1.15rem; text-transform:uppercase; letter-spacing:.03em; line-height:1.25;
+  color:var(--accent-text);
+}
+.promo-preco{ display:flex; align-items:flex-start; gap:3px; color:var(--accent-text); font-family:var(--font-title); line-height:1; }
+.promo-prefixo{ align-self:flex-end; margin-right:6px; padding-bottom:6px; font-style:italic; font-size:1rem; color:var(--text-soft); }
+.promo-rs{ font-size:1.05rem; margin-top:8px; }
+.promo-valor{ font-size:2.6rem; font-weight:500; }
+.promo-cent{ font-size:1.05rem; margin-top:4px; }
+.promo-destaque + .promo-preco{ margin-top:4px; }
+.promo-comp{ font-size:0.85rem; color:var(--text-soft); margin-top:4px; }
+
+.promo-foot{ display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; }
+.promo-skip{
+  background:none; border:0; cursor:pointer; padding:8px 12px; margin-top:4px;
+  font-family:var(--font-body); font-size:0.78rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--green-deep); text-decoration:underline; text-underline-offset:4px; text-decoration-color:var(--gold);
+}
+.promo-aviso{ font-size:0.8rem; color:var(--text-soft); font-style:italic; }
+
 /* ---------- ANIMAÇÃO DE ENTRADA ---------- */
 /* Só ativa com JavaScript; sem JS, tudo aparece normalmente. */
 .js .reveal{ opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease; }
@@ -596,4 +686,20 @@ section.block{ padding:96px 0; }
   .lb-prev, .lb-next{ top:auto; bottom:22px; transform:none; }
   .lb-prev{ left:calc(50% - 60px); }
   .lb-next{ right:calc(50% - 60px); }
+
+  .promo{ width:calc(100vw - 24px); max-height:calc(100dvh - 24px); border-radius:18px; }
+  .promo-box{ padding:30px 18px 22px; }
+  .promo-close{ top:10px; right:10px; width:40px; height:40px; }
+  .promo-head{ margin-bottom:20px; }
+  .promo-laco{ width:32px; height:32px; }
+  .promo-grid{ grid-template-columns:1fr; gap:10px; margin-bottom:20px; }
+  .promo-card{ grid-template-columns:44px 1fr; grid-template-areas:"icone nome" "icone oferta"; gap:2px 14px; padding:14px 16px; }
+  .promo-icon{ width:44px; height:44px; align-self:start; }
+  .promo-icon svg{ width:22px; height:22px; }
+  .promo-card h3{ font-size:0.74rem; }
+  .promo-oferta{ align-items:flex-start; text-align:left; margin-top:6px; padding-top:8px; }
+  .promo-rotulo{ font-size:0.92rem; }
+  .promo-destaque{ font-size:1rem; }
+  .promo-valor{ font-size:2.1rem; }
+  .promo-foot .btn{ width:100%; }
 }

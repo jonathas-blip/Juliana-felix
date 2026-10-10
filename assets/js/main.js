@@ -102,3 +102,24 @@ if (lb && zoomBtns.length && typeof lb.showModal === 'function') {
   });
   lb.addEventListener('close', () => zoomBtns[current].focus());
 }
+
+// ---------- Pop-up de promoção ----------
+// Abre uma vez por visita (aba do navegador) e some sozinho após a data em data-ate.
+const promo = document.getElementById('promo');
+if (promo && typeof promo.showModal === 'function') {
+  const ate = promo.dataset.ate;
+  const vigente = !ate || new Date() <= new Date(ate + 'T23:59:59');
+  let jaViu = false;
+  try { jaViu = sessionStorage.getItem('promoVista') === ate; } catch (e) {}
+  if (vigente && !jaViu) {
+    promo.showModal();
+    document.body.style.overflow = 'hidden';
+  }
+  const fechar = () => promo.close();
+  promo.querySelectorAll('.promo-close, .promo-skip').forEach((b) => b.addEventListener('click', fechar));
+  promo.addEventListener('click', (e) => { if (e.target === promo) fechar(); });
+  promo.addEventListener('close', () => {
+    document.body.style.overflow = '';
+    try { sessionStorage.setItem('promoVista', ate); } catch (e) {}
+  });
+}

@@ -106,6 +106,24 @@
     { "nome": "Eliete",  "procedimento": "Contorno de Mandíbula", "texto": "Fiz o contorno de mandíbula e o resultado foi muito harmonioso. Atendimento cuidadoso do início ao fim, me senti acolhida em cada etapa." }
   ],
 
+  "promocao": {
+    "ativa": true,
+    "ate": "2026-10-31",
+    "selo": "Campanha de outubro",
+    "titulo": "Outubro",
+    "tituloDestaque": "Rosa",
+    "subtituloHtml": "Neste mês, temos um <em>presente para você</em>.",
+    "ofertas": [
+      { "icone": "labios",  "nome": "Preenchimento Labial ou Botox",        "rotulo": "Ganhe uma", "destaque": "Limpeza de pele com extração" },
+      { "icone": "perfil",  "nome": "Lipo Enzimática ou Lipo de Papada",    "preco": "149", "centavos": "00", "complemento": "a sessão" },
+      { "icone": "rolo",    "nome": "Microagulhamento + PDRN Ana Pegova",   "preco": "249", "centavos": "90", "complemento": "a sessão" },
+      { "icone": "rosto",   "nome": "Fechou limpeza de pele?",              "rotulo": "Ganhe", "destaque": "Hidralips", "prefixo": "por", "preco": "129", "centavos": "90" }
+    ],
+    "botao": "Quero aproveitar",
+    "mensagemWhatsapp": "Olá, Juliana! Vi a promoção de Outubro Rosa no site e gostaria de aproveitar.",
+    "aviso": "Consulte condições e agende sua avaliação. Promoção válida até 31/10."
+  },
+
   "desenvolvedor": {
     "nome": "Jonathas Mariano",
     "url": ""
