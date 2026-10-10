@@ -42,7 +42,7 @@
     "bairro": "Tatuapé",
     "cep": "03065-030",
     "horario": "Das 8h às 22h, pelo WhatsApp",
-    "googleAvaliacoes": ""
+    "googleAvaliacoes": "https://www.google.com/search?kgmid=/g/11zyx0xh3q"
   },
 
   "hero": {
@@ -99,7 +99,6 @@
     { "titulo": "Acompanhamento",         "texto": "Retorno e orientações para cuidar do seu resultado ao longo do tempo." }
   ],
 
-  "_avisoDepoimentos": "IMPORTANTE: os depoimentos abaixo são exemplos. Substitua por avaliações reais (de preferência do Google) antes de publicar. Para esconder a seção, deixe a lista vazia: []",
   "depoimentos": [
     { "nome": "Ana",     "procedimento": "Preenchimento Labial",  "texto": "Fiz o preenchimento labial e o resultado ficou exatamente como eu queria: natural, sem exagero. Me senti super à vontade durante todo o atendimento." },
     { "nome": "Thais",   "procedimento": "Harmonização Facial",   "texto": "A harmonização facial mudou a forma como eu me vejo no espelho. Nada de artificial, só realçaram o que eu já tinha de bonito." },
@@ -108,7 +107,7 @@
   ],
 
   "desenvolvedor": {
-    "nome": "",
+    "nome": "Jonathas Mariano",
     "url": ""
   }
 }

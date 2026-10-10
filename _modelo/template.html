@@ -358,7 +358,7 @@
     </div>
     <div class="footer-bottom">
       <span>&copy; {{calc.ano}} {{marca.nomeCompleto}}. Todos os direitos reservados.</span>
-      {{#desenvolvedor.nome}}<span>Site desenvolvido por <a href="{{desenvolvedor.url}}" target="_blank" rel="noopener">{{desenvolvedor.nome}}</a></span>{{/desenvolvedor.nome}}
+      {{#desenvolvedor.nome}}<span>Site desenvolvido por {{#desenvolvedor.url}}<a href="{{desenvolvedor.url}}" target="_blank" rel="noopener">{{desenvolvedor.nome}}</a>{{/desenvolvedor.url}}{{^desenvolvedor.url}}{{desenvolvedor.nome}}{{/desenvolvedor.url}}</span>{{/desenvolvedor.nome}}
     </div>
   </div>
 </footer>

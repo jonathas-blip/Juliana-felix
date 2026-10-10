@@ -26,9 +26,7 @@ _modelo/
 2. Rode `powershell -ExecutionPolicy Bypass -File _modelo\build.ps1`.
 3. Suba os arquivos alterados para o GitHub. O site atualiza em alguns minutos.
 
-## Pendências
+## Observações
 
-- Substituir os depoimentos de exemplo por avaliações reais (`depoimentos` no `cliente.json`).
-- Preencher o número do COREN em `marca.registro`.
-- Preencher `contato.googleAvaliacoes` quando o Perfil da Empresa no Google estiver ativo.
-- Preencher `desenvolvedor` com o nome/site de quem desenvolveu.
+- O COREN não é exibido no site por decisão da cliente (`marca.registro` fica vazio).
+- Perfil da Empresa no Google: https://www.google.com/search?kgmid=/g/11zyx0xh3q
