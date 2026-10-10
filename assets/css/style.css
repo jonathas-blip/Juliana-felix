@@ -533,93 +533,136 @@ section.block{ padding:96px 0; }
 
 /* ---------- POP-UP DE PROMOÇÃO ---------- */
 .promo{
+  --rose:#B5656F;
+  --rose-deep:#9A4E59;
+  --olive:#3F4A35;
   border:0; padding:0;
-  width:min(760px, calc(100vw - 32px));
+  width:min(720px, calc(100vw - 32px));
   max-height:calc(100dvh - 32px);
-  border-radius:22px;
+  border-radius:24px;
   overflow:hidden;
   background:
-    radial-gradient(ellipse at 100% 0%, rgba(241,222,223,0.9), transparent 55%),
-    radial-gradient(ellipse at 0% 100%, rgba(198,161,91,0.12), transparent 50%),
-    #FFFCF9;
+    radial-gradient(70% 45% at 105% 62%, rgba(229,170,170,0.55), transparent 70%),
+    radial-gradient(60% 40% at -5% 100%, rgba(226,166,168,0.5), transparent 70%),
+    radial-gradient(60% 35% at 30% 0%, rgba(255,255,255,0.8), transparent 70%),
+    linear-gradient(165deg, #FCF3EE 0%, #F7E5DF 55%, #F2D6D0 100%);
   color:var(--text);
-  box-shadow:0 40px 90px -30px rgba(22,36,31,0.55);
+  box-shadow:0 40px 90px -30px rgba(22,36,31,0.6), inset 0 0 0 1px rgba(198,161,91,0.35);
 }
-.promo[open]{ display:flex; animation:promo-in .45s ease both; }
+.promo[open]{ display:flex; animation:promo-in .5s ease both; }
 .promo::backdrop{ background:rgba(22,36,31,0.62); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
 @keyframes promo-in{ from{ opacity:0; transform:translateY(16px) scale(.97); } to{ opacity:1; transform:none; } }
-.promo-box{ flex:1; overflow-y:auto; padding:30px 40px 24px; overscroll-behavior:contain; }
+.promo-fundo{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.promo-box{ position:relative; flex:1; overflow-y:auto; overflow-x:hidden; padding:30px 44px 28px; overscroll-behavior:contain; }
 .promo-box:focus{ outline:none; }
 .promo-close{
-  position:absolute; top:14px; right:14px; z-index:2;
+  position:absolute; top:14px; right:14px; z-index:3;
   width:42px; height:42px; border-radius:50%;
-  border:1px solid rgba(35,72,61,0.18); background:rgba(255,255,255,0.9); color:var(--green-deep);
+  border:0; background:rgba(255,255,255,0.55); color:var(--rose-deep);
   display:flex; align-items:center; justify-content:center; cursor:pointer;
   transition:background-color .2s ease, color .2s ease;
 }
-.promo-close:hover{ background:var(--green-deep); color:#fff; }
-.promo-close svg{ width:20px; height:20px; }
+.promo-close:hover{ background:var(--rose-deep); color:#fff; }
+.promo-close svg{ width:22px; height:22px; }
 
-.promo-head{ text-align:center; margin-bottom:22px; }
-.promo-laco{ width:34px; height:34px; color:var(--accent); margin:0 auto 8px; display:block; }
-.promo-head .eyebrow{ margin-bottom:8px; }
-.promo-head h2{
-  font-size:clamp(2.3rem, 6vw, 3.4rem);
-  text-transform:uppercase; letter-spacing:.04em; line-height:1.05;
-  color:var(--green-deep); margin-bottom:12px;
+/* logo */
+.promo-marca{ position:relative; text-align:center; margin-bottom:18px; }
+.promo-marca img{ width:230px; margin:0 auto; }
+.promo-marca p{
+  margin-top:6px; font-size:0.68rem; letter-spacing:.42em; text-transform:uppercase;
+  color:var(--olive); font-weight:500; padding-left:.42em;
 }
-.promo-head h2 em{ font-style:italic; color:var(--accent-text); }
-.promo-sub{ font-family:var(--font-title); font-size:clamp(1.1rem, 2.6vw, 1.35rem); color:var(--text); }
-.promo-sub em{ color:var(--accent-text); }
 
-.promo-grid{ list-style:none; margin:0 0 20px; padding:0; display:grid; grid-template-columns:repeat(2, 1fr); gap:14px; }
+/* laço */
+.promo-laco{
+  position:absolute; top:92px; right:-30px; width:190px; height:auto;
+  pointer-events:none; filter:drop-shadow(0 18px 22px rgba(150,80,90,0.25));
+}
+
+/* título */
+.promo-titulo{ position:relative; display:flex; flex-direction:column; line-height:.95; margin:0 0 18px; }
+.promo-t1{
+  font-size:clamp(3.2rem, 10vw, 5rem); letter-spacing:.01em; text-transform:uppercase;
+  color:var(--olive);
+}
+.promo-t2{
+  position:relative; display:inline-flex; align-items:flex-end; align-self:flex-start;
+  font-size:clamp(3.6rem, 11.5vw, 5.8rem); letter-spacing:.01em; text-transform:uppercase;
+  background:linear-gradient(180deg, #CF8D93 0%, var(--rose) 45%, var(--rose-deep) 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.promo-coracao{ width:clamp(90px, 22vw, 150px); height:auto; color:var(--rose); margin:0 0 .12em .1em; }
+.promo-sub{ position:relative; font-family:var(--font-title); line-height:1.15; margin-bottom:26px; }
+.promo-sub span{ display:block; font-size:clamp(1.4rem, 4vw, 2rem); color:var(--olive); }
+.promo-sub span::before{
+  content:''; display:block; width:56px; height:1px; background:var(--gold); margin:0 0 14px;
+}
+.promo-sub em{
+  display:flex; align-items:center; gap:16px;
+  font-size:clamp(1.7rem, 5vw, 2.5rem); color:var(--rose);
+}
+.promo-sub em::before{ content:''; width:70px; height:1px; background:var(--gold); flex-shrink:0; }
+
+/* ofertas */
+.promo-grid{ list-style:none; margin:0 0 22px; padding:0; display:grid; grid-template-columns:repeat(2, 1fr); gap:16px; position:relative; }
 .promo-card{
-  display:grid; grid-template-columns:52px 1fr; gap:4px 14px; align-items:center;
+  display:grid; grid-template-columns:64px 1fr; gap:0 16px; align-items:center;
   grid-template-areas:"icone nome" "oferta oferta";
-  background:rgba(255,255,255,0.78);
-  border:1px solid rgba(198,161,91,0.45);
-  border-radius:16px;
-  padding:16px 20px 16px;
+  background:linear-gradient(160deg, rgba(255,255,255,0.72), rgba(255,246,243,0.5));
+  border:1px solid rgba(198,161,91,0.6);
+  border-radius:18px;
+  padding:18px 18px 18px;
+  box-shadow:0 14px 30px -24px rgba(150,80,90,0.5);
+  backdrop-filter:blur(2px);
 }
 .promo-icon{
   grid-area:icone;
-  width:52px; height:52px; border-radius:50%;
-  background:var(--accent-light); color:var(--accent);
+  width:64px; height:64px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #D59AA0, var(--rose) 70%);
+  color:#fff;
   display:flex; align-items:center; justify-content:center;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,0.25);
 }
-.promo-icon svg{ width:26px; height:26px; }
+.promo-icon svg{ width:34px; height:34px; }
 .promo-card h3{
   grid-area:nome;
-  font-family:var(--font-body); font-weight:700;
-  font-size:0.8rem; letter-spacing:.08em; text-transform:uppercase; line-height:1.4;
-  color:var(--green-deep);
+  font-family:var(--font-title); font-weight:500;
+  font-size:1rem; letter-spacing:.02em; text-transform:uppercase; line-height:1.25;
+  color:var(--olive);
 }
+.promo-card h3::after{ content:''; display:block; width:56px; height:1px; background:var(--gold); margin-top:10px; }
 .promo-oferta{
   grid-area:oferta;
   display:flex; flex-direction:column; align-items:center; text-align:center;
-  margin-top:10px; padding-top:12px; border-top:1px solid rgba(198,161,91,0.35);
+  margin-top:12px; font-family:var(--font-title);
 }
-.promo-rotulo{ font-family:var(--font-title); font-style:italic; color:var(--text-soft); font-size:1rem; }
+.promo-rotulo{ font-style:italic; color:var(--olive); font-size:1.15rem; line-height:1.2; }
 .promo-destaque{
-  font-family:var(--font-title); font-weight:500;
-  font-size:1.15rem; text-transform:uppercase; letter-spacing:.03em; line-height:1.25;
-  color:var(--accent-text);
+  font-weight:500; font-size:1.3rem; text-transform:uppercase; letter-spacing:.02em; line-height:1.15;
+  color:var(--rose-deep);
 }
-.promo-preco{ display:flex; align-items:flex-start; gap:3px; color:var(--accent-text); font-family:var(--font-title); line-height:1; }
-.promo-prefixo{ align-self:flex-end; margin-right:6px; padding-bottom:6px; font-style:italic; font-size:1rem; color:var(--text-soft); }
-.promo-rs{ font-size:1.05rem; margin-top:8px; }
-.promo-valor{ font-size:2.6rem; font-weight:500; }
-.promo-cent{ font-size:1.05rem; margin-top:4px; }
+.promo-preco{ display:flex; align-items:flex-start; color:var(--rose-deep); line-height:.9; }
+.promo-prefixo{ align-self:flex-end; margin-right:8px; padding-bottom:4px; font-style:italic; font-size:1.15rem; color:var(--olive); }
+.promo-rs{ font-size:1.35rem; font-weight:500; margin:12px 4px 0 0; }
+.promo-valor{ font-size:3.4rem; font-weight:500; letter-spacing:-.01em; }
+.promo-cent{ font-size:1.35rem; font-weight:500; margin-top:4px; }
 .promo-destaque + .promo-preco{ margin-top:4px; }
-.promo-comp{ font-size:0.85rem; color:var(--text-soft); margin-top:4px; }
+.promo-comp{ font-size:1.05rem; color:var(--olive); margin-top:2px; }
 
-.promo-foot{ display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; }
+/* rodapé */
+.promo-foot{ position:relative; display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center; }
+.promo-sep{ display:flex; align-items:center; gap:10px; width:min(420px, 100%); color:var(--rose); }
+.promo-sep::before, .promo-sep::after{ content:''; flex:1; height:1px; background:linear-gradient(90deg, transparent, var(--gold)); }
+.promo-sep::after{ transform:scaleX(-1); }
+.promo-sep svg{ width:18px; height:18px; }
+.promo-aviso{ font-family:var(--font-title); font-size:1.05rem; color:var(--olive); margin-bottom:6px; }
+.promo-foot .btn-primary{ background:var(--rose-deep); }
+.promo-foot .btn-primary:hover{ background:#86424D; }
 .promo-skip{
-  background:none; border:0; cursor:pointer; padding:8px 12px; margin-top:4px;
-  font-family:var(--font-body); font-size:0.78rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--green-deep); text-decoration:underline; text-underline-offset:4px; text-decoration-color:var(--gold);
+  background:none; border:0; cursor:pointer; padding:6px 12px;
+  font-family:var(--font-body); font-size:0.76rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--olive); text-decoration:underline; text-underline-offset:4px; text-decoration-color:var(--gold);
 }
-.promo-aviso{ font-size:0.8rem; color:var(--text-soft); font-style:italic; }
 
 /* ---------- ANIMAÇÃO DE ENTRADA ---------- */
 /* Só ativa com JavaScript; sem JS, tudo aparece normalmente. */
@@ -687,19 +730,30 @@ section.block{ padding:96px 0; }
   .lb-prev{ left:calc(50% - 60px); }
   .lb-next{ right:calc(50% - 60px); }
 
-  .promo{ width:calc(100vw - 24px); max-height:calc(100dvh - 24px); border-radius:18px; }
-  .promo-box{ padding:30px 18px 22px; }
-  .promo-close{ top:10px; right:10px; width:40px; height:40px; }
-  .promo-head{ margin-bottom:20px; }
-  .promo-laco{ width:32px; height:32px; }
+  .promo{ width:calc(100vw - 20px); max-height:calc(100dvh - 20px); border-radius:20px; }
+  .promo-box{ padding:24px 18px 22px; }
+  .promo-close{ top:8px; right:8px; }
+  .promo-marca{ margin-bottom:14px; }
+  .promo-marca img{ width:180px; }
+  .promo-marca p{ font-size:0.6rem; letter-spacing:.34em; }
+  .promo-laco{ top:84px; right:-34px; width:100px; }
+  .promo-titulo{ margin-bottom:14px; }
+  .promo-sub{ margin-bottom:20px; }
+  .promo-sub span::before{ margin-bottom:10px; width:44px; }
+  .promo-sub em{ gap:10px; }
+  .promo-sub em::before{ width:28px; }
   .promo-grid{ grid-template-columns:1fr; gap:10px; margin-bottom:20px; }
-  .promo-card{ grid-template-columns:44px 1fr; grid-template-areas:"icone nome" "icone oferta"; gap:2px 14px; padding:14px 16px; }
-  .promo-icon{ width:44px; height:44px; align-self:start; }
-  .promo-icon svg{ width:22px; height:22px; }
-  .promo-card h3{ font-size:0.74rem; }
-  .promo-oferta{ align-items:flex-start; text-align:left; margin-top:6px; padding-top:8px; }
-  .promo-rotulo{ font-size:0.92rem; }
-  .promo-destaque{ font-size:1rem; }
-  .promo-valor{ font-size:2.1rem; }
+  .promo-card{ grid-template-columns:54px 1fr; grid-template-areas:"icone nome" "icone oferta"; gap:0 14px; padding:14px 16px; }
+  .promo-icon{ width:54px; height:54px; align-self:start; }
+  .promo-icon svg{ width:28px; height:28px; }
+  .promo-card h3{ font-size:0.92rem; }
+  .promo-card h3::after{ margin-top:8px; width:40px; }
+  .promo-oferta{ align-items:flex-start; text-align:left; margin-top:8px; }
+  .promo-rotulo{ font-size:1.02rem; }
+  .promo-destaque{ font-size:1.1rem; }
+  .promo-valor{ font-size:2.6rem; }
+  .promo-rs, .promo-cent{ font-size:1.1rem; }
+  .promo-comp{ font-size:0.95rem; }
+  .promo-aviso{ font-size:0.95rem; }
   .promo-foot .btn{ width:100%; }
 }

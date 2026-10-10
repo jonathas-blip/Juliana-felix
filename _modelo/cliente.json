@@ -12,6 +12,7 @@
     "profissional": "Juliana Felix",
     "primeiroNome": "Juliana",
     "titulo": "Enfermeira especialista em Estética Avançada",
+    "segmento": "Estética Avançada",
     "registro": "",
     "slogan": "Beleza, cuidado e naturalidade em cada detalhe.",
     "logoSimbolo": "assets/img/logo-simbolo.png",
@@ -109,19 +110,19 @@
   "promocao": {
     "ativa": true,
     "ate": "2026-10-31",
-    "selo": "Campanha de outubro",
     "titulo": "Outubro",
     "tituloDestaque": "Rosa",
-    "subtituloHtml": "Neste mês, temos um <em>presente para você</em>.",
+    "subtitulo": "Neste mês, temos um",
+    "subtituloDestaque": "presente para você",
     "ofertas": [
       { "icone": "labios",  "nome": "Preenchimento Labial ou Botox",        "rotulo": "Ganhe uma", "destaque": "Limpeza de pele com extração" },
-      { "icone": "perfil",  "nome": "Lipo Enzimática ou Lipo de Papada",    "preco": "149", "centavos": "00", "complemento": "a sessão" },
+      { "icone": "papada",  "nome": "Lipo Enzimática ou Lipo de Papada",    "preco": "149", "centavos": "00", "complemento": "a sessão" },
       { "icone": "rolo",    "nome": "Microagulhamento + PDRN Ana Pegova",   "preco": "249", "centavos": "90", "complemento": "a sessão" },
-      { "icone": "rosto",   "nome": "Fechou limpeza de pele?",              "rotulo": "Ganhe", "destaque": "Hidralips", "prefixo": "por", "preco": "129", "centavos": "90" }
+      { "icone": "toalha",  "nome": "Fechou limpeza de pele?",              "rotulo": "Ganhe", "destaque": "Hidralips", "prefixo": "por", "preco": "129", "centavos": "90" }
     ],
     "botao": "Quero aproveitar",
     "mensagemWhatsapp": "Olá, Juliana! Vi a promoção de Outubro Rosa no site e gostaria de aproveitar.",
-    "aviso": "Consulte condições e agende sua avaliação. Promoção válida até 31/10."
+    "aviso": "Consulte condições e agende sua avaliação. Válido até 31/10."
   },
 
   "desenvolvedor": {
