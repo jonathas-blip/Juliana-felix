@@ -605,7 +605,7 @@ section.block{ padding:96px 0; }
 .promo-sub em::before{ content:''; width:70px; height:1px; background:var(--gold); flex-shrink:0; }
 
 /* ofertas */
-.promo-grid{ list-style:none; margin:0 0 22px; padding:0; display:grid; grid-template-columns:repeat(2, 1fr); gap:16px; position:relative; }
+.promo-grid{ list-style:none; margin:0 0 22px; padding:0; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:16px; position:relative; }
 .promo-card{
   display:grid; grid-template-columns:64px 1fr; gap:0 16px; align-items:center;
   grid-template-areas:"icone nome" "oferta oferta";
@@ -669,6 +669,32 @@ section.block{ padding:96px 0; }
   color:#CFE0D8; text-decoration:underline; text-underline-offset:4px; text-decoration-color:var(--gold);
 }
 .promo-skip:hover{ color:#fff; }
+
+/* Pop-up largo no computador: título à esquerda, ofertas à direita */
+@media (min-width:1180px){
+  .promo{ width:min(1100px, calc(100vw - 48px)); }
+  .promo-box{
+    display:grid; grid-template-columns:minmax(0, 40fr) minmax(0, 60fr); column-gap:40px;
+    align-content:start; padding:34px 66px 0 48px;
+  }
+  .promo-marca{ grid-column:1; grid-row:1; text-align:left; margin-bottom:22px; }
+  .promo-marca img{ margin:0; width:220px; }
+  .promo-marca p{ padding-left:0; }
+  .promo-laco{ top:20px; right:auto; left:calc(48px + (100% - 114px - 40px) * .40 - 96px); width:92px; }
+  .promo-titulo{ grid-column:1; grid-row:2; }
+  .promo-t1{ font-size:clamp(3rem, 4.5vw, 4.3rem); }
+  .promo-t2{ font-size:clamp(3.4rem, 5.1vw, 4.9rem); }
+  .promo-sub span{ font-size:1.7rem; }
+  .promo-sub em{ font-size:2.1rem; gap:12px; }
+  .promo-sub em::before{ width:44px; }
+  .promo-card{ grid-template-columns:54px 1fr; gap:0 12px; padding:16px; }
+  .promo-icon{ width:54px; height:54px; }
+  .promo-icon svg{ width:28px; height:28px; }
+  .promo-card h3{ font-size:0.9rem; overflow-wrap:anywhere; }
+  .promo-sub{ grid-column:1; grid-row:3; margin-bottom:30px; }
+  .promo-grid{ grid-column:2; grid-row:1 / span 3; align-self:center; margin:22px 0 30px; }
+  .promo-foot{ grid-column:1 / -1; grid-row:4; margin:0 -66px 0 -48px; padding:20px 66px 22px 48px; }
+}
 
 /* ---------- ANIMAÇÃO DE ENTRADA ---------- */
 /* Só ativa com JavaScript; sem JS, tudo aparece normalmente. */
