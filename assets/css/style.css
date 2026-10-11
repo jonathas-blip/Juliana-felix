@@ -550,6 +550,7 @@ section.block{ padding:96px 0; }
   box-shadow:0 40px 90px -30px rgba(22,36,31,0.6), inset 0 0 0 1px rgba(198,161,91,0.55);
 }
 .promo[open]{ display:flex; animation:promo-in .5s ease both; }
+.promo.promo-fallback{ position:fixed; inset:0; margin:auto; z-index:300; box-shadow:0 0 0 100vmax rgba(22,36,31,0.62), 0 40px 90px -30px rgba(22,36,31,0.6); }
 .promo::backdrop{ background:rgba(22,36,31,0.62); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
 @keyframes promo-in{ from{ opacity:0; transform:translateY(16px) scale(.97); } to{ opacity:1; transform:none; } }
 .promo-fundo{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }

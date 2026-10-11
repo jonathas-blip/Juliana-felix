@@ -104,22 +104,23 @@ if (lb && zoomBtns.length && typeof lb.showModal === 'function') {
 }
 
 // ---------- Pop-up de promoção ----------
-// Abre uma vez por visita (aba do navegador) e some sozinho após a data em data-ate.
+// Abre sempre que o site é carregado e some sozinho após a data em data-ate.
 const promo = document.getElementById('promo');
-if (promo && typeof promo.showModal === 'function') {
+if (promo) {
   const ate = promo.dataset.ate;
   const vigente = !ate || new Date() <= new Date(ate + 'T23:59:59');
-  let jaViu = false;
-  try { jaViu = sessionStorage.getItem('promoVista') === ate; } catch (e) {}
-  if (vigente && !jaViu) {
-    promo.showModal();
+  const nativo = typeof promo.showModal === 'function';
+  const fechar = () => {
+    if (nativo) promo.close();
+    else { promo.removeAttribute('open'); promo.classList.remove('promo-fallback'); document.body.style.overflow = ''; }
+  };
+  if (vigente) {
+    if (nativo) promo.showModal();
+    else promo.setAttribute('open', ''), promo.classList.add('promo-fallback'); // navegadores antigos
     document.body.style.overflow = 'hidden';
   }
-  const fechar = () => promo.close();
   promo.querySelectorAll('.promo-close, .promo-skip').forEach((b) => b.addEventListener('click', fechar));
   promo.addEventListener('click', (e) => { if (e.target === promo) fechar(); });
-  promo.addEventListener('close', () => {
-    document.body.style.overflow = '';
-    try { sessionStorage.setItem('promoVista', ate); } catch (e) {}
-  });
+  promo.addEventListener('close', () => { document.body.style.overflow = ''; });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && promo.hasAttribute('open') && !nativo) fechar(); });
 }

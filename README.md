@@ -31,5 +31,5 @@ _modelo/
 - O COREN não é exibido no site por decisão da cliente (`marca.registro` fica vazio).
 - Perfil da Empresa no Google: https://www.google.com/search?kgmid=/g/11zyx0xh3q
 - Pop-up de promoção: configurado em `promocao` no `cliente.json`. Abre ao entrar no site
-  (uma vez por visita) e some sozinho depois da data em `promocao.ate`. Para desligar antes,
+  (toda vez que a página carrega) e some sozinho depois da data em `promocao.ate`. Para desligar antes,
   use `"ativa": false` e gere o site de novo.

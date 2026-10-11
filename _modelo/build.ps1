@@ -33,6 +33,7 @@ $c = $dados.contato
 $waBase = "https://wa.me/$($c.whatsapp)"
 $extras = [ordered]@{
   ano          = (Get-Date).Year
+  versao       = (Get-Date -Format 'yyyyMMddHHmm')  # força o navegador a baixar CSS/JS novos a cada publicação
   whatsappLink = "$waBase`?text=$(UrlEnc $c.mensagemWhatsapp)"
   whatsappBase = $waBase
   enderecoCompleto = "$($c.endereco), $($c.cidade), CEP $($c.cep)"
