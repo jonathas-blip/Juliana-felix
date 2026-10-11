@@ -31,6 +31,11 @@ Este site é um **modelo**. Todo o conteúdo específico da cliente fica em um
    - `depoimentos`: use **apenas depoimentos reais**. Lista vazia `[]`
      esconde a seção.
    - `desenvolvedor`: seu nome e site, para aparecer o crédito no rodapé.
+   - `googleAds`: se a cliente anuncia no Google Ads, coloque o ID da tag
+     (`AW-...`) e o `send_to` da conversão "Clique no WhatsApp" (Google Ads →
+     Metas → Conversões → criar ação "Contato" manual → "Ver snippet de
+     evento"). Todo clique em link do WhatsApp vira conversão. Deixe vazio
+     se não houver anúncios.
    - `procedimentos[].icone`: `rosto`, `labios`, `brilho`, `perfil`,
      `colageno` ou `gota`.
    - Cores: `destaque` é a cor dos botões (texto branco por cima). Para manter

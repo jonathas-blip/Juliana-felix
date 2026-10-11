@@ -1,5 +1,12 @@
 document.documentElement.classList.add('js');
 
+// ---------- Conversão do Google Ads: clique em qualquer link de WhatsApp ----------
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a[href*="wa.me/"]');
+  if (!link || typeof window.gtag !== 'function' || !window.CONVERSAO_WHATSAPP) return;
+  window.gtag('event', 'conversion', { send_to: window.CONVERSAO_WHATSAPP, transport_type: 'beacon' });
+});
+
 // ---------- Cabeçalho ao rolar ----------
 const header = document.getElementById('site-header');
 const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 30);

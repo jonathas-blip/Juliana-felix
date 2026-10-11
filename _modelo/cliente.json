@@ -125,6 +125,12 @@
     "aviso": "Consulte condições e agende sua avaliação. Válido até 31/10."
   },
 
+  "_avisoGoogleAds": "Medição do Google Ads. tagId = ID da tag do Google (AW-...). conversaoWhatsapp = 'send_to' da conversão 'Clique no WhatsApp'. Deixe tagId vazio para não instalar nada.",
+  "googleAds": {
+    "tagId": "AW-18459063436",
+    "conversaoWhatsapp": "AW-18459063436/WA7bCKvl6JgdEIzp--FE"
+  },
+
   "desenvolvedor": {
     "nome": "Jonathas Mariano",
     "url": ""

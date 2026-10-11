@@ -2,6 +2,17 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+{{#googleAds.tagId}}
+<!-- Google tag (gtag.js) — Google Ads -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{googleAds.tagId}}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{googleAds.tagId}}');
+  window.CONVERSAO_WHATSAPP = '{{googleAds.conversaoWhatsapp}}';
+</script>
+{{/googleAds.tagId}}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Arquivo gerado por _modelo/build.ps1 — edite _modelo/cliente.json e _modelo/template.html, não este arquivo. -->
 <title>{{site.titulo}}</title>
