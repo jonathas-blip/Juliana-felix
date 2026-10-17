@@ -2,7 +2,7 @@
   "site": {
     "url": "https://julianafelix.com.br",
     "titulo": "Juliana Felix Beauté | Estética Avançada no Tatuapé",
-    "descricao": "Harmonização facial, preenchimento labial, toxina botulínica (Botox) e bioestimuladores no Tatuapé, São Paulo. Atendimento personalizado com Juliana Felix, enfermeira especialista em estética avançada.",
+    "descricao": "Harmonização facial, preenchimento labial, tratamento de linhas de expressão e bioestimuladores no Tatuapé, São Paulo. Atendimento personalizado com Juliana Felix, enfermeira especialista em estética avançada.",
     "imagemCompartilhamento": "assets/img/og-image.jpg"
   },
 
@@ -65,7 +65,7 @@
   "procedimentos": [
     { "icone": "rosto",    "titulo": "Harmonização Facial",          "texto": "Protocolos personalizados que equilibram traços e realçam a harmonia natural do rosto." },
     { "icone": "labios",   "titulo": "Preenchimento Labial",         "texto": "Hidratação, definição e volume para lábios com resultado natural e sofisticado." },
-    { "icone": "brilho",   "titulo": "Toxina Botulínica (Botox)",    "texto": "Suaviza linhas de expressão da testa e da região dos olhos, com aspecto descansado e natural." },
+    { "icone": "brilho",   "titulo": "Linhas de Expressão",          "texto": "Suaviza linhas de expressão da testa e da região dos olhos, com aspecto descansado e natural." },
     { "icone": "perfil",   "titulo": "Contorno de Mandíbula",        "texto": "Definição do ângulo mandibular para um perfil mais harmonioso e aspecto rejuvenescido." },
     { "icone": "colageno", "titulo": "Bioestimuladores de Colágeno", "texto": "Estímulo gradual e natural de colágeno para firmeza e viço da pele ao longo do tempo." },
     { "icone": "gota",     "titulo": "Skincare Avançado",            "texto": "Renove sua pele e recupere a sensação de frescor, luminosidade e cuidado contínuo." }
@@ -115,7 +115,7 @@
     "subtitulo": "Neste mês, temos um",
     "subtituloDestaque": "presente para você",
     "ofertas": [
-      { "icone": "labios",  "nome": "Preenchimento Labial ou Botox",        "rotulo": "Ganhe uma", "destaque": "Limpeza de pele com extração" },
+      { "icone": "labios",  "nome": "Preenchimento Labial ou Linhas de Expressão", "rotulo": "Ganhe uma", "destaque": "Limpeza de pele com extração" },
       { "icone": "papada",  "nome": "Lipo Enzimática ou Lipo de Papada",    "preco": "149", "centavos": "00", "complemento": "a sessão" },
       { "icone": "rolo",    "nome": "Microagulhamento + PDRN Ana Pegova",   "preco": "249", "centavos": "90", "complemento": "a sessão" },
       { "icone": "toalha",  "nome": "Fechou limpeza de pele?",              "rotulo": "Ganhe", "destaque": "Hidralips", "prefixo": "por", "preco": "129", "centavos": "90" }
