@@ -117,7 +117,7 @@
     "ofertas": [
       { "icone": "labios",  "nome": "Preenchimento Labial ou Linhas de Expressão", "rotulo": "Ganhe uma", "destaque": "Limpeza de pele com extração" },
       { "icone": "papada",  "nome": "Lipo Enzimática ou Lipo de Papada",    "preco": "149", "centavos": "00", "complemento": "a sessão" },
-      { "icone": "rolo",    "nome": "Microagulhamento + PDRN Ana Pegova",   "preco": "249", "centavos": "90", "complemento": "a sessão" },
+      { "icone": "rolo",    "nome": "Microagulhamento + Ana Pegova",        "preco": "249", "centavos": "90", "complemento": "a sessão" },
       { "icone": "toalha",  "nome": "Fechou limpeza de pele?",              "rotulo": "Ganhe", "destaque": "Hidralips", "prefixo": "por", "preco": "129", "centavos": "90" }
     ],
     "botao": "Quero aproveitar",
