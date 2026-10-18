@@ -7,6 +7,71 @@ document.addEventListener('click', (e) => {
   window.gtag('event', 'conversion', { send_to: window.CONVERSAO_WHATSAPP, transport_type: 'beacon' });
 });
 
+// ---------- Monitoramento próprio: visitas e cliques no WhatsApp (painel/) ----------
+// Não guarda dado pessoal. Para não contar seus próprios acessos, abra o site
+// uma vez com ?naocontar no endereço (vale para aquele navegador).
+(() => {
+  const url = window.MONITOR_URL;
+  if (!url || navigator.webdriver || /^(localhost|127\.|\[::1\])/.test(location.hostname)) return;
+  const params = new URLSearchParams(location.search);
+  const guarda = (tipo, chave, valor) => { try { window[tipo].setItem(chave, valor); } catch (e) { /* modo privado */ } };
+  const le = (tipo, chave) => { try { return window[tipo].getItem(chave); } catch (e) { return null; } };
+  if (params.has('naocontar')) guarda('localStorage', 'naoContar', '1');
+  if (le('localStorage', 'naoContar')) return;
+
+  const origemDaVisita = () => {
+    const medium = (params.get('utm_medium') || '').toLowerCase();
+    if (params.has('gclid') || params.has('gbraid') || params.has('wbraid') || /^(cpc|ppc|paid)/.test(medium)) return 'google_ads';
+    if (params.get('utm_source')) return params.get('utm_source').toLowerCase().slice(0, 30);
+    let host = '';
+    try { host = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, '') : ''; } catch (e) { /* referrer inválido */ }
+    if (!host || host === location.hostname.replace(/^www\./, '')) return 'direto';
+    if (/google\./.test(host)) return 'google_organico';
+    if (/instagram\./.test(host)) return 'instagram';
+    if (/facebook\.|fb\./.test(host)) return 'facebook';
+    if (/whatsapp\./.test(host)) return 'whatsapp';
+    return host.slice(0, 30);
+  };
+
+  const sessao = le('sessionStorage', 'mSessao') || Math.random().toString(36).slice(2, 10);
+  const origem = le('sessionStorage', 'mOrigem') || origemDaVisita();
+  guarda('sessionStorage', 'mSessao', sessao);
+  guarda('sessionStorage', 'mOrigem', origem);
+  const dispositivo = window.matchMedia('(max-width: 820px)').matches ? 'celular' : 'computador';
+
+  const envia = (tipo, local) => {
+    const corpo = JSON.stringify({ t: tipo, l: local || '', o: origem, d: dispositivo, p: location.pathname, s: sessao });
+    try {
+      if (navigator.sendBeacon && navigator.sendBeacon(url, new Blob([corpo], { type: 'text/plain' }))) return;
+    } catch (e) { /* cai no fetch */ }
+    fetch(url, { method: 'POST', mode: 'no-cors', keepalive: true, body: corpo }).catch(() => {});
+  };
+
+  // Uma visita por sessão (abrir várias páginas/recarregar não conta de novo)
+  if (!le('sessionStorage', 'mVisita')) { envia('visita'); guarda('sessionStorage', 'mVisita', '1'); }
+
+  // Qual botão de WhatsApp foi clicado
+  const localDoBotao = (a) => {
+    if (a.closest('.wa-float')) return 'Botão flutuante';
+    if (a.closest('#promo')) return 'Pop-up de promoção';
+    const card = a.closest('.proc-card');
+    if (card) return 'Procedimento: ' + ((card.querySelector('h3') || {}).textContent || '').trim();
+    if (a.closest('.site-header')) return 'Cabeçalho';
+    if (a.closest('.mobile-panel')) return 'Menu do celular';
+    if (a.closest('.hero')) return 'Topo do site';
+    if (a.closest('.proc-note')) return 'Não sabe qual escolher';
+    if (a.closest('#quem-sou')) return 'Quem sou';
+    if (a.closest('.cta-block')) return 'Chamada final';
+    if (a.closest('#contato')) return 'Seção de contato';
+    if (a.closest('.site-footer')) return 'Rodapé';
+    return 'Outro';
+  };
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href*="wa.me/"]');
+    if (link) envia('clique_whatsapp', localDoBotao(link));
+  });
+})();
+
 // ---------- Cabeçalho ao rolar ----------
 const header = document.getElementById('site-header');
 const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 30);

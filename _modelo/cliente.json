@@ -131,6 +131,11 @@
     "conversaoWhatsapp": "AW-18459063436/WA7bCKvl6JgdEIzp--FE"
   },
 
+  "_avisoMonitoramento": "Painel de visitas e cliques (julianafelix.com.br/painel/). endpoint = URL /exec do Apps Script (_modelo/monitor-apps-script.gs). Vazio = monitoramento desligado.",
+  "monitoramento": {
+    "endpoint": ""
+  },
+
   "desenvolvedor": {
     "nome": "Jonathas Mariano",
     "url": ""

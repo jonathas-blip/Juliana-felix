@@ -102,3 +102,13 @@ if ($restos.Count -gt 0) { Write-Warning ("Marcadores não resolvidos: " + (($re
 
 [IO.File]::WriteAllText($Saida, $html, (New-Object System.Text.UTF8Encoding $false))
 Write-Host "Gerado: $Saida ($([math]::Round($html.Length / 1KB)) KB)"
+
+# Painel de monitoramento (painel/index.html), se o template existir
+$tplPainel = Join-Path $PSScriptRoot 'painel.html'
+if (Test-Path $tplPainel) {
+  $saidaPainel = Join-Path (Split-Path $Saida -Parent) 'painel\index.html'
+  New-Item -ItemType Directory -Force (Split-Path $saidaPainel -Parent) | Out-Null
+  $htmlPainel = Render (Get-Content -LiteralPath $tplPainel -Raw -Encoding UTF8) @($dados)
+  [IO.File]::WriteAllText($saidaPainel, $htmlPainel, (New-Object System.Text.UTF8Encoding $false))
+  Write-Host "Gerado: $saidaPainel"
+}

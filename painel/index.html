@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<!-- Gerado por _modelo/build.ps1 a partir de _modelo/painel.html -->
+<title>Painel do site · Juliana Felix Beauté</title>
+<link rel="icon" type="image/png" href="../assets/img/logo-simbolo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#F6F4EF; --surface:#FFFFFF; --surface-2:#FBFAF7; --line:rgba(23,23,23,.09);
+    --ink:#1B1B1B; --ink-2:#5C5C5C; --ink-3:#8A8A8A;
+    --brand:#23483D; --brand-ink:#FFFFFF;
+    --s-visitas:#007F5C; --s-cliques:#C99227;
+    --good:#1E7A4F; --bad:#B23B3B;
+    --shadow:0 1px 2px rgba(23,23,23,.04), 0 8px 24px -16px rgba(23,23,23,.18);
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#141716; --surface:#1C201E; --surface-2:#202523; --line:rgba(255,255,255,.08);
+      --ink:#EDEDEA; --ink-2:#B4B8B5; --ink-3:#868B88;
+      --brand:#2F5B4C; --s-visitas:#198663; --s-cliques:#BF8A26;
+      --good:#4CC28A; --bad:#F08080; --shadow:none; color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#141716; --surface:#1C201E; --surface-2:#202523; --line:rgba(255,255,255,.08);
+    --ink:#EDEDEA; --ink-2:#B4B8B5; --ink-3:#868B88;
+    --brand:#2F5B4C; --s-visitas:#198663; --s-cliques:#BF8A26;
+    --good:#4CC28A; --bad:#F08080; --shadow:none; color-scheme:dark;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:'Manrope', system-ui, sans-serif; font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  h1,h2{ margin:0; font-weight:600; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 20px 48px; }
+
+  /* Topo */
+  .topbar{ background:var(--brand); color:var(--brand-ink); }
+  .topbar .wrap{ display:flex; align-items:center; gap:16px; padding-top:18px; padding-bottom:18px; flex-wrap:wrap; }
+  .marca{ display:flex; align-items:center; gap:12px; margin-right:auto; }
+  .marca img{ width:42px; height:42px; border-radius:50%; background:#F8F5EF; padding:4px; }
+  .marca h1{ font-family:'Bodoni Moda', Georgia, serif; font-weight:500; font-size:1.35rem; line-height:1.1; }
+  .marca span{ display:block; font-size:.78rem; opacity:.8; letter-spacing:.04em; }
+  .periodo{ display:flex; background:rgba(255,255,255,.12); border-radius:999px; padding:3px; }
+  .periodo button{ border:0; background:none; color:inherit; font:inherit; font-weight:600; font-size:.82rem; padding:7px 14px; border-radius:999px; cursor:pointer; }
+  .periodo button[aria-pressed="true"]{ background:#fff; color:var(--brand); }
+  .acoes{ display:flex; align-items:center; gap:10px; font-size:.78rem; opacity:.95; }
+  .icon-btn{ border:1px solid rgba(255,255,255,.35); background:none; color:inherit; border-radius:999px; height:34px; padding:0 12px; font:inherit; font-size:.8rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; }
+  .icon-btn:hover{ background:rgba(255,255,255,.12); }
+
+  .aviso{ margin:20px 0 0; padding:12px 16px; border-radius:12px; font-size:.88rem; background:#FFF6E0; color:#6B4E0E; border:1px solid #F1DDA6; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .aviso{ background:#2D2616; color:#E9D3A0; border-color:#4A3D1D; } }
+
+  /* KPIs */
+  .kpis{ display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-top:24px; }
+  .kpi{ background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:18px 20px; box-shadow:var(--shadow); }
+  .kpi.destaque{ background:var(--brand); color:#fff; border-color:transparent; }
+  .kpi.destaque .kpi-rot, .kpi.destaque .kpi-sub{ color:rgba(255,255,255,.8); }
+  .kpi-rot{ font-size:.78rem; font-weight:600; color:var(--ink-2); display:flex; align-items:center; gap:8px; }
+  .kpi-rot i{ width:10px; height:10px; border-radius:3px; display:inline-block; }
+  .kpi-val{ font-size:2.2rem; font-weight:700; letter-spacing:-.02em; margin:6px 0 2px; font-variant-numeric:tabular-nums; }
+  .kpi-sub{ font-size:.8rem; color:var(--ink-3); }
+  .delta{ font-weight:700; }
+  .delta.up{ color:var(--good); } .delta.down{ color:var(--bad); }
+  .kpi.destaque .delta{ color:#fff; }
+
+  /* Cartões */
+  .grid{ display:grid; grid-template-columns:1.6fr 1fr; gap:16px; margin-top:16px; }
+  .card{ background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:20px; box-shadow:var(--shadow); min-width:0; }
+  .card h2{ font-size:1rem; }
+  .card .sub{ font-size:.8rem; color:var(--ink-3); margin:2px 0 14px; }
+  .card.full{ grid-column:1 / -1; }
+  .legenda{ display:flex; gap:16px; font-size:.8rem; color:var(--ink-2); margin-bottom:8px; flex-wrap:wrap; }
+  .legenda span{ display:inline-flex; align-items:center; gap:6px; }
+  .legenda i{ width:12px; height:3px; border-radius:2px; display:inline-block; }
+  .chart-box{ position:relative; height:280px; }
+  .chart-box.menor{ height:auto; }
+
+  /* Barras horizontais em HTML (ranking) */
+  .ranking{ list-style:none; margin:0; padding:0; display:grid; gap:10px; }
+  .ranking li{ display:grid; grid-template-columns:1fr auto; gap:4px 12px; font-size:.85rem; }
+  .ranking .nome{ color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ranking .num{ font-weight:700; font-variant-numeric:tabular-nums; }
+  .ranking .num small{ font-weight:500; color:var(--ink-3); margin-left:6px; }
+  .ranking .barra{ grid-column:1 / -1; height:8px; background:var(--surface-2); border-radius:4px; overflow:hidden; }
+  .ranking .barra b{ display:block; height:100%; border-radius:4px; }
+  .vazio{ color:var(--ink-3); font-size:.85rem; padding:12px 0; }
+
+  /* Aparelhos */
+  .aparelhos{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .ap{ background:var(--surface-2); border-radius:12px; padding:14px; }
+  .ap b{ display:block; font-size:1.6rem; font-variant-numeric:tabular-nums; }
+  .ap span{ font-size:.8rem; color:var(--ink-2); }
+
+  /* Tabela */
+  table{ width:100%; border-collapse:collapse; font-size:.84rem; }
+  th, td{ text-align:left; padding:9px 8px; border-bottom:1px solid var(--line); }
+  th{ font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-3); font-weight:700; }
+  td.n{ text-align:right; font-variant-numeric:tabular-nums; }
+  .tabela-scroll{ overflow-x:auto; }
+  details summary{ cursor:pointer; font-size:.82rem; font-weight:600; color:var(--ink-2); margin-top:12px; }
+
+  /* Login */
+  .login{ max-width:380px; margin:64px auto; background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:28px; box-shadow:var(--shadow); text-align:center; }
+  .login h2{ font-family:'Bodoni Moda', Georgia, serif; font-weight:500; font-size:1.4rem; margin-bottom:6px; }
+  .login p{ color:var(--ink-2); font-size:.88rem; margin:0 0 18px; }
+  .login input{ width:100%; height:46px; border-radius:12px; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); padding:0 14px; font:inherit; }
+  .login button{ width:100%; height:46px; margin-top:10px; border:0; border-radius:12px; background:var(--brand); color:#fff; font:inherit; font-weight:700; cursor:pointer; }
+  .erro{ color:var(--bad); font-size:.85rem; margin-top:10px; min-height:1.2em; }
+  [hidden]{ display:none !important; }
+  .carregando{ text-align:center; color:var(--ink-3); padding:60px 0; }
+
+  @media (max-width:900px){
+    .kpis{ grid-template-columns:repeat(2, 1fr); }
+    .grid{ grid-template-columns:1fr; }
+  }
+  @media (max-width:520px){
+    .wrap{ padding:0 16px 40px; }
+    .kpi-val{ font-size:1.8rem; }
+    .periodo button{ padding:6px 10px; }
+    .chart-box{ height:230px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="marca">
+      <img src="../assets/img/logo-simbolo.png" alt="">
+      <div><h1>Juliana Felix Beauté</h1><span>Painel do site</span></div>
+    </div>
+    <div class="periodo" role="group" aria-label="Período">
+      <button type="button" data-dias="7" aria-pressed="false">7 dias</button>
+      <button type="button" data-dias="30" aria-pressed="true">30 dias</button>
+      <button type="button" data-dias="90" aria-pressed="false">90 dias</button>
+    </div>
+    <div class="acoes">
+      <span id="atualizado"></span>
+      <button class="icon-btn" type="button" id="btnAtualizar" aria-label="Atualizar dados">↻ Atualizar</button>
+      <button class="icon-btn" type="button" id="btnSair" hidden>Sair</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="aviso" id="avisoDemo" hidden>Você está vendo <b>dados de exemplo</b> só para conhecer o painel. Os números reais aparecem quando o monitoramento estiver ligado.</p>
+  <p class="aviso" id="avisoConfig" hidden>O monitoramento ainda não foi ligado neste site. Veja <b>_modelo/monitor-apps-script.gs</b> para instalar. Para conhecer o painel, abra <a href="?demo">a versão de exemplo</a>.</p>
+
+  <section class="login" id="login" hidden>
+    <h2>Painel do site</h2>
+    <p>Digite a senha do painel para ver visitas e contatos.</p>
+    <form id="formLogin">
+      <input type="password" id="senha" placeholder="Senha do painel" autocomplete="current-password" required>
+      <button type="submit">Entrar</button>
+      <div class="erro" id="erroLogin" role="alert"></div>
+    </form>
+  </section>
+
+  <p class="carregando" id="carregando" hidden>Carregando dados…</p>
+
+  <div id="conteudo" hidden>
+    <section class="kpis" aria-label="Resumo do período">
+      <div class="kpi">
+        <div class="kpi-rot"><i style="background:var(--s-visitas)"></i>Visitas ao site</div>
+        <div class="kpi-val" id="kVisitas">0</div>
+        <div class="kpi-sub" id="kVisitasD"></div>
+      </div>
+      <div class="kpi destaque">
+        <div class="kpi-rot"><i style="background:var(--s-cliques)"></i>Cliques no WhatsApp</div>
+        <div class="kpi-val" id="kCliques">0</div>
+        <div class="kpi-sub" id="kCliquesD"></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-rot">Taxa de contato</div>
+        <div class="kpi-val" id="kTaxa">0%</div>
+        <div class="kpi-sub">das visitas clicaram no WhatsApp</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-rot">Vindas do Google Ads</div>
+        <div class="kpi-val" id="kAds">0</div>
+        <div class="kpi-sub" id="kAdsD"></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>Visitas e cliques por dia</h2>
+        <p class="sub" id="subDia"></p>
+        <div class="legenda">
+          <span><i style="background:var(--s-visitas)"></i>Visitas</span>
+          <span><i style="background:var(--s-cliques)"></i>Cliques no WhatsApp</span>
+        </div>
+        <div class="chart-box"><canvas id="grafDia" aria-label="Gráfico de visitas e cliques por dia" role="img"></canvas></div>
+        <details>
+          <summary>Ver em tabela</summary>
+          <div class="tabela-scroll"><table id="tabDia"><thead><tr><th>Dia</th><th class="n">Visitas</th><th class="n">Cliques</th></tr></thead><tbody></tbody></table></div>
+        </details>
+      </div>
+
+      <div class="card">
+        <h2>Qual botão gera mais contato</h2>
+        <p class="sub">Cliques no WhatsApp por botão do site</p>
+        <ul class="ranking" id="rankBotoes"></ul>
+      </div>
+
+      <div class="card">
+        <h2>De onde vêm as visitas</h2>
+        <p class="sub">Visitas e cliques por origem</p>
+        <ul class="ranking" id="rankOrigem"></ul>
+      </div>
+
+      <div class="card">
+        <h2>Aparelho</h2>
+        <p class="sub">Visitas por tipo de aparelho</p>
+        <div class="aparelhos">
+          <div class="ap"><b id="apCel">0%</b><span>Celular · <span id="apCelN">0</span> visitas</span></div>
+          <div class="ap"><b id="apPc">0%</b><span>Computador · <span id="apPcN">0</span> visitas</span></div>
+        </div>
+      </div>
+
+      <div class="card full">
+        <h2>Últimos cliques no WhatsApp</h2>
+        <p class="sub">Os 15 mais recentes do período</p>
+        <div class="tabela-scroll">
+          <table id="tabUltimos"><thead><tr><th>Quando</th><th>Botão</th><th>Origem</th><th>Aparelho</th></tr></thead><tbody></tbody></table>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+(() => {
+  const ENDPOINT = '';
+  const params = new URLSearchParams(location.search);
+  const DEMO = params.has('demo');
+  const $ = (id) => document.getElementById(id);
+  const guarda = (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} };
+  const le = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+
+  let dias = Number(le('painelDias')) || 30;
+  let eventos = [];
+  let grafico = null;
+
+  const NOMES_ORIGEM = {
+    google_ads: 'Google Ads', google_organico: 'Google (orgânico)', instagram: 'Instagram',
+    facebook: 'Facebook', whatsapp: 'WhatsApp', direto: 'Direto / link salvo'
+  };
+  const nomeOrigem = (o) => NOMES_ORIGEM[o] || o || 'Desconhecida';
+  const fmt = new Intl.NumberFormat('pt-BR');
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const diaChave = (t) => { const d = new Date(t); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+  const diaRotulo = (k) => { const [a, m, d] = k.split('-'); return d + '/' + m; };
+
+  // ---------- Dados de exemplo (?demo) ----------
+  function gerarDemo() {
+    const botoes = ['Botão flutuante', 'Topo do site', 'Procedimento: Harmonização Facial', 'Procedimento: Preenchimento Labial', 'Pop-up de promoção', 'Seção de contato', 'Cabeçalho', 'Chamada final'];
+    const pesosB = [30, 18, 14, 12, 10, 7, 5, 4];
+    const origens = ['google_ads', 'google_organico', 'instagram', 'direto'];
+    const pesosO = [45, 20, 20, 15];
+    const sorteia = (lista, pesos) => { let r = Math.random() * pesos.reduce((a, b) => a + b, 0); for (let i = 0; i < lista.length; i++) { r -= pesos[i]; if (r <= 0) return lista[i]; } return lista[0]; };
+    const out = [];
+    const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+    for (let d = 180; d >= 0; d--) {
+      const base = hoje.getTime() - d * 86400000;
+      const visitas = Math.max(2, Math.round(14 + 6 * Math.sin(d / 3) + Math.random() * 8 - (d > 120 ? 6 : 0)));
+      for (let i = 0; i < visitas; i++) {
+        const t = base + Math.floor(Math.random() * 86400000);
+        if (t > Date.now()) continue;
+        const o = sorteia(origens, pesosO), ap = Math.random() < 0.82 ? 'celular' : 'computador';
+        out.push([t, 'visita', '', o, ap, '/', 's' + d + i]);
+        if (Math.random() < (o === 'google_ads' ? 0.11 : 0.06)) out.push([t + 60000, 'clique_whatsapp', sorteia(botoes, pesosB), o, ap, '/', 's' + d + i]);
+      }
+    }
+    return out;
+  }
+
+  // ---------- Busca ----------
+  async function carregar() {
+    $('carregando').hidden = false;
+    try {
+      if (DEMO) {
+        eventos = gerarDemo();
+      } else {
+        const senha = le('painelSenha');
+        if (!senha) { mostrarLogin(); return; }
+        const r = await fetch(ENDPOINT + '?senha=' + encodeURIComponent(senha) + '&dias=' + (dias * 2) + '&_=' + Date.now());
+        const j = await r.json();
+        if (j.erro === 'senha') { guarda('painelSenha', null); mostrarLogin('Senha incorreta.'); return; }
+        eventos = j.eventos || [];
+      }
+      $('login').hidden = true;
+      $('conteudo').hidden = false;
+      $('btnSair').hidden = DEMO;
+      $('atualizado').textContent = 'Atualizado às ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      desenhar();
+    } catch (e) {
+      $('conteudo').hidden = true;
+      mostrarLogin('Não foi possível carregar os dados. Verifique a internet e tente de novo.');
+    } finally {
+      $('carregando').hidden = true;
+    }
+  }
+
+  function mostrarLogin(msg) {
+    $('carregando').hidden = true;
+    $('conteudo').hidden = true;
+    $('login').hidden = false;
+    $('erroLogin').textContent = msg || '';
+    $('senha').focus();
+  }
+
+  // ---------- Cálculos ----------
+  function desenhar() {
+    const agora = Date.now();
+    const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+    const inicio = hoje.getTime() - (dias - 1) * 86400000;
+    const inicioAnt = inicio - dias * 86400000;
+    const doPeriodo = eventos.filter((e) => e[0] >= inicio && e[0] <= agora);
+    const doAnterior = eventos.filter((e) => e[0] >= inicioAnt && e[0] < inicio);
+    const conta = (lista, tipo, filtro) => lista.filter((e) => e[1] === tipo && (!filtro || filtro(e))).length;
+
+    const vis = conta(doPeriodo, 'visita'), cli = conta(doPeriodo, 'clique_whatsapp');
+    const visA = conta(doAnterior, 'visita'), cliA = conta(doAnterior, 'clique_whatsapp');
+    const ads = conta(doPeriodo, 'visita', (e) => e[3] === 'google_ads');
+    const adsA = conta(doAnterior, 'visita', (e) => e[3] === 'google_ads');
+
+    $('kVisitas').textContent = fmt.format(vis);
+    $('kCliques').textContent = fmt.format(cli);
+    $('kTaxa').textContent = vis ? (cli / vis * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%' : '—';
+    $('kAds').textContent = fmt.format(ads);
+    $('kVisitasD').innerHTML = delta(vis, visA);
+    $('kCliquesD').innerHTML = delta(cli, cliA);
+    $('kAdsD').innerHTML = delta(ads, adsA);
+
+    // Por dia
+    const chaves = [];
+    for (let i = 0; i < dias; i++) chaves.push(diaChave(inicio + i * 86400000 + 3600000));
+    const porDia = Object.fromEntries(chaves.map((k) => [k, { v: 0, c: 0 }]));
+    doPeriodo.forEach((e) => { const k = diaChave(e[0]); if (porDia[k]) porDia[k][e[1] === 'visita' ? 'v' : 'c']++; });
+    $('subDia').textContent = 'Últimos ' + dias + ' dias · ' + fmt.format(vis) + ' visitas e ' + fmt.format(cli) + ' cliques';
+    graficoDia(chaves, porDia);
+    $('tabDia').querySelector('tbody').innerHTML = chaves.slice().reverse().map((k) => '<tr><td>' + diaRotulo(k) + '</td><td class="n">' + porDia[k].v + '</td><td class="n">' + porDia[k].c + '</td></tr>').join('');
+
+    // Botões
+    const botoes = {};
+    doPeriodo.filter((e) => e[1] === 'clique_whatsapp').forEach((e) => { const b = e[2] || 'Outro'; botoes[b] = (botoes[b] || 0) + 1; });
+    ranking('rankBotoes', Object.entries(botoes).map(([n, c]) => ({ nome: n, valor: c, extra: cli ? Math.round(c / cli * 100) + '%' : '' })), css('--s-cliques'), 'Nenhum clique no WhatsApp neste período ainda.');
+
+    // Origem
+    const origem = {};
+    doPeriodo.forEach((e) => { const o = e[3] || 'direto'; origem[o] = origem[o] || { v: 0, c: 0 }; origem[o][e[1] === 'visita' ? 'v' : 'c']++; });
+    ranking('rankOrigem', Object.entries(origem).filter(([, x]) => x.v > 0).map(([o, x]) => ({ nome: nomeOrigem(o), valor: x.v, extra: x.c + (x.c === 1 ? ' clique' : ' cliques') })), css('--s-visitas'), 'Nenhuma visita neste período ainda.');
+
+    // Aparelho
+    const cel = conta(doPeriodo, 'visita', (e) => e[4] === 'celular');
+    const pc = vis - cel;
+    $('apCel').textContent = vis ? Math.round(cel / vis * 100) + '%' : '—';
+    $('apPc').textContent = vis ? Math.round(pc / vis * 100) + '%' : '—';
+    $('apCelN').textContent = fmt.format(cel);
+    $('apPcN').textContent = fmt.format(pc);
+
+    // Últimos cliques
+    const ultimos = doPeriodo.filter((e) => e[1] === 'clique_whatsapp').sort((a, b) => b[0] - a[0]).slice(0, 15);
+    $('tabUltimos').querySelector('tbody').innerHTML = ultimos.length
+      ? ultimos.map((e) => '<tr><td>' + new Date(e[0]).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) + '</td><td>' + esc(e[2]) + '</td><td>' + esc(nomeOrigem(e[3])) + '</td><td>' + esc(e[4]) + '</td></tr>').join('')
+      : '<tr><td colspan="4" class="vazio">Nenhum clique no WhatsApp neste período ainda.</td></tr>';
+  }
+
+  function delta(atual, anterior) {
+    if (!anterior && !atual) return 'Sem dados no período anterior';
+    if (!anterior) return '<span class="delta up">novo</span> · antes: 0';
+    const p = Math.round((atual - anterior) / anterior * 100);
+    const cls = p > 0 ? 'up' : p < 0 ? 'down' : '';
+    return '<span class="delta ' + cls + '">' + (p > 0 ? '▲ +' : p < 0 ? '▼ ' : '') + p + '%</span> vs. ' + dias + ' dias anteriores';
+  }
+
+  function ranking(id, itens, cor, vazio) {
+    const el = $(id);
+    itens.sort((a, b) => b.valor - a.valor);
+    if (!itens.length) { el.innerHTML = '<li class="vazio">' + vazio + '</li>'; return; }
+    const max = itens[0].valor;
+    el.innerHTML = itens.slice(0, 8).map((i) =>
+      '<li><span class="nome" title="' + esc(i.nome) + '">' + esc(i.nome) + '</span><span class="num">' + fmt.format(i.valor) + '<small>' + esc(i.extra) + '</small></span>' +
+      '<span class="barra"><b style="width:' + Math.max(3, i.valor / max * 100) + '%;background:' + cor + '"></b></span></li>').join('');
+  }
+
+  function graficoDia(chaves, porDia) {
+    if (!window.Chart) return;
+    const corV = css('--s-visitas'), corC = css('--s-cliques'), grade = css('--line'), tinta = css('--ink-3');
+    const dados = {
+      labels: chaves.map(diaRotulo),
+      datasets: [
+        { label: 'Visitas', data: chaves.map((k) => porDia[k].v), borderColor: corV, backgroundColor: corV + '22', fill: true, tension: .3, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, pointHoverBorderWidth: 2, pointHoverBorderColor: css('--surface') },
+        { label: 'Cliques no WhatsApp', data: chaves.map((k) => porDia[k].c), borderColor: corC, backgroundColor: corC, fill: false, tension: .3, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, pointHoverBorderWidth: 2, pointHoverBorderColor: css('--surface') }
+      ]
+    };
+    const opcoes = {
+      responsive: true, maintainAspectRatio: false, animation: { duration: 300 },
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: { backgroundColor: '#1B1B1B', padding: 10, boxPadding: 4, usePointStyle: true, titleFont: { family: 'Manrope', weight: '700' }, bodyFont: { family: 'Manrope' } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: tinta, maxTicksLimit: 8, font: { family: 'Manrope', size: 11 } }, border: { color: grade } },
+        y: { beginAtZero: true, grid: { color: grade }, border: { display: false }, ticks: { color: tinta, precision: 0, font: { family: 'Manrope', size: 11 } } }
+      }
+    };
+    if (grafico) grafico.destroy();
+    grafico = new Chart($('grafDia'), { type: 'line', data: dados, options: opcoes });
+  }
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]); }
+
+  // ---------- Controles ----------
+  document.querySelectorAll('.periodo button').forEach((b) => {
+    b.setAttribute('aria-pressed', String(Number(b.dataset.dias) === dias));
+    b.addEventListener('click', () => {
+      dias = Number(b.dataset.dias);
+      guarda('painelDias', String(dias));
+      document.querySelectorAll('.periodo button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      DEMO ? desenhar() : carregar();
+    });
+  });
+  $('btnAtualizar').addEventListener('click', carregar);
+  $('btnSair').addEventListener('click', () => { guarda('painelSenha', null); eventos = []; mostrarLogin(); });
+  $('formLogin').addEventListener('submit', (e) => { e.preventDefault(); guarda('painelSenha', $('senha').value); $('senha').value = ''; carregar(); });
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (eventos.length) desenhar(); });
+  setInterval(() => { if (!DEMO && !document.hidden && le('painelSenha')) carregar(); }, 5 * 60 * 1000);
+
+  // ---------- Início ----------
+  if (DEMO) { $('avisoDemo').hidden = false; carregar(); }
+  else if (!ENDPOINT) { $('avisoConfig').hidden = false; }
+  else carregar();
+})();
+</script>
+</body>
+</html>
