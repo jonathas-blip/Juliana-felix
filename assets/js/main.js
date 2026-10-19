@@ -4,6 +4,7 @@ document.documentElement.classList.add('js');
 document.addEventListener('click', (e) => {
   const link = e.target.closest('a[href*="wa.me/"]');
   if (!link || typeof window.gtag !== 'function' || !window.CONVERSAO_WHATSAPP) return;
+  if (/^(localhost|127\.|\[::1\])/.test(location.hostname)) return; // testes locais não contam conversão
   window.gtag('event', 'conversion', { send_to: window.CONVERSAO_WHATSAPP, transport_type: 'beacon' });
 });
 
@@ -74,6 +75,46 @@ document.addEventListener('click', (e) => {
     const link = e.target.closest('a[href*="wa.me/"]');
     if (link) envia('clique_whatsapp', localDoBotao(link));
   });
+})();
+
+// ---------- WhatsApp no computador: QR code + WhatsApp Web direto ----------
+// No celular o link abre o app normalmente. No computador, o wa.me mostra uma página
+// intermediária onde muita gente desiste; aqui mostramos o QR code e o WhatsApp Web.
+(() => {
+  const modal = document.getElementById('waModal');
+  if (!modal || typeof modal.showModal !== 'function') return;
+  // mouse e sem toque = computador (celulares e tablets abrem o app direto)
+  const computador = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches && !/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  let carregando = null;
+  const carregaQr = () => carregando || (carregando = new Promise((ok, erro) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+    s.integrity = 'sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==';
+    s.crossOrigin = 'anonymous';
+    s.onload = ok; s.onerror = erro;
+    document.head.appendChild(s);
+  }));
+
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href*="wa.me/"]');
+    if (!link || !computador()) return;
+    e.preventDefault();
+    const url = new URL(link.href);
+    const numero = url.pathname.replace(/\D/g, '');
+    const texto = url.searchParams.get('text') || '';
+    const q = '?phone=' + numero + (texto ? '&text=' + encodeURIComponent(texto) : '');
+    document.getElementById('waWeb').href = 'https://web.whatsapp.com/send' + q;
+    document.getElementById('waApp').href = 'whatsapp://send' + q;
+    const caixa = document.getElementById('waQr');
+    caixa.innerHTML = '';
+    carregaQr().then(() => {
+      new window.QRCode(caixa, { text: link.href, width: 200, height: 200, colorDark: '#171717', colorLight: '#ffffff', correctLevel: window.QRCode.CorrectLevel.L });
+    }).catch(() => { caixa.hidden = true; });
+    modal.showModal();
+  });
+  modal.querySelector('.wa-modal-fechar').addEventListener('click', () => modal.close());
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.close(); });
+  modal.querySelectorAll('#waWeb, #waApp').forEach((a) => a.addEventListener('click', () => setTimeout(() => modal.close(), 300)));
 })();
 
 // ---------- Cabeçalho ao rolar ----------

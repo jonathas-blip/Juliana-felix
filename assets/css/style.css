@@ -816,3 +816,20 @@ section.block{ padding:96px 0; }
   .faq-item summary{ font-size:.97rem; padding:18px 2px; }
   .faq-item p{ padding-right:8px; }
 }
+
+/* ---------- Janela do WhatsApp no computador (QR code) ---------- */
+.wa-modal{
+  border:0; border-radius:24px; padding:36px 32px 28px; width:min(400px, calc(100% - 32px));
+  text-align:center; background:var(--surface); color:var(--text); box-shadow:0 30px 80px -20px rgba(0,0,0,.35);
+}
+.wa-modal::backdrop{ background:rgba(20,30,26,.55); backdrop-filter:blur(2px); }
+.wa-modal h2{ font-size:1.55rem; margin-bottom:18px; }
+.wa-modal .eyebrow{ margin-bottom:8px; }
+.wa-modal-qr{ width:216px; height:216px; margin:0 auto; padding:8px; background:#fff; border:1px solid var(--line); border-radius:16px; }
+.wa-modal-qr img, .wa-modal-qr canvas{ width:200px !important; height:200px !important; }
+.wa-modal-dica{ font-size:.88rem; color:var(--text-soft); margin:14px auto 20px; max-width:300px; }
+.wa-modal .btn{ width:100%; justify-content:center; }
+.wa-modal-app{ display:inline-block; margin-top:14px; font-size:.86rem; font-weight:600; color:var(--green-deep); text-decoration:underline; text-underline-offset:3px; }
+.wa-modal-num{ font-size:.82rem; color:var(--text-soft); margin-top:12px; }
+.wa-modal-fechar{ position:absolute; top:14px; right:14px; width:36px; height:36px; border:0; border-radius:50%; background:var(--green-pale); color:var(--green-deep); cursor:pointer; display:grid; place-items:center; }
+.wa-modal-fechar svg{ width:16px; height:16px; }

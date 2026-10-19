@@ -37,7 +37,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/img/juliana-hero.jpg" fetchpriority="high">
-<link rel="stylesheet" href="assets/css/style.css?v=202610191344">
+<link rel="stylesheet" href="assets/css/style.css?v=202610192000">
 <script>document.documentElement.classList.add('js');</script>
 <style>
   :root{
@@ -564,6 +564,19 @@
   <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>
 </a>
 
+<!-- No computador, o link do WhatsApp abre uma página intermediária onde muita gente desiste.
+     Esta janela mostra o QR code para continuar no celular, ou abre o WhatsApp Web direto. -->
+<dialog class="wa-modal" id="waModal" aria-labelledby="waModalTitulo">
+  <button class="wa-modal-fechar" type="button" aria-label="Fechar"><svg aria-hidden="true"><use href="#i-fechar"/></svg></button>
+  <p class="eyebrow">Fale com a Juliana</p>
+  <h2 id="waModalTitulo">Continue a conversa no WhatsApp</h2>
+  <div class="wa-modal-qr" id="waQr" role="img" aria-label="QR code para abrir a conversa no WhatsApp do celular"></div>
+  <p class="wa-modal-dica">Aponte a câmera do celular para o código: a conversa abre com a mensagem pronta, é só enviar.</p>
+  <a class="btn btn-primary" id="waWeb" href="#" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-whatsapp"/></svg> Abrir no WhatsApp Web</a>
+  <a class="wa-modal-app" id="waApp" href="#">Tenho o WhatsApp instalado no computador</a>
+  <p class="wa-modal-num">Ou adicione o número: <b>(11) 92727-4120</b></p>
+</dialog>
+
 <dialog class="lightbox" id="lightbox" aria-label="Foto ampliada">
   <button class="lb-btn lb-close" type="button" aria-label="Fechar"><svg aria-hidden="true"><use href="#i-fechar"/></svg></button>
   <button class="lb-btn lb-prev" type="button" aria-label="Foto anterior"><svg aria-hidden="true"><use href="#i-anterior"/></svg></button>
@@ -679,6 +692,6 @@
 </dialog>
 
 
-<script src="assets/js/main.js?v=202610191344" defer></script>
+<script src="assets/js/main.js?v=202610192000" defer></script>
 </body>
 </html>
