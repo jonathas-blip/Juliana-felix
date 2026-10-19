@@ -1,0 +1,27 @@
+# Monitor do site da Juliana Felix — contêiner separado do Aviks.
+# Uso (na VPS, dentro desta pasta):  docker compose up -d --build
+# A senha do painel fica no arquivo .env (SENHA_PAINEL=...), que NÃO vai para o GitHub.
+services:
+  monitor:
+    image: node:20-alpine
+    container_name: jf-monitor
+    working_dir: /app
+    command: ["node", "server.js"]
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - DATA_DIR=/data
+      - PORT=8080
+    volumes:
+      - ./server.js:/app/server.js:ro
+      - ./public:/app/public:ro
+      - ./dados:/data
+    networks:
+      - proxy
+
+# Rede do Caddy do Aviks (descobrir o nome real com: docker network ls).
+# O Caddy encaminha painel.julianafelix.com.br para jf-monitor:8080.
+networks:
+  proxy:
+    external: true
+    name: ${REDE_CADDY:-aviks_default}

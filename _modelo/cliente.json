@@ -131,9 +131,10 @@
     "conversaoWhatsapp": "AW-18459063436/WA7bCKvl6JgdEIzp--FE"
   },
 
-  "_avisoMonitoramento": "Painel de visitas e cliques (julianafelix.com.br/painel/). endpoint = URL /exec do Apps Script (_modelo/monitor-apps-script.gs). Vazio = monitoramento desligado.",
+  "_avisoMonitoramento": "Painel de visitas e cliques servido pela VPS (_servidor/monitor). endpoint = URL completa da API usada pelo site (ex.: https://painel.julianafelix.com.br/api); vazio = coleta desligada. painelApi = endereço da API visto pelo painel (/api quando o painel roda no mesmo servidor).",
   "monitoramento": {
-    "endpoint": ""
+    "endpoint": "",
+    "painelApi": "/api"
   },
 
   "desenvolvedor": {

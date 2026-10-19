@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <!-- Gerado por _modelo/build.ps1 a partir de _modelo/painel.html -->
 <title>Painel do site · Juliana Felix Beauté</title>
-<link rel="icon" type="image/png" href="../assets/img/logo-simbolo.png">
+<link rel="icon" type="image/png" href="https://julianafelix.com.br/assets/img/logo-simbolo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -133,7 +133,7 @@
 <header class="topbar">
   <div class="wrap">
     <div class="marca">
-      <img src="../assets/img/logo-simbolo.png" alt="">
+      <img src="https://julianafelix.com.br/assets/img/logo-simbolo.png" alt="">
       <div><h1>Juliana Felix Beauté</h1><span>Painel do site</span></div>
     </div>
     <div class="periodo" role="group" aria-label="Período">
@@ -151,7 +151,7 @@
 
 <main class="wrap">
   <p class="aviso" id="avisoDemo" hidden>Você está vendo <b>dados de exemplo</b> só para conhecer o painel. Os números reais aparecem quando o monitoramento estiver ligado.</p>
-  <p class="aviso" id="avisoConfig" hidden>O monitoramento ainda não foi ligado neste site. Veja <b>_modelo/monitor-apps-script.gs</b> para instalar. Para conhecer o painel, abra <a href="?demo">a versão de exemplo</a>.</p>
+  <p class="aviso" id="avisoConfig" hidden>O monitoramento ainda não foi ligado neste site. Veja <b>_servidor/monitor/LEIA-ME.md</b> para instalar. Para conhecer o painel, abra <a href="?demo">a versão de exemplo</a>.</p>
 
   <section class="login" id="login" hidden>
     <h2>Painel do site</h2>
@@ -238,7 +238,7 @@
 
 <script>
 (() => {
-  const ENDPOINT = '';
+  const ENDPOINT = '/api';
   const params = new URLSearchParams(location.search);
   const DEMO = params.has('demo');
   const $ = (id) => document.getElementById(id);

@@ -18,11 +18,13 @@
  */
 
 const SENHA_PAINEL = 'TROQUE-ESTA-SENHA';
+// ID da planilha (trecho entre /d/ e /edit no endereço). Vazio = planilha onde o script foi criado.
+const PLANILHA_ID = '';
 const ABA = 'eventos';
 const TIPOS = { visita: true, clique_whatsapp: true };
 
 function aba_() {
-  const planilha = SpreadsheetApp.getActive();
+  const planilha = PLANILHA_ID ? SpreadsheetApp.openById(PLANILHA_ID) : SpreadsheetApp.getActive();
   let aba = planilha.getSheetByName(ABA);
   if (!aba) {
     aba = planilha.insertSheet(ABA);
