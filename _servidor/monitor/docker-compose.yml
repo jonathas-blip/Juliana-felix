@@ -14,6 +14,8 @@ services:
       - PORT=8080
     volumes:
       - ./server.js:/app/server.js:ro
+      - ./geo.js:/app/geo.js:ro
+      - ./geo:/app/geo:ro
       - ./public:/app/public:ro
       - ./dados:/data
     networks:

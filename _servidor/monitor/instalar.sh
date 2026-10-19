@@ -18,7 +18,10 @@ if [ ! -f .env ]; then
   echo "Senha do painel criada e guardada em $(pwd)/.env"
 fi
 grep -q '^REDE_CADDY=' .env || printf 'REDE_CADDY=%s\n' "$REDE" >> .env
-mkdir -p dados
+mkdir -p dados geo
+
+# Base de localização por IP (cidade/estado no painel). Sem ela o monitor funciona, só sem localização.
+[ -f geo/dbip-city-lite.mmdb ] || bash atualizar-geo.sh || echo "Aviso: não consegui baixar a base de localização agora."
 
 # 2) A rede precisa existir e o Caddy precisa estar nela (isso é feito pelo deploy do Aviks)
 docker network inspect "$REDE" >/dev/null 2>&1 || { echo "Rede $REDE não existe — ela é criada pelo deploy do Aviks."; exit 1; }

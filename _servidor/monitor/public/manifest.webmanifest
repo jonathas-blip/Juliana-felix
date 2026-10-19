@@ -1,0 +1,24 @@
+{
+    "name":  "Painel · Juliana Felix Beauté",
+    "short_name":  "Painel Juliana",
+    "start_url":  "/adm",
+    "scope":  "/",
+    "display":  "standalone",
+    "background_color":  "#F8F5EF",
+    "theme_color":  "#23483D",
+    "lang":  "pt-BR",
+    "icons":  [
+                  {
+                      "purpose":  "any maskable",
+                      "type":  "image/png",
+                      "sizes":  "192x192",
+                      "src":  "/icone-192.png"
+                  },
+                  {
+                      "purpose":  "any maskable",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "/icone-512.png"
+                  }
+              ]
+}

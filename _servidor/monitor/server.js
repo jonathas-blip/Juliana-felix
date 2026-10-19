@@ -6,7 +6,7 @@
 //   GET  /saude          → verificação simples ("ok")
 //
 // Dados: uma linha JSON por evento em DATA_DIR/eventos.ndjson.
-// Nenhum dado pessoal é guardado (nem IP).
+// Nenhum dado pessoal é guardado: o IP só é usado na hora para achar cidade/estado (geo.js) e é descartado.
 
 const http = require('http');
 const fs = require('fs');
@@ -20,6 +20,15 @@ const ORIGENS = (process.env.ORIGENS_PERMITIDAS || 'https://julianafelix.com.br,
 const ARQUIVO = path.join(DATA_DIR, 'eventos.ndjson');
 const PAINEL = path.join(__dirname, 'public', 'adm.html');
 const TIPOS = new Set(['visita', 'clique_whatsapp']);
+const localDoIp = require('./geo')(process.env.GEO_DB || path.join(__dirname, 'geo', 'dbip-city-lite.mmdb'));
+
+// Arquivos do "app" do painel (ícone na tela inicial do celular)
+const ESTATICOS = {
+  '/manifest.webmanifest': 'application/manifest+json',
+  '/icone-192.png': 'image/png',
+  '/icone-512.png': 'image/png',
+  '/apple-touch-icon.png': 'image/png'
+};
 
 if (!SENHA) { console.error('Defina SENHA_PAINEL.'); process.exit(1); }
 fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -79,6 +88,15 @@ const servidor = http.createServer((req, res) => {
 
   if (url.pathname === '/saude') { res.writeHead(200, { 'Content-Type': 'text/plain' }); return res.end('ok'); }
 
+  if (ESTATICOS[url.pathname]) {
+    fs.readFile(path.join(__dirname, 'public', url.pathname.slice(1)), (err, arq) => {
+      if (err) { res.writeHead(404); return res.end(); }
+      res.writeHead(200, { 'Content-Type': ESTATICOS[url.pathname], 'Cache-Control': 'public, max-age=86400' });
+      res.end(arq);
+    });
+    return;
+  }
+
   if (url.pathname === '/adm' || url.pathname === '/adm/') {
     fs.readFile(PAINEL, (err, html) => {
       if (err) { res.writeHead(500); return res.end('Painel indisponível'); }
@@ -96,7 +114,10 @@ const servidor = http.createServer((req, res) => {
       try {
         const d = JSON.parse(corpo || '{}');
         if (!TIPOS.has(d.t)) return json(res, 400, { ok: false });
-        const ev = [Date.now(), d.t, corta(d.l, 80), corta(d.o, 40), corta(d.d, 12), corta(d.p, 80), corta(d.s, 16)];
+        // Localização aproximada pelo IP (o IP em si não é guardado)
+        const lugar = localDoIp(ip);
+        const ev = [Date.now(), d.t, corta(d.l, 80), corta(d.o, 40), corta(d.d, 12), corta(d.p, 80), corta(d.s, 16),
+          corta(lugar.cidade, 60), corta(lugar.estado, 40), corta(d.k, 80)];
         fs.appendFile(ARQUIVO, JSON.stringify(ev) + '\n', (err) => json(res, err ? 500 : 200, { ok: !err }));
       } catch (err) {
         json(res, 400, { ok: false });

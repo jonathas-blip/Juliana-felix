@@ -37,10 +37,13 @@ document.addEventListener('click', (e) => {
   const origem = le('sessionStorage', 'mOrigem') || origemDaVisita();
   guarda('sessionStorage', 'mSessao', sessao);
   guarda('sessionStorage', 'mOrigem', origem);
+  // Palavra pesquisada no Google que trouxe a visita (vem do anúncio: ?utm_term={keyword})
+  const termo = le('sessionStorage', 'mTermo') || (params.get('utm_term') || params.get('kw') || '').toLowerCase().slice(0, 80);
+  guarda('sessionStorage', 'mTermo', termo);
   const dispositivo = window.matchMedia('(max-width: 820px)').matches ? 'celular' : 'computador';
 
   const envia = (tipo, local) => {
-    const corpo = JSON.stringify({ t: tipo, l: local || '', o: origem, d: dispositivo, p: location.pathname, s: sessao });
+    const corpo = JSON.stringify({ t: tipo, l: local || '', o: origem, d: dispositivo, p: location.pathname, s: sessao, k: termo });
     try {
       if (navigator.sendBeacon && navigator.sendBeacon(url, new Blob([corpo], { type: 'text/plain' }))) return;
     } catch (e) { /* cai no fetch */ }

@@ -6,7 +6,14 @@
 <meta name="robots" content="noindex, nofollow">
 <!-- Gerado por _modelo/build.ps1 a partir de _modelo/painel.html -->
 <title>Painel do site · {{marca.nomeCompleto}}</title>
-<link rel="icon" type="image/png" href="{{site.url}}/{{marca.logoSimbolo}}">
+<link rel="icon" type="image/png" sizes="192x192" href="/icone-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="{{cores.principal}}">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Painel {{marca.primeiroNome}}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -97,6 +104,14 @@
   .ap{ background:var(--surface-2); border-radius:12px; padding:14px; }
   .ap b{ display:block; font-size:1.6rem; font-variant-numeric:tabular-nums; }
   .ap span{ font-size:.8rem; color:var(--ink-2); }
+
+  /* Dias da semana */
+  .semana{ display:grid; grid-template-columns:repeat(7, minmax(0, 1fr)); gap:8px; margin-top:16px; }
+  .dia small{ display:block; font-size:inherit; }
+  @media (max-width:520px){ .semana{ gap:4px; } .dia{ padding:8px 2px; font-size:.68rem; } .dia b{ font-size:1rem; } .dia small{ display:none; } }
+  .dia{ background:var(--surface-2); border-radius:10px; padding:10px 6px; text-align:center; font-size:.75rem; color:var(--ink-2); }
+  .dia b{ display:block; font-size:1.15rem; color:var(--ink); font-variant-numeric:tabular-nums; }
+  .dia.top{ outline:2px solid var(--s-cliques); outline-offset:-2px; }
 
   /* Tabela */
   table{ width:100%; border-collapse:collapse; font-size:.84rem; }
@@ -225,11 +240,34 @@
         </div>
       </div>
 
+      <div class="card">
+        <h2>De onde as pessoas acessam</h2>
+        <p class="sub">Cidade aproximada (pela internet da pessoa) · visitas e cliques</p>
+        <ul class="ranking" id="rankLocal"></ul>
+      </div>
+
+      <div class="card">
+        <h2>O que pesquisaram no Google</h2>
+        <p class="sub">Palavras dos anúncios que trouxeram visitas · visitas e cliques</p>
+        <ul class="ranking" id="rankTermo"></ul>
+      </div>
+
+      <div class="card full">
+        <h2>Melhores horários</h2>
+        <p class="sub" id="subHora">Visitas e cliques no WhatsApp por hora do dia</p>
+        <div class="legenda">
+          <span><i style="background:var(--s-visitas)"></i>Visitas</span>
+          <span><i style="background:var(--s-cliques)"></i>Cliques no WhatsApp</span>
+        </div>
+        <div class="chart-box"><canvas id="grafHora" aria-label="Gráfico de visitas e cliques por hora do dia" role="img"></canvas></div>
+        <div class="semana" id="semana"></div>
+      </div>
+
       <div class="card full">
         <h2>Últimos cliques no WhatsApp</h2>
         <p class="sub">Os 15 mais recentes do período</p>
         <div class="tabela-scroll">
-          <table id="tabUltimos"><thead><tr><th>Quando</th><th>Botão</th><th>Origem</th><th>Aparelho</th></tr></thead><tbody></tbody></table>
+          <table id="tabUltimos"><thead><tr><th>Quando</th><th>Botão</th><th>Origem</th><th>Local</th><th>Aparelho</th></tr></thead><tbody></tbody></table>
         </div>
       </div>
     </section>
@@ -247,7 +285,7 @@
 
   let dias = Number(le('painelDias')) || 30;
   let eventos = [];
-  let grafico = null;
+  let grafico = null, graficoH = null;
 
   const NOMES_ORIGEM = {
     google_ads: 'Google Ads', google_organico: 'Google (orgânico)', instagram: 'Instagram',
@@ -266,17 +304,24 @@
     const origens = ['google_ads', 'google_organico', 'instagram', 'direto'];
     const pesosO = [45, 20, 20, 15];
     const sorteia = (lista, pesos) => { let r = Math.random() * pesos.reduce((a, b) => a + b, 0); for (let i = 0; i < lista.length; i++) { r -= pesos[i]; if (r <= 0) return lista[i]; } return lista[0]; };
+    const lugares = [['São Paulo', 'SP'], ['Guarulhos', 'SP'], ['Santo André', 'SP'], ['Osasco', 'SP'], ['São Bernardo do Campo', 'SP'], ['Rio de Janeiro', 'RJ']];
+    const pesosL = [62, 12, 8, 6, 5, 3];
+    const termos = ['harmonização facial tatuapé', 'preenchimento labial', 'clínica de estética zona leste', 'bioestimulador de colágeno', 'contorno de mandíbula'];
+    const pesosT = [30, 28, 20, 12, 10];
+    const pesosH = [1, 0, 0, 0, 0, 1, 2, 4, 6, 8, 9, 9, 10, 9, 8, 8, 9, 10, 12, 14, 15, 13, 9, 4];
+    const horas = pesosH.map((_, h) => h);
     const out = [];
     const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
     for (let d = 180; d >= 0; d--) {
       const base = hoje.getTime() - d * 86400000;
       const visitas = Math.max(2, Math.round(14 + 6 * Math.sin(d / 3) + Math.random() * 8 - (d > 120 ? 6 : 0)));
       for (let i = 0; i < visitas; i++) {
-        const t = base + Math.floor(Math.random() * 86400000);
+        const t = base + sorteia(horas, pesosH) * 3600000 + Math.floor(Math.random() * 3600000);
         if (t > Date.now()) continue;
         const o = sorteia(origens, pesosO), ap = Math.random() < 0.82 ? 'celular' : 'computador';
-        out.push([t, 'visita', '', o, ap, '/', 's' + d + i]);
-        if (Math.random() < (o === 'google_ads' ? 0.11 : 0.06)) out.push([t + 60000, 'clique_whatsapp', sorteia(botoes, pesosB), o, ap, '/', 's' + d + i]);
+        const [cid, uf] = sorteia(lugares, pesosL), k = o === 'google_ads' ? sorteia(termos, pesosT) : '';
+        out.push([t, 'visita', '', o, ap, '/', 's' + d + i, cid, uf, k]);
+        if (Math.random() < (o === 'google_ads' ? 0.11 : 0.06)) out.push([t + 60000, 'clique_whatsapp', sorteia(botoes, pesosB), o, ap, '/', 's' + d + i, cid, uf, k]);
       }
     }
     return out;
@@ -367,11 +412,59 @@
     $('apCelN').textContent = fmt.format(cel);
     $('apPcN').textContent = fmt.format(pc);
 
+    // Localização e palavras pesquisadas (visitas, com cliques ao lado)
+    const agrupa = (chave) => {
+      const g = {};
+      doPeriodo.forEach((e) => { const k = chave(e); if (!k) return; g[k] = g[k] || { v: 0, c: 0 }; g[k][e[1] === 'visita' ? 'v' : 'c']++; });
+      return Object.entries(g).filter(([, x]) => x.v > 0).map(([n, x]) => ({ nome: n, valor: x.v, extra: x.c + (x.c === 1 ? ' clique' : ' cliques') }));
+    };
+    ranking('rankLocal', agrupa(lugar), css('--s-visitas'), 'A cidade aparece nas próximas visitas.');
+    ranking('rankTermo', agrupa((e) => e[9]), css('--s-cliques'), 'Aparece quando as visitas vierem dos anúncios do Google.');
+
+    // Horários e dias da semana
+    const porHora = Array.from({ length: 24 }, () => ({ v: 0, c: 0 }));
+    const porSemana = Array.from({ length: 7 }, () => ({ v: 0, c: 0 }));
+    doPeriodo.forEach((e) => { const d = new Date(e[0]), k = e[1] === 'visita' ? 'v' : 'c'; porHora[d.getHours()][k]++; porSemana[d.getDay()][k]++; });
+    const melhorHora = porHora.reduce((m, x, h) => (x.c + x.v / 100 > porHora[m].c + porHora[m].v / 100 ? h : m), 0);
+    $('subHora').textContent = vis ? 'Mais contatos por volta das ' + melhorHora + 'h · visitas e cliques por hora do dia' : 'Visitas e cliques no WhatsApp por hora do dia';
+    graficoHora(porHora);
+    const nomesDia = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+    const topDia = porSemana.reduce((m, x, i) => (x.c > porSemana[m].c ? i : m), 0);
+    $('semana').innerHTML = [1, 2, 3, 4, 5, 6, 0].map((i) =>
+      '<div class="dia' + (cli && i === topDia ? ' top' : '') + '" title="' + porSemana[i].v + ' visitas">' + nomesDia[i] + '<b>' + porSemana[i].c + '</b><small>cliques</small></div>').join('');
+
     // Últimos cliques
     const ultimos = doPeriodo.filter((e) => e[1] === 'clique_whatsapp').sort((a, b) => b[0] - a[0]).slice(0, 15);
     $('tabUltimos').querySelector('tbody').innerHTML = ultimos.length
-      ? ultimos.map((e) => '<tr><td>' + new Date(e[0]).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) + '</td><td>' + esc(e[2]) + '</td><td>' + esc(nomeOrigem(e[3])) + '</td><td>' + esc(e[4]) + '</td></tr>').join('')
-      : '<tr><td colspan="4" class="vazio">Nenhum clique no WhatsApp neste período ainda.</td></tr>';
+      ? ultimos.map((e) => '<tr><td>' + new Date(e[0]).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) + '</td><td>' + esc(e[2]) + '</td><td>' + esc(nomeOrigem(e[3])) + '</td><td>' + esc(lugar(e) || '—') + '</td><td>' + esc(e[4]) + '</td></tr>').join('')
+      : '<tr><td colspan="5" class="vazio">Nenhum clique no WhatsApp neste período ainda.</td></tr>';
+  }
+
+  const lugar = (e) => (e[7] ? e[7] + (e[8] ? ' – ' + e[8] : '') : (e[8] || ''));
+
+  function graficoHora(porHora) {
+    if (!window.Chart) return;
+    const grade = css('--line'), tinta = css('--ink-3');
+    const dados = {
+      labels: porHora.map((_, h) => h + 'h'),
+      datasets: [
+        { label: 'Visitas', data: porHora.map((x) => x.v), backgroundColor: css('--s-visitas'), borderRadius: 3, yAxisID: 'y' },
+        { label: 'Cliques no WhatsApp', data: porHora.map((x) => x.c), backgroundColor: css('--s-cliques'), borderRadius: 3, yAxisID: 'y2' }
+      ]
+    };
+    const opcoes = {
+      responsive: true, maintainAspectRatio: false, animation: { duration: 300 },
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1B1B1B', padding: 10, boxPadding: 4, titleFont: { family: 'Manrope', weight: '700' }, bodyFont: { family: 'Manrope' } } },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: tinta, autoSkip: true, maxRotation: 0, font: { family: 'Manrope', size: 11 } }, border: { color: grade } },
+        y: { beginAtZero: true, grid: { color: grade }, border: { display: false }, title: { display: true, text: 'visitas', color: tinta }, ticks: { color: tinta, precision: 0, font: { family: 'Manrope', size: 11 } } },
+        // cliques em escala própria (à direita) para não sumirem perto das visitas
+        y2: { beginAtZero: true, position: 'right', grid: { display: false }, border: { display: false }, title: { display: true, text: 'cliques', color: tinta }, ticks: { color: tinta, precision: 0, font: { family: 'Manrope', size: 11 } } }
+      }
+    };
+    if (graficoH) graficoH.destroy();
+    graficoH = new Chart($('grafHora'), { type: 'bar', data: dados, options: opcoes });
   }
 
   function delta(atual, anterior) {

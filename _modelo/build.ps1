@@ -111,4 +111,41 @@ if (Test-Path $tplPainel) {
   $htmlPainel = Render (Get-Content -LiteralPath $tplPainel -Raw -Encoding UTF8) @($dados)
   [IO.File]::WriteAllText($saidaPainel, $htmlPainel, (New-Object System.Text.UTF8Encoding $false))
   Write-Host "Gerado: $saidaPainel"
+
+  # "App" do painel: ícones (logo sobre o fundo da marca) e manifest para a tela inicial do celular
+  Add-Type -AssemblyName System.Drawing
+  $pub = Split-Path $saidaPainel -Parent
+  $logo = [Drawing.Image]::FromFile((Join-Path (Split-Path $PSScriptRoot -Parent) $dados.marca.logoSimbolo))
+  $fundo = [Drawing.ColorTranslator]::FromHtml($dados.cores.fundo)
+  foreach ($icone in @(@{ n = 'icone-512.png'; t = 512 }, @{ n = 'icone-192.png'; t = 192 }, @{ n = 'apple-touch-icon.png'; t = 180 })) {
+    $t = $icone.t
+    $bmp = New-Object Drawing.Bitmap $t, $t
+    $g = [Drawing.Graphics]::FromImage($bmp)
+    $g.InterpolationMode = 'HighQualityBicubic'; $g.SmoothingMode = 'HighQuality'; $g.PixelOffsetMode = 'HighQuality'
+    $g.Clear($fundo)
+    # 68% do lado: sobra margem para os cantos arredondados/máscara do Android
+    $escala = [Math]::Min($t * 0.68 / $logo.Width, $t * 0.68 / $logo.Height)
+    $w = [int]($logo.Width * $escala); $h = [int]($logo.Height * $escala)
+    $g.DrawImage($logo, [int](($t - $w) / 2), [int](($t - $h) / 2), $w, $h)
+    $g.Dispose()
+    $bmp.Save((Join-Path $pub $icone.n), [Drawing.Imaging.ImageFormat]::Png)
+    $bmp.Dispose()
+  }
+  $logo.Dispose()
+  $manifest = [ordered]@{
+    name             = "Painel $([char]0xB7) $($dados.marca.nomeCompleto)"
+    short_name       = "Painel $($dados.marca.primeiroNome)"
+    start_url        = '/adm'
+    scope            = '/'
+    display          = 'standalone'
+    background_color = $dados.cores.fundo
+    theme_color      = $dados.cores.principal
+    lang             = 'pt-BR'
+    icons            = @(
+      @{ src = '/icone-192.png'; sizes = '192x192'; type = 'image/png'; purpose = 'any maskable' },
+      @{ src = '/icone-512.png'; sizes = '512x512'; type = 'image/png'; purpose = 'any maskable' }
+    )
+  }
+  [IO.File]::WriteAllText((Join-Path $pub 'manifest.webmanifest'), ($manifest | ConvertTo-Json -Depth 4), (New-Object System.Text.UTF8Encoding $false))
+  Write-Host "Gerado: icones e manifest do painel"
 }

@@ -16,6 +16,23 @@ Dados ficam em `dados/eventos.ndjson` (uma linha por evento). Nada pessoal é gu
 - O bloco `painel.julianafelix.com.br` fica **no código do Aviks** (`deploy/Caddyfile`, commit 9cbc422). Não edite o Caddyfile direto
   no servidor: ele é versionado e o próximo deploy do Aviks quebraria ou apagaria a mudança.
 
+## Localização (cidade/estado)
+
+`geo.js` consulta a base gratuita **DB-IP IP to City Lite** (CC BY 4.0, ~130 MB) em `geo/dbip-city-lite.mmdb`.
+Baixe/atualize com `bash atualizar-geo.sh` (o `instalar.sh` já baixa na primeira vez). O IP é usado só na hora e não é
+guardado. Sem o arquivo, o monitor funciona normalmente, só sem localização. A precisão é de cidade e falha às vezes
+no 4G (a operadora pode aparecer como outra cidade).
+
+## Palavra pesquisada no Google
+
+O site guarda `utm_term` da URL. No Google Ads, use como sufixo do URL final da campanha:
+`utm_source=google&utm_medium=cpc&utm_term={keyword}`.
+
+## Ícone do app
+
+`build.ps1` gera `public/icone-192.png`, `icone-512.png`, `apple-touch-icon.png` e `manifest.webmanifest` a partir da
+logo e das cores do `cliente.json`. No celular: abrir `/adm` → “Adicionar à tela de início”.
+
 ## Atualizar
 
 - **Painel:** gere de novo (`build.ps1`) e copie `public/adm.html` para `/opt/jf-monitor/public/`. Não precisa reiniciar nada.
