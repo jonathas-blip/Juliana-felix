@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
   :root{
     --bg:#F6F4EF; --surface:#FFFFFF; --surface-2:#FBFAF7; --line:rgba(23,23,23,.09);
@@ -128,6 +128,8 @@
   .login input{ width:100%; height:46px; border-radius:12px; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); padding:0 14px; font:inherit; }
   .login button{ width:100%; height:46px; margin-top:10px; border:0; border-radius:12px; background:var(--brand); color:#fff; font:inherit; font-weight:700; cursor:pointer; }
   .erro{ color:var(--bad); font-size:.85rem; margin-top:10px; min-height:1.2em; }
+  .rodape{ font-size:.75rem; color:var(--ink-3); text-align:center; padding-bottom:24px; }
+  .rodape a{ color:inherit; }
   [hidden]{ display:none !important; }
   .carregando{ text-align:center; color:var(--ink-3); padding:60px 0; }
 
@@ -273,6 +275,8 @@
     </section>
   </div>
 </main>
+
+<footer class="wrap rodape">Localização por IP: <a href="https://db-ip.com" target="_blank" rel="noopener">IP Geolocation by DB-IP</a> (CC BY 4.0)</footer>
 
 <script>
 (() => {
