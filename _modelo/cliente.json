@@ -109,6 +109,21 @@
     { "nome": "Eliete",  "procedimento": "Contorno de Mandíbula", "texto": "Fiz o contorno de mandíbula e o resultado foi muito harmonioso. Atendimento cuidadoso do início ao fim, me senti acolhida em cada etapa." }
   ],
 
+  "_avisoPerguntas": "Perguntas frequentes (seção 'Dúvidas' + dados para o Google). Não use aspas duplas nas respostas nem nomes de medicamentos. Lista vazia = seção some.",
+  "perguntas": [
+    { "pergunta": "Como faço para agendar um atendimento?", "resposta": "É só chamar no WhatsApp. A Juliana responde suas dúvidas e combina com você o melhor dia e horário para a avaliação." },
+    { "pergunta": "Preciso fazer uma avaliação antes do procedimento?", "resposta": "Sim. Toda pessoa passa por uma avaliação individual: conversamos sobre seus objetivos, seu histórico de saúde e suas características. A partir disso indicamos o protocolo mais adequado e também dizemos com sinceridade quando um procedimento não é indicado para você." },
+    { "pergunta": "Quanto custam os procedimentos?", "resposta": "O valor depende do procedimento e do protocolo indicado para você, por isso é passado na avaliação. Chame no WhatsApp contando o que você deseja tratar para receber uma orientação inicial." },
+    { "pergunta": "O resultado fica natural?", "resposta": "Esse é o nosso principal cuidado. A proposta é realçar a sua beleza respeitando os seus traços, sem exageros, para que você se reconheça no espelho e se sinta mais confiante." },
+    { "pergunta": "Os procedimentos doem?", "resposta": "A sensação varia de pessoa para pessoa e de procedimento para procedimento. Usamos técnicas para deixar o atendimento o mais confortável possível, e a maioria das pacientes relata apenas um leve desconforto." },
+    { "pergunta": "Quanto tempo dura o preenchimento labial?", "resposta": "Em geral, de 6 a 12 meses. A duração muda conforme o produto indicado, a região tratada, o metabolismo e os cuidados de cada pessoa." },
+    { "pergunta": "Quanto tempo dura o tratamento de linhas de expressão?", "resposta": "O efeito costuma aparecer entre 7 e 15 dias e dura, em média, de 4 a 6 meses, variando de pessoa para pessoa. Com a manutenção regular, as linhas tendem a ficar mais suaves ao longo do tempo." },
+    { "pergunta": "Quando aparecem os resultados dos bioestimuladores de colágeno?", "resposta": "O resultado é gradual: a pele vai ganhando firmeza ao longo de semanas, com melhora mais visível entre 60 e 90 dias. Normalmente o protocolo tem mais de uma sessão." },
+    { "pergunta": "Posso voltar à minha rotina no mesmo dia?", "resposta": "Na maioria dos procedimentos, sim. Pode haver um leve inchaço ou vermelhidão nas primeiras horas ou dias. Você recebe todas as orientações de cuidados depois do atendimento." },
+    { "pergunta": "Quem realiza os procedimentos?", "resposta": "Todos os atendimentos são feitos pela Juliana Felix, enfermeira com pós-graduação e especialização em Estética Avançada e mais de 15 anos de experiência na área da saúde e estética." },
+    { "pergunta": "Onde fica o atendimento?", "resposta": "Na Rua Catiguá, 159, no Tatuapé, zona leste de São Paulo. O endereço completo e o mapa estão na seção de contato logo abaixo." }
+  ],
+
   "promocao": {
     "ativa": true,
     "ate": "2026-10-31",

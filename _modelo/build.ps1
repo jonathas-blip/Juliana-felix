@@ -39,6 +39,7 @@ $extras = [ordered]@{
   whatsappBase = $waBase
   enderecoCompleto = "$($c.endereco), $($c.cidade), CEP $($c.cep)"
   temDepoimentos = (@($dados.depoimentos).Count -gt 0)
+  temPerguntas   = (@($dados.perguntas | Where-Object { $_ }).Count -gt 0)
 }
 $extras.mapsLink  = "https://www.google.com/maps/search/?api=1&query=$(UrlEnc $extras.enderecoCompleto)"
 $extras.mapsEmbed = "https://www.google.com/maps?q=$(UrlEnc $extras.enderecoCompleto)&output=embed"

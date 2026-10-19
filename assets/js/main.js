@@ -64,6 +64,7 @@ document.addEventListener('click', (e) => {
     if (a.closest('.hero')) return 'Topo do site';
     if (a.closest('.proc-note')) return 'Não sabe qual escolher';
     if (a.closest('#quem-sou')) return 'Quem sou';
+    if (a.closest('#duvidas')) return 'Perguntas frequentes';
     if (a.closest('.cta-block')) return 'Chamada final';
     if (a.closest('#contato')) return 'Seção de contato';
     if (a.closest('.site-footer')) return 'Rodapé';

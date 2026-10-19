@@ -84,6 +84,15 @@
   "sameAs": ["https://www.instagram.com/{{contato.instagram}}"{{#contato.googleAvaliacoes}}, "{{contato.googleAvaliacoes}}"{{/contato.googleAvaliacoes}}]
 }
 </script>
+{{#calc.temPerguntas}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{{#perguntas}}{{@sep}}{ "@type": "Question", "name": "{{pergunta}}", "acceptedAnswer": { "@type": "Answer", "text": "{{resposta}}" } }{{/perguntas}}]
+}
+</script>
+{{/calc.temPerguntas}}
 </head>
 <body>
 
@@ -141,6 +150,7 @@
     <a href="#resultados">Resultados</a>
     <a href="#quem-sou">Quem Sou</a>
     <a href="#como-funciona">Como Funciona</a>
+    {{#calc.temPerguntas}}<a href="#duvidas">Dúvidas</a>{{/calc.temPerguntas}}
     <a href="#contato">Contato</a>
   </nav>
   <a href="{{calc.whatsappLink}}" class="btn btn-primary" target="_blank" rel="noopener">
@@ -304,6 +314,27 @@
   </section>
   {{/calc.temDepoimentos}}
 
+  <!-- PERGUNTAS FREQUENTES (some automaticamente se a lista estiver vazia) -->
+  {{#calc.temPerguntas}}
+  <section class="block faq" id="duvidas">
+    <div class="container faq-container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Dúvidas frequentes</p>
+        <h2>Perguntas que sempre recebemos</h2>
+      </div>
+      <div class="faq-list reveal">
+        {{#perguntas}}
+        <details class="faq-item">
+          <summary>{{pergunta}}<span class="faq-mais" aria-hidden="true"></span></summary>
+          <p>{{resposta}}</p>
+        </details>
+        {{/perguntas}}
+      </div>
+      <p class="faq-more">Ficou com alguma outra dúvida? <a href="{{calc.whatsappLink}}" target="_blank" rel="noopener">Pergunte para a {{marca.primeiroNome}} no WhatsApp <svg aria-hidden="true"><use href="#i-seta"/></svg></a></p>
+    </div>
+  </section>
+  {{/calc.temPerguntas}}
+
   <!-- CTA -->
   <section class="cta-block">
     <div class="container reveal">
@@ -369,6 +400,7 @@
           <li><a href="#resultados">Resultados</a></li>
           <li><a href="#quem-sou">Quem Sou</a></li>
           <li><a href="#como-funciona">Como Funciona</a></li>
+          {{#calc.temPerguntas}}<li><a href="#duvidas">Dúvidas</a></li>{{/calc.temPerguntas}}
           <li><a href="#contato">Contato</a></li>
         </ul>
       </div>
