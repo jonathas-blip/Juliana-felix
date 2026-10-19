@@ -40,6 +40,8 @@
     "instagram": "drajuliannafelix",
     "endereco": "Rua Catiguá, 159 – Tatuapé",
     "cidade": "São Paulo - SP",
+    "municipio": "São Paulo",
+    "uf": "SP",
     "bairro": "Tatuapé",
     "cep": "03065-030",
     "horario": "Das 8h às 22h, pelo WhatsApp",
@@ -47,7 +49,7 @@
   },
 
   "hero": {
-    "selo": "Estética · Cuidado · Beleza",
+    "selo": "Estética Avançada no Tatuapé · SP",
     "tituloHtml": "Realce sua beleza.<br><em>Valorize quem você é.</em>",
     "texto": "Um cuidado personalizado para realçar sua beleza, respeitando sua individualidade e valorizando resultados naturais.",
     "imagem": "assets/img/juliana-hero.jpg",

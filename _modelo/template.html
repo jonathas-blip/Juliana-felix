@@ -58,6 +58,7 @@
 {
   "@context": "https://schema.org",
   "@type": "HealthAndBeautyBusiness",
+  "@id": "{{site.url}}/#negocio",
   "name": "{{marca.nomeCompleto}}",
   "description": "{{site.descricao}}",
   "url": "{{site.url}}/",
@@ -67,11 +68,20 @@
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "{{contato.endereco}}",
-    "addressLocality": "{{contato.cidade}}",
+    "addressLocality": "{{contato.municipio}}",
+    "addressRegion": "{{contato.uf}}",
     "postalCode": "{{contato.cep}}",
     "addressCountry": "BR"
   },
-  "sameAs": ["https://www.instagram.com/{{contato.instagram}}"]
+  "hasMap": "{{calc.mapsLink}}",
+  "areaServed": ["{{contato.bairro}}", "{{contato.municipio}}"],
+  "founder": { "@type": "Person", "name": "{{marca.profissional}}", "jobTitle": "{{marca.titulo}}" },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Procedimentos",
+    "itemListElement": [{{#procedimentos}}{{@sep}}{ "@type": "Offer", "itemOffered": { "@type": "Service", "name": "{{titulo}}", "description": "{{texto}}" } }{{/procedimentos}}]
+  },
+  "sameAs": ["https://www.instagram.com/{{contato.instagram}}"{{#contato.googleAvaliacoes}}, "{{contato.googleAvaliacoes}}"{{/contato.googleAvaliacoes}}]
 }
 </script>
 </head>

@@ -11,6 +11,7 @@
 #   {{#lista}}...{{/lista}}  repete para cada item (ou mostra o bloco se o valor existir)
 #   {{^campo}}...{{/campo}}  mostra o bloco só se o campo estiver vazio
 #   {{@num}}                 número do item na lista (01, 02, ...)
+#   {{@sep}}                 ", " a partir do 2º item (para listas JSON)
 
 param(
   [string]$Cliente = (Join-Path $PSScriptRoot 'cliente.json'),
@@ -81,7 +82,7 @@ function Render([string]$text, $stack) {
     if ($val -is [array]) {
       $sb = New-Object System.Text.StringBuilder
       for ($i = 0; $i -lt $val.Count; $i++) {
-        $meta = [pscustomobject]@{ '@num' = ('{0:D2}' -f ($i + 1)) }
+        $meta = [pscustomobject]@{ '@num' = ('{0:D2}' -f ($i + 1)); '@sep' = $(if ($i -gt 0) { ', ' } else { '' }) }
         [void]$sb.Append((Render $inner (@($val[$i], $meta) + $stack)))
       }
       return $sb.ToString()
@@ -102,6 +103,14 @@ if ($restos.Count -gt 0) { Write-Warning ("Marcadores não resolvidos: " + (($re
 
 [IO.File]::WriteAllText($Saida, $html, (New-Object System.Text.UTF8Encoding $false))
 Write-Host "Gerado: $Saida ($([math]::Round($html.Length / 1KB)) KB)"
+
+# robots.txt e sitemap.xml (para o Google encontrar e indexar o site)
+$raiz = Split-Path $Saida -Parent
+$utf8 = New-Object System.Text.UTF8Encoding $false
+[IO.File]::WriteAllText((Join-Path $raiz 'robots.txt'), "User-agent: *`nAllow: /`n`nSitemap: $($dados.site.url)/sitemap.xml`n", $utf8)
+$sitemap = "<?xml version=`"1.0`" encoding=`"UTF-8`"?>`n<urlset xmlns=`"http://www.sitemaps.org/schemas/sitemap/0.9`">`n  <url>`n    <loc>$($dados.site.url)/</loc>`n    <lastmod>$(Get-Date -Format 'yyyy-MM-dd')</lastmod>`n  </url>`n</urlset>`n"
+[IO.File]::WriteAllText((Join-Path $raiz 'sitemap.xml'), $sitemap, $utf8)
+Write-Host "Gerado: robots.txt e sitemap.xml"
 
 # Painel de monitoramento (servido pela VPS em /adm), se o template existir
 $tplPainel = Join-Path $PSScriptRoot 'painel.html'

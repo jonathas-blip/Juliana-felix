@@ -37,7 +37,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/img/juliana-hero.jpg" fetchpriority="high">
-<link rel="stylesheet" href="assets/css/style.css?v=202610190823">
+<link rel="stylesheet" href="assets/css/style.css?v=202610191052">
 <script>document.documentElement.classList.add('js');</script>
 <style>
   :root{
@@ -58,6 +58,7 @@
 {
   "@context": "https://schema.org",
   "@type": "HealthAndBeautyBusiness",
+  "@id": "https://julianafelix.com.br/#negocio",
   "name": "Juliana Felix Beauté",
   "description": "Harmonização facial, preenchimento labial, tratamento de linhas de expressão e bioestimuladores no Tatuapé, São Paulo. Atendimento personalizado com Juliana Felix, enfermeira especialista em estética avançada.",
   "url": "https://julianafelix.com.br/",
@@ -67,11 +68,20 @@
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Rua Catiguá, 159 – Tatuapé",
-    "addressLocality": "São Paulo - SP",
+    "addressLocality": "São Paulo",
+    "addressRegion": "SP",
     "postalCode": "03065-030",
     "addressCountry": "BR"
   },
-  "sameAs": ["https://www.instagram.com/drajuliannafelix"]
+  "hasMap": "https://www.google.com/maps/search/?api=1&amp;query=Rua%20Catigu%C3%A1%2C%20159%20%E2%80%93%20Tatuap%C3%A9%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%20CEP%2003065-030",
+  "areaServed": ["Tatuapé", "São Paulo"],
+  "founder": { "@type": "Person", "name": "Juliana Felix", "jobTitle": "Enfermeira especialista em Estética Avançada" },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Procedimentos",
+    "itemListElement": [{ "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Harmonização Facial", "description": "Protocolos personalizados que equilibram traços e realçam a harmonia natural do rosto." } }, { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Preenchimento Labial", "description": "Hidratação, definição e volume para lábios com resultado natural e sofisticado." } }, { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Linhas de Expressão", "description": "Suaviza linhas de expressão da testa e da região dos olhos, com aspecto descansado e natural." } }, { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Contorno de Mandíbula", "description": "Definição do ângulo mandibular para um perfil mais harmonioso e aspecto rejuvenescido." } }, { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Bioestimuladores de Colágeno", "description": "Estímulo gradual e natural de colágeno para firmeza e viço da pele ao longo do tempo." } }, { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Skincare Avançado", "description": "Renove sua pele e recupere a sensação de frescor, luminosidade e cuidado contínuo." } }]
+  },
+  "sameAs": ["https://www.instagram.com/drajuliannafelix", "https://www.google.com/search?kgmid=/g/11zyx0xh3q"]
 }
 </script>
 </head>
@@ -144,7 +154,7 @@
   <section class="hero" id="inicio">
     <div class="container hero-grid">
       <div class="hero-text">
-        <p class="eyebrow">Estética · Cuidado · Beleza</p>
+        <p class="eyebrow">Estética Avançada no Tatuapé · SP</p>
         <h1>Realce sua beleza.<br><em>Valorize quem você é.</em></h1>
         <p class="lead">Um cuidado personalizado para realçar sua beleza, respeitando sua individualidade e valorizando resultados naturais.</p>
         <div class="hero-ctas">
@@ -587,6 +597,6 @@
 </dialog>
 
 
-<script src="assets/js/main.js?v=202610190823" defer></script>
+<script src="assets/js/main.js?v=202610191052" defer></script>
 </body>
 </html>
