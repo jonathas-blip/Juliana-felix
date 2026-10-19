@@ -3,31 +3,27 @@
 Serviço pequeno em Node (sem dependências) que roda num contêiner próprio na VPS:
 
 - `POST /api` — o site envia cada visita e cada clique em botão de WhatsApp
-- `GET /api?senha=…&dias=…` — o painel lê os dados
+- `GET /api?dias=…` — o painel lê os dados (senha no cabeçalho `Authorization: Bearer …`)
 - `GET /adm` — o painel (gerado por `_modelo/build.ps1` a partir de `_modelo/painel.html`)
 
 Dados ficam em `dados/eventos.ndjson` (uma linha por evento). Nada pessoal é guardado (nem IP).
 
-## Instalação na VPS (uma vez)
+## Como está instalado (VPS 187.77.58.31)
 
-1. **DNS:** no registro.br, crie um registro **A** `painel` → IP da VPS (`187.77.58.31`).
-2. Copie esta pasta para a VPS, por exemplo em `/opt/jf-monitor`
-   (`server.js`, `docker-compose.yml`, `instalar.sh`, `public/adm.html`).
-3. Na VPS: `cd /opt/jf-monitor && bash instalar.sh`
-   - cria a senha do painel em `.env` e mostra na tela;
-   - sobe o contêiner `jf-monitor` na mesma rede do Caddy do Aviks;
-   - acrescenta `painel.julianafelix.com.br` no Caddyfile (com backup) e recarrega o Caddy sem derrubar o Aviks.
-4. No `_modelo/cliente.json`: `"monitoramento": { "endpoint": "https://painel.julianafelix.com.br/api", "painelApi": "/api" }`,
-   gere o site (`build.ps1`) e publique.
+- Pasta: `/opt/jf-monitor` — senha do painel em `/opt/jf-monitor/.env` (`SENHA_PAINEL`).
+- Contêiner `jf-monitor` na rede `aviks_sites`, que só tem o Caddy e os sites. Ele **não** alcança o banco nem a API do Aviks.
+- DNS: registro **A** `painel` → `187.77.58.31` no registro.br.
+- O bloco `painel.julianafelix.com.br` fica **no código do Aviks** (`deploy/Caddyfile`, commit 9cbc422). Não edite o Caddyfile direto
+  no servidor: ele é versionado e o próximo deploy do Aviks quebraria ou apagaria a mudança.
 
-## Atualizar o painel
+## Atualizar
 
-Gere de novo (`build.ps1`) e copie `public/adm.html` para a VPS — não precisa reiniciar nada.
+- **Painel:** gere de novo (`build.ps1`) e copie `public/adm.html` para `/opt/jf-monitor/public/`. Não precisa reiniciar nada.
+- **server.js:** copie para `/opt/jf-monitor/` e rode `bash instalar.sh` (só recria o `jf-monitor`).
 
 ## Desinstalar
 
-`docker compose down` na pasta, remova o bloco `painel.julianafelix.com.br` do Caddyfile e rode
-`docker exec aviks-caddy-1 caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile`.
+`docker compose down` na pasta e remova o bloco `painel.julianafelix.com.br` do Caddyfile no repositório do Aviks (e publique).
 
 ## Não contar os próprios acessos
 

@@ -1,7 +1,7 @@
 // Monitor de visitas e cliques no WhatsApp — sem dependências (Node 20+)
 //
 //   POST /api            ← o site envia eventos (texto JSON, via sendBeacon)
-//   GET  /api?senha=&dias= → o painel lê os eventos (exige a senha)
+//   GET  /api?dias=      → o painel lê os eventos (senha no cabeçalho Authorization: Bearer …)
 //   GET  /adm            → o painel
 //   GET  /saude          → verificação simples ("ok")
 //
@@ -11,6 +11,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const PORT = Number(process.env.PORT) || 8080;
 const SENHA = process.env.SENHA_PAINEL || '';
@@ -35,7 +36,15 @@ function permitido(ip) {
 }
 setInterval(() => { const lim = Date.now() - 120000; for (const [ip, r] of janela) if (r.inicio < lim) janela.delete(ip); }, 60000).unref();
 
-const corta = (v, max) => String(v == null ? '' : v).slice(0, max);
+// Senha vem no cabeçalho (não na URL, para não ficar em logs); comparação em tempo constante
+function senhaConfere(req) {
+  const m = /^Bearer (.+)$/.exec(req.headers.authorization || '');
+  const a = crypto.createHash('sha256').update(m ? m[1] : '').digest();
+  const b = crypto.createHash('sha256').update(SENHA).digest();
+  return crypto.timingSafeEqual(a, b);
+}
+
+const corta =(v, max) => String(v == null ? '' : v).slice(0, max);
 
 function cors(req, res) {
   const origem = req.headers.origin;
@@ -62,10 +71,11 @@ function lerEventos(desde) {
 
 const servidor = http.createServer((req, res) => {
   const url = new URL(req.url, 'http://localhost');
-  const ip = String(req.headers['x-forwarded-for'] || req.socket.remoteAddress || '').split(',')[0].trim();
+  // Atrás do Caddy vale o último valor do X-Forwarded-For (o que o Caddy acrescenta); os anteriores podem ser forjados
+  const ip = String(req.headers['x-forwarded-for'] || req.socket.remoteAddress || '').split(',').pop().trim();
   cors(req, res);
 
-  if (req.method === 'OPTIONS') { res.writeHead(204, { 'Access-Control-Allow-Methods': 'GET, POST', 'Access-Control-Allow-Headers': 'Content-Type' }); return res.end(); }
+  if (req.method === 'OPTIONS') { res.writeHead(204, { 'Access-Control-Allow-Methods': 'GET, POST', 'Access-Control-Allow-Headers': 'Content-Type, Authorization' }); return res.end(); }
 
   if (url.pathname === '/saude') { res.writeHead(200, { 'Content-Type': 'text/plain' }); return res.end('ok'); }
 
@@ -96,7 +106,7 @@ const servidor = http.createServer((req, res) => {
   }
 
   if (url.pathname === '/api' && req.method === 'GET') {
-    if (url.searchParams.get('senha') !== SENHA) {
+    if (!senhaConfere(req)) {
       // pequena espera para dificultar tentativa e erro
       return setTimeout(() => json(res, 401, { erro: 'senha' }), 800);
     }

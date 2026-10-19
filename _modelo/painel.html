@@ -291,7 +291,7 @@
       } else {
         const senha = le('painelSenha');
         if (!senha) { mostrarLogin(); return; }
-        const r = await fetch(ENDPOINT + '?senha=' + encodeURIComponent(senha) + '&dias=' + (dias * 2) + '&_=' + Date.now());
+        const r = await fetch(ENDPOINT + '?dias=' + (dias * 2), { headers: { Authorization: 'Bearer ' + senha }, cache: 'no-store' });
         const j = await r.json();
         if (j.erro === 'senha') { guarda('painelSenha', null); mostrarLogin('Senha incorreta.'); return; }
         eventos = j.eventos || [];

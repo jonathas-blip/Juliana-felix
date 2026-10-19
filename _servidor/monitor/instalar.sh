@@ -1,43 +1,29 @@
 #!/bin/bash
 # Instala/atualiza o monitor na VPS, sem tocar nos contêineres do Aviks.
 # Rodar na VPS a partir desta pasta (ex.: /opt/jf-monitor):  bash instalar.sh
-# Pré-requisito: registro DNS "painel.julianafelix.com.br" do tipo A apontando para o IP da VPS.
+#
+# O domínio painel.julianafelix.com.br já está no Caddyfile do Aviks — que é versionado no git do Aviks
+# (commit 9cbc422). NÃO edite o Caddyfile no servidor: o próximo deploy do Aviks quebraria ou apagaria o bloco.
+# O monitor fica numa rede só dele com o Caddy (aviks_sites); não enxerga banco nem API do Aviks.
 set -euo pipefail
-
-DOMINIO="${DOMINIO:-painel.julianafelix.com.br}"
-CADDY="${CADDY:-aviks-caddy-1}"
 cd "$(dirname "$0")"
+
+REDE="${REDE_CADDY:-aviks_sites}"
 
 # 1) Senha do painel (gerada uma vez, guardada em .env)
 if [ ! -f .env ]; then
   SENHA=$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 16)
   printf 'SENHA_PAINEL=%s\n' "$SENHA" > .env
   chmod 600 .env
-  echo "Senha do painel criada: $SENHA  (guarde; está em $(pwd)/.env)"
+  echo "Senha do painel criada e guardada em $(pwd)/.env"
 fi
+grep -q '^REDE_CADDY=' .env || printf 'REDE_CADDY=%s\n' "$REDE" >> .env
 mkdir -p dados
 
-# 2) Descobre a rede do Caddy e sobe o contêiner do monitor nela
-REDE=$(docker inspect "$CADDY" --format '{{range $k, $v := .NetworkSettings.Networks}}{{$k}} {{end}}' | awk '{print $1}')
-echo "Rede do Caddy: $REDE"
-grep -q '^REDE_CADDY=' .env || printf 'REDE_CADDY=%s\n' "$REDE" >> .env
-docker compose up -d
+# 2) A rede precisa existir e o Caddy precisa estar nela (isso é feito pelo deploy do Aviks)
+docker network inspect "$REDE" >/dev/null 2>&1 || { echo "Rede $REDE não existe — ela é criada pelo deploy do Aviks."; exit 1; }
+
+# 3) Sobe/atualiza o contêiner
+docker compose up -d --force-recreate
 sleep 2
 docker exec jf-monitor wget -qO- http://localhost:8080/saude && echo " ← monitor no ar"
-
-# 3) Acrescenta o domínio no Caddyfile do Aviks (só se ainda não existir) e recarrega sem derrubar nada
-CF=$(docker inspect "$CADDY" --format '{{range .Mounts}}{{if eq .Destination "/etc/caddy/Caddyfile"}}{{.Source}}{{end}}{{end}}')
-if [ -z "$CF" ]; then echo "Não achei o Caddyfile montado no $CADDY — adicione o bloco manualmente (ver LEIA-ME.md)"; exit 1; fi
-BACKUP=""
-if ! grep -q "$DOMINIO" "$CF"; then
-  BACKUP="$CF.bak-$(date +%Y%m%d%H%M%S)"
-  cp "$CF" "$BACKUP"
-  printf '\n# Monitor do site da Juliana Felix (adicionado por _servidor/monitor/instalar.sh)\n%s {\n\tencode gzip\n\treverse_proxy jf-monitor:8080\n}\n' "$DOMINIO" >> "$CF"
-fi
-if ! docker exec "$CADDY" caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile; then
-  echo "Configuração inválida — restaurando o Caddyfile original. Nada foi recarregado."
-  [ -n "$BACKUP" ] && cp "$BACKUP" "$CF"
-  exit 1
-fi
-docker exec "$CADDY" caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile
-echo "Pronto: https://$DOMINIO/adm"

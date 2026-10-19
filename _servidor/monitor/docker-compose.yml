@@ -19,9 +19,9 @@ services:
     networks:
       - proxy
 
-# Rede do Caddy do Aviks (descobrir o nome real com: docker network ls).
+# Rede só do Caddy + sites (aviks_sites): o monitor não enxerga o banco nem a API do Aviks.
 # O Caddy encaminha painel.julianafelix.com.br para jf-monitor:8080.
 networks:
   proxy:
     external: true
-    name: ${REDE_CADDY:-aviks_default}
+    name: ${REDE_CADDY:-aviks_sites}
