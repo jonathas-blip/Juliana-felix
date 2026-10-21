@@ -113,6 +113,21 @@
   .dia b{ display:block; font-size:1.15rem; color:var(--ink); font-variant-numeric:tabular-nums; }
   .dia.top{ outline:2px solid var(--s-cliques); outline-offset:-2px; }
 
+  /* Funil */
+  .funil{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:12px; }
+  .etapa{ background:var(--surface-2); border-radius:12px; padding:14px 16px; position:relative; }
+  .etapa b{ display:block; font-size:1.8rem; font-variant-numeric:tabular-nums; }
+  .etapa span{ font-size:.8rem; color:var(--ink-2); }
+  .etapa small{ display:block; margin-top:4px; font-size:.78rem; font-weight:700; color:var(--s-cliques); }
+  .card-topo{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .btn-sec{ border:1px solid var(--line); background:var(--surface-2); color:var(--ink); border-radius:999px; height:36px; padding:0 14px; font:inherit; font-size:.8rem; font-weight:700; cursor:pointer; }
+  .btn-sec:hover{ border-color:var(--brand); }
+  .zap{ color:var(--s-visitas); font-weight:700; text-decoration:none; white-space:nowrap; }
+  .zap:hover{ text-decoration:underline; }
+  .remover{ border:0; background:none; color:var(--ink-3); font:inherit; font-size:.75rem; cursor:pointer; text-decoration:underline; }
+  .remover:hover{ color:var(--bad); }
+  @media (max-width:520px){ .funil{ gap:6px; } .etapa{ padding:10px; } .etapa b{ font-size:1.35rem; } .etapa span{ font-size:.7rem; } }
+
   /* Tabela */
   table{ width:100%; border-collapse:collapse; font-size:.84rem; }
   th, td{ text-align:left; padding:9px 8px; border-bottom:1px solid var(--line); }
@@ -266,6 +281,25 @@
       </div>
 
       <div class="card full">
+        <h2>Do clique à conversa</h2>
+        <p class="sub">Quantas pessoas clicaram, se cadastraram e seguiram para o WhatsApp no período</p>
+        <div class="funil" id="funil"></div>
+      </div>
+
+      <div class="card full" id="cardCadastros">
+        <div class="card-topo">
+          <div>
+            <h2>Cadastros para contato</h2>
+            <p class="sub" id="subCadastros">Nome e WhatsApp deixados antes de abrir a conversa</p>
+          </div>
+          <button class="btn-sec" type="button" id="btnCsv">Baixar planilha (CSV)</button>
+        </div>
+        <div class="tabela-scroll">
+          <table id="tabCadastros"><thead><tr><th>Quando</th><th>Nome</th><th>WhatsApp</th><th>Botão</th><th>Origem</th><th>Local</th><th></th></tr></thead><tbody></tbody></table>
+        </div>
+      </div>
+
+      <div class="card full">
         <h2>Últimos cliques no WhatsApp</h2>
         <p class="sub">Os 15 mais recentes do período</p>
         <div class="tabela-scroll">
@@ -290,6 +324,7 @@
   let dias = Number(le('painelDias')) || 30;
   let eventos = [];
   let grafico = null, graficoH = null;
+  let cadastros = [];
 
   const NOMES_ORIGEM = {
     google_ads: 'Google Ads', google_organico: 'Google (orgânico)', instagram: 'Instagram',
@@ -325,10 +360,21 @@
         const o = sorteia(origens, pesosO), ap = Math.random() < 0.82 ? 'celular' : 'computador';
         const [cid, uf] = sorteia(lugares, pesosL), k = o === 'google_ads' ? sorteia(termos, pesosT) : '';
         out.push([t, 'visita', '', o, ap, '/', 's' + d + i, cid, uf, k]);
-        if (Math.random() < (o === 'google_ads' ? 0.11 : 0.06)) out.push([t + 60000, 'clique_whatsapp', sorteia(botoes, pesosB), o, ap, '/', 's' + d + i, cid, uf, k]);
+        if (Math.random() < (o === 'google_ads' ? 0.11 : 0.06)) {
+          const b = sorteia(botoes, pesosB);
+          out.push([t + 60000, 'clique_whatsapp', b, o, ap, '/', 's' + d + i, cid, uf, k]);
+          if (Math.random() < 0.55) out.push([t + 90000, 'lead', b, o, ap, '/', 's' + d + i, cid, uf, k]);
+          if (Math.random() < 0.8) out.push([t + 95000, 'whatsapp_aberto', b, o, ap, '/', 's' + d + i, cid, uf, k]);
+        }
       }
     }
     return out;
+  }
+
+  function gerarCadastrosDemo() {
+    const nomes = ['Ana Paula', 'Fernanda', 'Camila', 'Patrícia', 'Juliana R.', 'Mariana', 'Beatriz', 'Renata', 'Aline', 'Carla'];
+    const botoes = ['Botão flutuante', 'Procedimento: Preenchimento Labial', 'Topo do site', 'Pop-up de promoção', 'Procedimento: Harmonização Facial'];
+    return nomes.map((n, i) => [Date.now() - i * 26 * 3600000 - Math.floor(Math.random() * 3600000), n, '1198' + String(7000000 + i * 13137).slice(0, 7), i % 3 ? 'google_ads' : 'instagram', botoes[i % botoes.length], i % 4 ? 'celular' : 'computador', 'São Paulo', 'SP']);
   }
 
   // ---------- Busca ----------
@@ -337,6 +383,7 @@
     try {
       if (DEMO) {
         eventos = gerarDemo();
+        cadastros = gerarCadastrosDemo();
       } else {
         const senha = le('painelSenha');
         if (!senha) { mostrarLogin(); return; }
@@ -344,6 +391,10 @@
         const j = await r.json();
         if (j.erro === 'senha') { guarda('painelSenha', null); mostrarLogin('Senha incorreta.'); return; }
         eventos = j.eventos || [];
+        try {
+          const rc = await fetch(ENDPOINT + '/leads', { headers: { Authorization: 'Bearer ' + senha }, cache: 'no-store' });
+          cadastros = rc.ok ? ((await rc.json()).cadastros || []) : [];
+        } catch (e) { cadastros = []; }
       }
       $('login').hidden = true;
       $('conteudo').hidden = false;
@@ -437,11 +488,48 @@
     $('semana').innerHTML = [1, 2, 3, 4, 5, 6, 0].map((i) =>
       '<div class="dia' + (cli && i === topDia ? ' top' : '') + '" title="' + porSemana[i].v + ' visitas">' + nomesDia[i] + '<b>' + porSemana[i].c + '</b><small>cliques</small></div>').join('');
 
+    // Funil: clique → cadastro → abriu o WhatsApp (eventos 'lead' e 'whatsapp_aberto' existem desde a janela de cadastro)
+    const fl = conta(doPeriodo, 'lead'), fw = conta(doPeriodo, 'whatsapp_aberto');
+    const pct = (a, b) => b ? Math.round(a / b * 100) + '% dos cliques' : '';
+    $('funil').innerHTML =
+      '<div class="etapa"><b>' + fmt.format(cli) + '</b><span>Clicaram em falar no WhatsApp</span></div>' +
+      '<div class="etapa"><b>' + fmt.format(fl) + '</b><span>Deixaram nome e WhatsApp</span><small>' + pct(fl, cli) + '</small></div>' +
+      '<div class="etapa"><b>' + fmt.format(fw) + '</b><span>Seguiram para o WhatsApp</span><small>' + pct(fw, cli) + '</small></div>';
+
+    // Cadastros (mais recentes primeiro; o mesmo número aparece uma vez)
+    const vistos = new Set();
+    const lista = cadastros.slice().sort((a, b) => b[0] - a[0]).filter((c) => !vistos.has(c[2]) && vistos.add(c[2]));
+    const noPeriodo = lista.filter((c) => c[0] >= inicio).length;
+    $('subCadastros').textContent = fmt.format(lista.length) + (lista.length === 1 ? ' contato' : ' contatos') + ' no total · ' + fmt.format(noPeriodo) + ' nos últimos ' + dias + ' dias';
+    const telFmt = (t) => t.length === 11 ? '(' + t.slice(0, 2) + ') ' + t.slice(2, 7) + '-' + t.slice(7) : '(' + t.slice(0, 2) + ') ' + t.slice(2, 6) + '-' + t.slice(6);
+    $('tabCadastros').querySelector('tbody').innerHTML = lista.length
+      ? lista.map((c) => '<tr><td>' + new Date(c[0]).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) + '</td><td>' + esc(c[1]) +
+        '</td><td><a class="zap" href="https://wa.me/55' + esc(c[2]) + '" target="_blank" rel="noopener">' + telFmt(c[2]) + '</a></td><td>' + esc(c[4]) + '</td><td>' + esc(nomeOrigem(c[3])) +
+        '</td><td>' + esc(c[6] ? c[6] + (c[7] ? ' – ' + c[7] : '') : '—') + '</td><td>' + (DEMO ? '' : '<button class="remover" type="button" data-tel="' + esc(c[2]) + '">remover</button>') + '</td></tr>').join('')
+      : '<tr><td colspan="7" class="vazio">Os cadastros aparecem aqui quando alguém preencher a janela antes do WhatsApp.</td></tr>';
+    listaCadastros = lista;
+
     // Últimos cliques
     const ultimos = doPeriodo.filter((e) => e[1] === 'clique_whatsapp').sort((a, b) => b[0] - a[0]).slice(0, 15);
     $('tabUltimos').querySelector('tbody').innerHTML = ultimos.length
       ? ultimos.map((e) => '<tr><td>' + new Date(e[0]).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) + '</td><td>' + esc(e[2]) + '</td><td>' + esc(nomeOrigem(e[3])) + '</td><td>' + esc(lugar(e) || '—') + '</td><td>' + esc(e[4]) + '</td></tr>').join('')
       : '<tr><td colspan="5" class="vazio">Nenhum clique no WhatsApp neste período ainda.</td></tr>';
+  }
+
+  let listaCadastros = [];
+  function baixarCsv() {
+    const linhas = [['Data', 'Nome', 'WhatsApp', 'Botão', 'Origem', 'Aparelho', 'Cidade', 'Estado']].concat(
+      listaCadastros.map((c) => [new Date(c[0]).toLocaleString('pt-BR'), c[1], '55' + c[2], c[4], nomeOrigem(c[3]), c[5], c[6], c[7]]));
+    const csv = String.fromCharCode(0xFEFF) + linhas.map((l) => l.map((v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"').join(';')).join('\r\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'cadastros-' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+  async function removerCadastro(tel) {
+    if (!confirm('Remover este contato da lista? Use quando a pessoa pedir para sair.')) return;
+    const r = await fetch(ENDPOINT + '/leads?tel=' + encodeURIComponent(tel), { method: 'DELETE', headers: { Authorization: 'Bearer ' + le('painelSenha') } });
+    if (r.ok) { cadastros = cadastros.filter((c) => c[2] !== tel); desenhar(); }
   }
 
   const lugar = (e) => (e[7] ? e[7] + (e[8] ? ' – ' + e[8] : '') : (e[8] || ''));
@@ -528,6 +616,8 @@
     });
   });
   $('btnAtualizar').addEventListener('click', carregar);
+  $('btnCsv').addEventListener('click', baixarCsv);
+  $('tabCadastros').addEventListener('click', (e) => { const b = e.target.closest('.remover'); if (b) removerCadastro(b.dataset.tel); });
   $('btnSair').addEventListener('click', () => { guarda('painelSenha', null); eventos = []; mostrarLogin(); });
   $('formLogin').addEventListener('submit', (e) => { e.preventDefault(); guarda('painelSenha', $('senha').value); $('senha').value = ''; carregar(); });
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (eventos.length) desenhar(); });

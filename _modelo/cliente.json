@@ -142,6 +142,16 @@
     "aviso": "Consulte condições e agende sua avaliação. Válido até 31/10."
   },
 
+  "_avisoCadastro": "Janela que pede nome e WhatsApp antes de abrir a conversa (lista de contatos no painel). ativo=false desliga.",
+  "cadastro": {
+    "ativo": true,
+    "selo": "Atendimento pelo WhatsApp",
+    "tituloHtml": "Fale com a <em>Juliana</em>",
+    "texto": "Preencha o cadastro para receber promoções exclusivas.",
+    "botao": "Falar no WhatsApp",
+    "aviso": "Ao enviar, você aceita receber contato e promoções da Juliana Felix pelo WhatsApp. Pode pedir para sair quando quiser."
+  },
+
   "_avisoGoogleAds": "Medição do Google Ads. tagId = ID da tag do Google (AW-...). conversaoWhatsapp = 'send_to' da conversão 'Clique no WhatsApp'. Deixe tagId vazio para não instalar nada.",
   "googleAds": {
     "tagId": "AW-18459063436",

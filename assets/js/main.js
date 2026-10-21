@@ -1,24 +1,41 @@
 document.documentElement.classList.add('js');
 
-// ---------- Conversão do Google Ads: clique em qualquer link de WhatsApp ----------
-document.addEventListener('click', (e) => {
-  const link = e.target.closest('a[href*="wa.me/"]');
-  if (!link || typeof window.gtag !== 'function' || !window.CONVERSAO_WHATSAPP) return;
-  if (/^(localhost|127\.|\[::1\])/.test(location.hostname)) return; // testes locais não contam conversão
+const ehLocal = /^(localhost|127\.|\[::1\])/.test(location.hostname);
+const guarda = (tipo, chave, valor) => { try { window[tipo].setItem(chave, valor); } catch (e) { /* modo privado */ } };
+const le = (tipo, chave) => { try { return window[tipo].getItem(chave); } catch (e) { return null; } };
+
+// ---------- Conversão do Google Ads: quando a pessoa realmente segue para o WhatsApp ----------
+const converteAds = () => {
+  if (ehLocal || typeof window.gtag !== 'function' || !window.CONVERSAO_WHATSAPP) return; // testes locais não contam
   window.gtag('event', 'conversion', { send_to: window.CONVERSAO_WHATSAPP, transport_type: 'beacon' });
-});
+};
+
+// Qual botão de WhatsApp foi clicado
+const localDoBotao = (a) => {
+  if (a.closest('.wa-float')) return 'Botão flutuante';
+  if (a.closest('#promo')) return 'Pop-up de promoção';
+  const card = a.closest('.proc-card');
+  if (card) return 'Procedimento: ' + ((card.querySelector('h3') || {}).textContent || '').trim();
+  if (a.closest('.site-header')) return 'Cabeçalho';
+  if (a.closest('.mobile-panel')) return 'Menu do celular';
+  if (a.closest('.hero')) return 'Topo do site';
+  if (a.closest('.proc-note')) return 'Não sabe qual escolher';
+  if (a.closest('#quem-sou')) return 'Quem sou';
+  if (a.closest('#duvidas')) return 'Perguntas frequentes';
+  if (a.closest('.cta-block')) return 'Chamada final';
+  if (a.closest('#contato')) return 'Seção de contato';
+  if (a.closest('.site-footer')) return 'Rodapé';
+  return 'Outro';
+};
 
 // ---------- Monitoramento próprio: visitas e cliques no WhatsApp (painel/) ----------
-// Não guarda dado pessoal. Para não contar seus próprios acessos, abra o site
+// Eventos não guardam dado pessoal. Para não contar seus próprios acessos, abra o site
 // uma vez com ?naocontar no endereço (vale para aquele navegador).
-(() => {
+const monitor = (() => {
   const url = window.MONITOR_URL;
-  if (!url || navigator.webdriver || /^(localhost|127\.|\[::1\])/.test(location.hostname)) return;
   const params = new URLSearchParams(location.search);
-  const guarda = (tipo, chave, valor) => { try { window[tipo].setItem(chave, valor); } catch (e) { /* modo privado */ } };
-  const le = (tipo, chave) => { try { return window[tipo].getItem(chave); } catch (e) { return null; } };
   if (params.has('naocontar')) guarda('localStorage', 'naoContar', '1');
-  if (le('localStorage', 'naoContar')) return;
+  const ativo = !!url && !navigator.webdriver && !ehLocal && !le('localStorage', 'naoContar');
 
   const origemDaVisita = () => {
     const medium = (params.get('utm_medium') || '').toLowerCase();
@@ -43,47 +60,31 @@ document.addEventListener('click', (e) => {
   guarda('sessionStorage', 'mTermo', termo);
   const dispositivo = window.matchMedia('(max-width: 820px)').matches ? 'celular' : 'computador';
 
-  const envia = (tipo, local) => {
-    const corpo = JSON.stringify({ t: tipo, l: local || '', o: origem, d: dispositivo, p: location.pathname, s: sessao, k: termo });
+  const posta = (endereco, dados) => {
+    const corpo = JSON.stringify(dados);
     try {
-      if (navigator.sendBeacon && navigator.sendBeacon(url, new Blob([corpo], { type: 'text/plain' }))) return;
+      if (navigator.sendBeacon && navigator.sendBeacon(endereco, new Blob([corpo], { type: 'text/plain' }))) return;
     } catch (e) { /* cai no fetch */ }
-    fetch(url, { method: 'POST', mode: 'no-cors', keepalive: true, body: corpo }).catch(() => {});
+    fetch(endereco, { method: 'POST', mode: 'no-cors', keepalive: true, body: corpo }).catch(() => {});
+  };
+  const envia = (tipo, local) => {
+    if (ativo) posta(url, { t: tipo, l: local || '', o: origem, d: dispositivo, p: location.pathname, s: sessao, k: termo });
+  };
+  // Cadastro (nome e WhatsApp) vai para uma lista separada, só visível no painel com senha
+  const enviaCadastro = (nome, whatsapp, local) => {
+    if (url && !ehLocal && !navigator.webdriver) posta(url.replace(/\/api\/?$/, '/api/lead'), { n: nome, w: whatsapp, o: origem, l: local || '', d: dispositivo, s: sessao });
   };
 
   // Uma visita por sessão (abrir várias páginas/recarregar não conta de novo)
-  if (!le('sessionStorage', 'mVisita')) { envia('visita'); guarda('sessionStorage', 'mVisita', '1'); }
-
-  // Qual botão de WhatsApp foi clicado
-  const localDoBotao = (a) => {
-    if (a.closest('.wa-float')) return 'Botão flutuante';
-    if (a.closest('#promo')) return 'Pop-up de promoção';
-    const card = a.closest('.proc-card');
-    if (card) return 'Procedimento: ' + ((card.querySelector('h3') || {}).textContent || '').trim();
-    if (a.closest('.site-header')) return 'Cabeçalho';
-    if (a.closest('.mobile-panel')) return 'Menu do celular';
-    if (a.closest('.hero')) return 'Topo do site';
-    if (a.closest('.proc-note')) return 'Não sabe qual escolher';
-    if (a.closest('#quem-sou')) return 'Quem sou';
-    if (a.closest('#duvidas')) return 'Perguntas frequentes';
-    if (a.closest('.cta-block')) return 'Chamada final';
-    if (a.closest('#contato')) return 'Seção de contato';
-    if (a.closest('.site-footer')) return 'Rodapé';
-    return 'Outro';
-  };
-  document.addEventListener('click', (e) => {
-    const link = e.target.closest('a[href*="wa.me/"]');
-    if (link) envia('clique_whatsapp', localDoBotao(link));
-  });
+  if (ativo && !le('sessionStorage', 'mVisita')) { envia('visita'); guarda('sessionStorage', 'mVisita', '1'); }
+  return { envia, enviaCadastro };
 })();
 
-// ---------- WhatsApp no computador: QR code + WhatsApp Web direto ----------
-// No celular o link abre o app normalmente. No computador, o wa.me mostra uma página
-// intermediária onde muita gente desiste; aqui mostramos o QR code e o WhatsApp Web.
-(() => {
+// ---------- Abrir o WhatsApp ----------
+// No celular o link abre o app direto. No computador, o wa.me mostra uma página
+// intermediária onde muita gente desiste; lá mostramos o QR code e o WhatsApp Web.
+const abreWhatsApp = (() => {
   const modal = document.getElementById('waModal');
-  if (!modal || typeof modal.showModal !== 'function') return;
-  // mouse e sem toque = computador (celulares e tablets abrem o app direto)
   const computador = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches && !/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   let carregando = null;
   const carregaQr = () => carregando || (carregando = new Promise((ok, erro) => {
@@ -94,12 +95,15 @@ document.addEventListener('click', (e) => {
     s.onload = ok; s.onerror = erro;
     document.head.appendChild(s);
   }));
+  if (modal && typeof modal.showModal === 'function') {
+    modal.querySelector('.wa-modal-fechar').addEventListener('click', () => modal.close());
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.close(); });
+    modal.querySelectorAll('#waWeb, #waApp').forEach((a) => a.addEventListener('click', () => setTimeout(() => modal.close(), 300)));
+  }
 
-  document.addEventListener('click', (e) => {
-    const link = e.target.closest('a[href*="wa.me/"]');
-    if (!link || !computador()) return;
-    e.preventDefault();
-    const url = new URL(link.href);
+  return (href) => {
+    if (!modal || typeof modal.showModal !== 'function' || !computador()) { location.href = href; return; }
+    const url = new URL(href);
     const numero = url.pathname.replace(/\D/g, '');
     const texto = url.searchParams.get('text') || '';
     const q = '?phone=' + numero + (texto ? '&text=' + encodeURIComponent(texto) : '');
@@ -107,14 +111,76 @@ document.addEventListener('click', (e) => {
     document.getElementById('waApp').href = 'whatsapp://send' + q;
     const caixa = document.getElementById('waQr');
     caixa.innerHTML = '';
+    caixa.hidden = false;
     carregaQr().then(() => {
-      new window.QRCode(caixa, { text: link.href, width: 200, height: 200, colorDark: '#171717', colorLight: '#ffffff', correctLevel: window.QRCode.CorrectLevel.L });
+      new window.QRCode(caixa, { text: href, width: 200, height: 200, colorDark: '#171717', colorLight: '#ffffff', correctLevel: window.QRCode.CorrectLevel.L });
     }).catch(() => { caixa.hidden = true; });
     modal.showModal();
+  };
+})();
+
+// ---------- Cadastro antes do WhatsApp ----------
+// Ao clicar em qualquer botão de WhatsApp, abre uma janela pedindo nome e WhatsApp
+// (para promoções e contato). Quem já se cadastrou neste navegador vai direto.
+(() => {
+  const janela = document.getElementById('cadastro');
+  const form = document.getElementById('cadastroForm');
+  const campoNome = document.getElementById('cadNome');
+  const campoTel = document.getElementById('cadTel');
+  const erro = document.getElementById('cadErro');
+  let destino = null;
+  let botao = '';
+
+  const seguir = () => {
+    converteAds();
+    monitor.envia('whatsapp_aberto', botao);
+    if (janela && janela.open) janela.close();
+    abreWhatsApp(destino);
+  };
+
+  // (11) 91234-5678
+  const formata = (v) => {
+    const d = v.replace(/\D/g, '').slice(0, 11);
+    if (d.length <= 2) return d ? '(' + d : '';
+    if (d.length <= 6) return '(' + d.slice(0, 2) + ') ' + d.slice(2);
+    if (d.length <= 10) return '(' + d.slice(0, 2) + ') ' + d.slice(2, 6) + '-' + d.slice(6);
+    return '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7);
+  };
+  const telefoneValido = (d) => (d.length === 10 || d.length === 11) && Number(d.slice(0, 2)) >= 11 && (d.length === 10 || d[2] === '9');
+
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href*="wa.me/"]');
+    if (!link) return;
+    e.preventDefault();
+    destino = link.href;
+    botao = localDoBotao(link);
+    monitor.envia('clique_whatsapp', botao);
+    if (!janela || typeof janela.showModal !== 'function' || le('localStorage', 'jfCadastro')) { seguir(); return; }
+    erro.textContent = '';
+    if (document.getElementById('promo') && document.getElementById('promo').open) document.getElementById('promo').close();
+    janela.showModal();
+    setTimeout(() => campoNome.focus(), 50);
+  }, true);
+
+  if (!janela || !form) return;
+  campoTel.addEventListener('input', () => { campoTel.value = formata(campoTel.value); erro.textContent = ''; });
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nome = campoNome.value.trim().replace(/\s+/g, ' ').slice(0, 60);
+    const digitos = campoTel.value.replace(/\D/g, '');
+    if (!nome || !telefoneValido(digitos)) {
+      erro.textContent = !nome ? 'Digite seu nome.' : 'Confira o WhatsApp com DDD, por exemplo (11) 91234-5678.';
+      (!nome ? campoNome : campoTel).focus();
+      return;
+    }
+    monitor.enviaCadastro(nome, digitos, botao);
+    monitor.envia('lead', botao);
+    guarda('localStorage', 'jfCadastro', '1');
+    seguir();
   });
-  modal.querySelector('.wa-modal-fechar').addEventListener('click', () => modal.close());
-  modal.addEventListener('click', (e) => { if (e.target === modal) modal.close(); });
-  modal.querySelectorAll('#waWeb, #waApp').forEach((a) => a.addEventListener('click', () => setTimeout(() => modal.close(), 300)));
+  document.getElementById('cadDireto').addEventListener('click', seguir);
+  janela.querySelector('.cad-fechar').addEventListener('click', () => janela.close());
+  janela.addEventListener('click', (e) => { if (e.target === janela) janela.close(); });
 })();
 
 // ---------- Cabeçalho ao rolar ----------

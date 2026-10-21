@@ -833,3 +833,42 @@ section.block{ padding:96px 0; }
 .wa-modal-num{ font-size:.82rem; color:var(--text-soft); margin-top:12px; }
 .wa-modal-fechar{ position:absolute; top:14px; right:14px; width:36px; height:36px; border:0; border-radius:50%; background:var(--green-pale); color:var(--green-deep); cursor:pointer; display:grid; place-items:center; }
 .wa-modal-fechar svg{ width:16px; height:16px; }
+
+/* ---------- Cadastro antes do WhatsApp ---------- */
+.cad-modal{
+  border:0; border-radius:28px; padding:0; width:min(420px, calc(100% - 32px)); max-height:calc(100dvh - 32px); overflow:auto;
+  background:var(--bg); color:var(--text); box-shadow:0 30px 80px -20px rgba(0,0,0,.4);
+}
+.cad-modal::backdrop{ background:rgba(20,30,26,.55); backdrop-filter:blur(3px); }
+.cad-topo{ background:linear-gradient(160deg, var(--green-deep), var(--green-soft)); color:#fff; text-align:center; padding:34px 28px 26px; position:relative; }
+.cad-topo::after{ content:""; position:absolute; left:50%; bottom:0; width:64px; height:2px; background:var(--gold); transform:translateX(-50%); }
+.cad-logo{ display:inline-grid; place-items:center; width:76px; height:76px; border-radius:50%; background:var(--bg); margin-bottom:14px; box-shadow:0 0 0 4px rgba(198,161,91,.35); }
+.cad-logo img{ width:56px; height:auto; }
+.cad-topo .eyebrow{ color:var(--gold); margin-bottom:6px; }
+.cad-topo h2{ color:#fff; font-size:1.9rem; }
+.cad-topo h2 em{ color:var(--accent-light); font-style:italic; }
+#cadastroForm{ display:grid; gap:14px; padding:24px 28px 8px; }
+.cad-campo{ display:grid; gap:6px; font-size:.82rem; font-weight:700; color:var(--green-deep); letter-spacing:.02em; }
+.cad-campo input{
+  height:50px; border-radius:14px; border:1px solid rgba(35,72,61,.22); background:var(--surface); padding:0 16px;
+  font:inherit; font-size:1rem; font-weight:500; color:var(--text); transition:border-color .2s, box-shadow .2s;
+}
+.cad-campo input::placeholder{ color:#9A9A9A; font-weight:400; }
+.cad-campo input:focus{ outline:none; border-color:var(--green-deep); box-shadow:0 0 0 3px rgba(35,72,61,.15); }
+.cad-promo{ display:flex; align-items:center; gap:10px; background:var(--accent-light); color:var(--accent-hover); border-radius:12px; padding:10px 14px; font-size:.9rem; font-weight:600; }
+.cad-promo svg{ width:22px; height:22px; flex-shrink:0; }
+.cad-erro{ color:#B23B3B; font-size:.85rem; min-height:0; }
+.cad-erro:empty{ display:none; }
+.cad-enviar{ width:100%; justify-content:center; height:54px; font-size:.95rem; }
+.cad-direto{ display:block; margin:6px auto 0; border:0; background:none; font:inherit; font-size:.85rem; font-weight:600; color:var(--text-soft); text-decoration:underline; text-underline-offset:3px; cursor:pointer; padding:8px; }
+.cad-direto:hover{ color:var(--green-deep); }
+.cad-aviso{ font-size:.72rem; line-height:1.5; color:var(--text-soft); text-align:center; padding:6px 28px 24px; }
+.cad-fechar{ position:absolute; top:14px; right:14px; z-index:1; width:36px; height:36px; border:0; border-radius:50%; background:rgba(255,255,255,.14); color:#fff; cursor:pointer; display:grid; place-items:center; }
+.cad-fechar:hover{ background:rgba(255,255,255,.24); }
+.cad-fechar svg{ width:16px; height:16px; }
+@media (max-width:480px){
+  .cad-topo{ padding:28px 22px 22px; }
+  .cad-topo h2{ font-size:1.65rem; }
+  #cadastroForm{ padding:20px 20px 6px; }
+  .cad-aviso{ padding:4px 20px 20px; }
+}

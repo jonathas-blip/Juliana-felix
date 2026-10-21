@@ -2,11 +2,14 @@
 //
 //   POST /api            ← o site envia eventos (texto JSON, via sendBeacon)
 //   GET  /api?dias=      → o painel lê os eventos (senha no cabeçalho Authorization: Bearer …)
+//   POST /api/lead       ← cadastro feito antes de abrir o WhatsApp (nome + WhatsApp)
+//   GET  /api/leads      → o painel lê os cadastros (com senha)
+//   DELETE /api/leads?tel= → remove um cadastro (pedido de exclusão, LGPD)
 //   GET  /adm            → o painel
 //   GET  /saude          → verificação simples ("ok")
 //
-// Dados: uma linha JSON por evento em DATA_DIR/eventos.ndjson.
-// Nenhum dado pessoal é guardado: o IP só é usado na hora para achar cidade/estado (geo.js) e é descartado.
+// Dados: uma linha JSON por evento em DATA_DIR/eventos.ndjson (sem dado pessoal; o IP só é usado na hora para achar
+// cidade/estado e é descartado). Cadastros ficam à parte em DATA_DIR/cadastros.ndjson e só saem com a senha do painel.
 
 const http = require('http');
 const fs = require('fs');
@@ -19,7 +22,8 @@ const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'dados');
 const ORIGENS = (process.env.ORIGENS_PERMITIDAS || 'https://julianafelix.com.br,https://www.julianafelix.com.br').split(',').map((s) => s.trim());
 const ARQUIVO = path.join(DATA_DIR, 'eventos.ndjson');
 const PAINEL = path.join(__dirname, 'public', 'adm.html');
-const TIPOS = new Set(['visita', 'clique_whatsapp']);
+const CADASTROS = path.join(DATA_DIR, 'cadastros.ndjson');
+const TIPOS = new Set(['visita', 'clique_whatsapp', 'lead', 'whatsapp_aberto']);
 const localDoIp = require('./geo')(process.env.GEO_DB || path.join(__dirname, 'geo', 'dbip-city-lite.mmdb'));
 
 // Arquivos do "app" do painel (ícone na tela inicial do celular)
@@ -68,6 +72,23 @@ function json(res, status, obj) {
   res.end(JSON.stringify(obj));
 }
 
+function lerLinhas(arquivo) {
+  if (!fs.existsSync(arquivo)) return [];
+  const out = [];
+  for (const linha of fs.readFileSync(arquivo, 'utf8').split('\n')) {
+    if (!linha) continue;
+    try { out.push(JSON.parse(linha)); } catch (err) { /* linha corrompida */ }
+  }
+  return out;
+}
+
+// Corpo pequeno em texto (sendBeacon manda text/plain)
+function lerCorpo(req, cb) {
+  let corpo = '';
+  req.on('data', (c) => { corpo += c; if (corpo.length > 2048) req.destroy(); });
+  req.on('end', () => { try { cb(JSON.parse(corpo || '{}')); } catch (err) { cb(null); } });
+}
+
 function lerEventos(desde) {
   if (!fs.existsSync(ARQUIVO)) return [];
   const out = [];
@@ -84,7 +105,7 @@ const servidor = http.createServer((req, res) => {
   const ip = String(req.headers['x-forwarded-for'] || req.socket.remoteAddress || '').split(',').pop().trim();
   cors(req, res);
 
-  if (req.method === 'OPTIONS') { res.writeHead(204, { 'Access-Control-Allow-Methods': 'GET, POST', 'Access-Control-Allow-Headers': 'Content-Type, Authorization' }); return res.end(); }
+  if (req.method === 'OPTIONS') { res.writeHead(204, { 'Access-Control-Allow-Methods': 'GET, POST, DELETE', 'Access-Control-Allow-Headers': 'Content-Type, Authorization' }); return res.end(); }
 
   if (url.pathname === '/saude') { res.writeHead(200, { 'Content-Type': 'text/plain' }); return res.end('ok'); }
 
@@ -126,6 +147,31 @@ const servidor = http.createServer((req, res) => {
     return;
   }
 
+  if (url.pathname === '/api/lead' && req.method === 'POST') {
+    if (!permitido(ip)) return json(res, 429, { ok: false });
+    lerCorpo(req, (d) => {
+      const nome = corta(d && d.n, 60).replace(/\s+/g, ' ').trim();
+      const tel = String((d && d.w) || '').replace(/\D/g, '');
+      const telOk = (tel.length === 10 || tel.length === 11) && Number(tel.slice(0, 2)) >= 11;
+      if (!nome || !telOk) return json(res, 400, { ok: false });
+      const lugar = localDoIp(ip);
+      const cad = [Date.now(), nome, tel, corta(d.o, 40), corta(d.l, 80), corta(d.d, 12), corta(lugar.cidade, 60), corta(lugar.estado, 40)];
+      fs.appendFile(CADASTROS, JSON.stringify(cad) + '\n', (err) => json(res, err ? 500 : 200, { ok: !err }));
+    });
+    return;
+  }
+
+  if (url.pathname === '/api/leads' && (req.method === 'GET' || req.method === 'DELETE')) {
+    if (!senhaConfere(req)) return setTimeout(() => json(res, 401, { erro: 'senha' }), 800);
+    if (req.method === 'DELETE') {
+      const tel = String(url.searchParams.get('tel') || '').replace(/\D/g, '');
+      if (!tel) return json(res, 400, { ok: false });
+      const resto = lerLinhas(CADASTROS).filter((c) => c[2] !== tel);
+      fs.writeFile(CADASTROS, resto.map((c) => JSON.stringify(c)).join('\n') + (resto.length ? '\n' : ''), (err) => json(res, err ? 500 : 200, { ok: !err }));
+      return;
+    }
+    return json(res, 200, { gerado: Date.now(), cadastros: lerLinhas(CADASTROS) });
+  }
   if (url.pathname === '/api' && req.method === 'GET') {
     if (!senhaConfere(req)) {
       // pequena espera para dificultar tentativa e erro

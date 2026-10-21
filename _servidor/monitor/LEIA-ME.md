@@ -45,3 +45,10 @@ logo e das cores do `cliente.json`. No celular: abrir `/adm` → “Adicionar à
 ## Não contar os próprios acessos
 
 Abra o site uma vez com `?naocontar` no fim do endereço (vale para aquele navegador).
+
+## Cadastros (nome + WhatsApp)
+
+O site pede nome e WhatsApp antes de abrir a conversa (janela `#cadastro`, liga/desliga em `cliente.json` > `cadastro.ativo`).
+Os cadastros ficam em `dados/cadastros.ndjson` e aparecem no painel em **Cadastros para contato**, com botão para baixar CSV
+e para remover um contato (pedido de exclusão, LGPD). Só saem do servidor com a senha do painel.
+
