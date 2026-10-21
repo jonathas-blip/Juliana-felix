@@ -872,3 +872,7 @@ section.block{ padding:96px 0; }
   #cadastroForm{ padding:20px 20px 6px; }
   .cad-aviso{ padding:4px 20px 20px; }
 }
+
+/* Navegadores sem <dialog>: a janela de cadastro vira uma camada fixa com fundo escurecido */
+.cad-modal.cad-fallback{ position:fixed; inset:0; margin:auto; height:fit-content; z-index:1000; box-shadow:0 0 0 100vmax rgba(20,30,26,.55), 0 30px 80px -20px rgba(0,0,0,.4); }
+

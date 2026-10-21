@@ -130,11 +130,16 @@ const abreWhatsApp = (() => {
   const erro = document.getElementById('cadErro');
   let destino = null;
   let botao = '';
+  // Navegadores antigos (iOS antes do 15.4) não têm <dialog>: abre como camada fixa
+  const nativo = !!janela && typeof janela.showModal === 'function';
+  const aberta = () => !!janela && janela.hasAttribute('open');
+  const abrir = () => { if (nativo) janela.showModal(); else { janela.setAttribute('open', ''); janela.classList.add('cad-fallback'); } };
+  const fechar = () => { if (!janela) return; if (nativo) janela.close(); else { janela.removeAttribute('open'); janela.classList.remove('cad-fallback'); } };
 
   const seguir = () => {
     converteAds();
     monitor.envia('whatsapp_aberto', botao);
-    if (janela && janela.open) janela.close();
+    if (aberta()) fechar();
     abreWhatsApp(destino);
   };
 
@@ -155,10 +160,10 @@ const abreWhatsApp = (() => {
     destino = link.href;
     botao = localDoBotao(link);
     monitor.envia('clique_whatsapp', botao);
-    if (!janela || typeof janela.showModal !== 'function' || le('localStorage', 'jfCadastro')) { seguir(); return; }
+    if (!janela || le('localStorage', 'jfCadastro')) { seguir(); return; }
     erro.textContent = '';
     if (document.getElementById('promo') && document.getElementById('promo').open) document.getElementById('promo').close();
-    janela.showModal();
+    abrir();
     setTimeout(() => campoNome.focus(), 50);
   }, true);
 
@@ -179,8 +184,8 @@ const abreWhatsApp = (() => {
     seguir();
   });
   document.getElementById('cadDireto').addEventListener('click', seguir);
-  janela.querySelector('.cad-fechar').addEventListener('click', () => janela.close());
-  janela.addEventListener('click', (e) => { if (e.target === janela) janela.close(); });
+  janela.querySelector('.cad-fechar').addEventListener('click', fechar);
+  janela.addEventListener('click', (e) => { if (e.target === janela) fechar(); });
 })();
 
 // ---------- Cabeçalho ao rolar ----------
