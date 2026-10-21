@@ -517,10 +517,12 @@
   }
 
   let listaCadastros = [];
+  // Texto vindo do formulário público não pode virar fórmula no Excel (=, +, -, @, TAB, CR no início)
+  const seguro = (v) => { const s = String(v == null ? '' : v); return /^[=+\-@\t\r]/.test(s) ? "'" + s : s; };
   function baixarCsv() {
     const linhas = [['Data', 'Nome', 'WhatsApp', 'Botão', 'Origem', 'Aparelho', 'Cidade', 'Estado']].concat(
       listaCadastros.map((c) => [new Date(c[0]).toLocaleString('pt-BR'), c[1], '55' + c[2], c[4], nomeOrigem(c[3]), c[5], c[6], c[7]]));
-    const csv = String.fromCharCode(0xFEFF) + linhas.map((l) => l.map((v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"').join(';')).join('\r\n');
+    const csv = String.fromCharCode(0xFEFF) + linhas.map((l) => l.map((v) => '"' + seguro(v).replace(/"/g, '""') + '"').join(';')).join('\r\n');
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
     a.download = 'cadastros-' + new Date().toISOString().slice(0, 10) + '.csv';

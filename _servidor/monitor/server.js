@@ -150,7 +150,8 @@ const servidor = http.createServer((req, res) => {
   if (url.pathname === '/api/lead' && req.method === 'POST') {
     if (!permitido(ip)) return json(res, 429, { ok: false });
     lerCorpo(req, (d) => {
-      const nome = corta(d && d.n, 60).replace(/\s+/g, ' ').trim();
+      // tira do início caracteres que viram fórmula em planilha (=, +, -, @)
+      const nome = corta(d && d.n, 60).replace(/\s+/g, ' ').trim().replace(/^[=+\-@]+/, '').trim();
       const tel = String((d && d.w) || '').replace(/\D/g, '');
       const telOk = (tel.length === 10 || tel.length === 11) && Number(tel.slice(0, 2)) >= 11;
       if (!nome || !telOk) return json(res, 400, { ok: false });
