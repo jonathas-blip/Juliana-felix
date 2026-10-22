@@ -448,7 +448,7 @@
     <p class="cad-erro" id="cadErro" role="alert"></p>
     <button class="btn btn-primary cad-enviar" type="submit"><svg class="ic" aria-hidden="true"><use href="#i-whatsapp"/></svg> {{cadastro.botao}}</button>
   </form>
-  <button class="cad-direto" id="cadDireto" type="button">Prefiro ir direto para o WhatsApp</button>
+  {{^cadastro.obrigatorio}}<button class="cad-direto" id="cadDireto" type="button">Prefiro ir direto para o WhatsApp</button>{{/cadastro.obrigatorio}}
   <p class="cad-aviso">{{cadastro.aviso}}</p>
 </dialog>
 {{/cadastro.ativo}}

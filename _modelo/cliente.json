@@ -142,9 +142,10 @@
     "aviso": "Consulte condições e agende sua avaliação. Válido até 31/10."
   },
 
-  "_avisoCadastro": "Janela que pede nome e WhatsApp antes de abrir a conversa (lista de contatos no painel). ativo=false desliga.",
+  "_avisoCadastro": "Janela que pede nome e WhatsApp antes de abrir a conversa (lista de contatos no painel). ativo=false desliga; obrigatorio=true tira o link para pular o cadastro.",
   "cadastro": {
     "ativo": true,
+    "obrigatorio": true,
     "selo": "Atendimento pelo WhatsApp",
     "tituloHtml": "Fale com a <em>Juliana</em>",
     "texto": "Preencha o cadastro para receber promoções exclusivas.",

@@ -183,7 +183,8 @@ const abreWhatsApp = (() => {
     guarda('localStorage', 'jfCadastro', '1');
     seguir();
   });
-  document.getElementById('cadDireto').addEventListener('click', seguir);
+  const direto = document.getElementById('cadDireto'); // só existe quando o cadastro não é obrigatório
+  if (direto) direto.addEventListener('click', seguir);
   janela.querySelector('.cad-fechar').addEventListener('click', fechar);
   janela.addEventListener('click', (e) => { if (e.target === janela) fechar(); });
 })();
