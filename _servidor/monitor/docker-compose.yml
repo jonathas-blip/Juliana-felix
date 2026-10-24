@@ -15,6 +15,7 @@ services:
     volumes:
       - ./server.js:/app/server.js:ro
       - ./geo.js:/app/geo.js:ro
+      - ./meta.js:/app/meta.js:ro
       - ./geo:/app/geo:ro
       - ./public:/app/public:ro
       - ./dados:/data

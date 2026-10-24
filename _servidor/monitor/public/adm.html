@@ -61,6 +61,27 @@
   .icon-btn{ border:1px solid rgba(255,255,255,.35); background:none; color:inherit; border-radius:999px; height:34px; padding:0 12px; font:inherit; font-size:.8rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; }
   .icon-btn:hover{ background:rgba(255,255,255,.12); }
 
+  /* Abas Site | Meta */
+  .abas{ display:flex; gap:4px; background:rgba(0,0,0,.14); border-radius:12px; padding:4px; }
+  .abas button{ border:0; background:none; color:inherit; font:inherit; font-weight:700; font-size:.88rem; padding:8px 18px; border-radius:9px; cursor:pointer; opacity:.85; }
+  .abas button[aria-selected="true"]{ background:#fff; color:var(--brand); opacity:1; }
+  @media (max-width:520px){ .abas{ order:3; width:100%; } .abas button{ flex:1; } }
+
+  /* Meta */
+  .secao{ font-family:'Bodoni Moda', Georgia, serif; font-weight:500; font-size:1.35rem; margin:32px 0 0; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  .secao small{ font-family:'Manrope', sans-serif; font-size:.8rem; color:var(--ink-3); font-weight:500; }
+  .status{ display:inline-block; font-size:.72rem; font-weight:700; padding:2px 8px; border-radius:999px; background:var(--surface-2); color:var(--ink-2); }
+  .status.ativo{ background:rgba(30,122,79,.12); color:var(--good); }
+  .posts td{ vertical-align:middle; }
+  .posts img{ width:52px; height:52px; object-fit:cover; border-radius:8px; display:block; background:var(--surface-2); }
+  .posts .leg{ max-width:280px; color:var(--ink-2); font-size:.78rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .posts tr.top td{ background:rgba(201,146,39,.08); }
+  .meta-config{ max-width:560px; margin:32px auto 0; }
+  .meta-config ol{ padding-left:20px; color:var(--ink-2); font-size:.86rem; }
+  .meta-config input{ width:100%; height:46px; border-radius:12px; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); padding:0 14px; font:inherit; margin-top:8px; }
+  .meta-config button[type=submit]{ width:100%; height:46px; margin-top:10px; border:0; border-radius:12px; background:var(--brand); color:#fff; font:inherit; font-weight:700; cursor:pointer; }
+  .parcial{ color:var(--ink-3); font-size:.8rem; }
+
   .aviso{ margin:20px 0 0; padding:12px 16px; border-radius:12px; font-size:.88rem; background:#FFF6E0; color:#6B4E0E; border:1px solid #F1DDA6; }
   @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .aviso{ background:#2D2616; color:#E9D3A0; border-color:#4A3D1D; } }
 
@@ -166,7 +187,11 @@
   <div class="wrap">
     <div class="marca">
       <img src="https://julianafelix.com.br/assets/img/logo-simbolo.png" alt="">
-      <div><h1>Juliana Felix Beauté</h1><span>Painel do site</span></div>
+      <div><h1>Juliana Felix Beauté</h1><span>Painel de resultados</span></div>
+    </div>
+    <div class="abas" role="tablist" aria-label="O que ver">
+      <button type="button" role="tab" data-aba="site" aria-selected="true">Site</button>
+      <button type="button" role="tab" data-aba="meta" aria-selected="false">Meta</button>
     </div>
     <div class="periodo" role="group" aria-label="Período">
       <button type="button" data-dias="7" aria-pressed="false">7 dias</button>
@@ -308,9 +333,143 @@
       </div>
     </section>
   </div>
+
+  <div id="conteudoMeta" hidden>
+    <section class="card meta-config" id="metaConfig" hidden>
+      <h2>Conectar a Meta (anúncios e Instagram)</h2>
+      <p class="sub">É feito uma vez só. O token fica guardado apenas no servidor do painel.</p>
+      <ol>
+        <li>No Gerenciador de Negócios da Meta, abra <b>Configurações do negócio → Usuários do sistema</b>.</li>
+        <li>Gere um token com as permissões <b>ads_read</b>, <b>read_insights</b>, <b>instagram_basic</b>, <b>instagram_manage_insights</b> e <b>pages_read_engagement</b>.</li>
+        <li>Copie o token e cole abaixo.</li>
+      </ol>
+      <form id="formMeta">
+        <input type="password" id="metaToken" placeholder="Cole o token de acesso aqui" autocomplete="off" spellcheck="false" required>
+        <button type="submit">Conectar</button>
+        <div class="erro" id="erroMeta" role="alert"></div>
+      </form>
+    </section>
+    <p class="aviso" id="metaErro" hidden></p>
+
+    <div id="metaDados" hidden>
+      <h2 class="secao">Anúncios no Facebook e Instagram <small id="metaConta"></small></h2>
+      <section class="kpis" aria-label="Resumo dos anúncios">
+        <div class="kpi">
+          <div class="kpi-rot">Investido</div>
+          <div class="kpi-val" id="mGasto">R$ 0</div>
+          <div class="kpi-sub" id="mGastoD"></div>
+        </div>
+        <div class="kpi destaque">
+          <div class="kpi-rot"><i style="background:var(--s-cliques)"></i>Conversas no WhatsApp</div>
+          <div class="kpi-val" id="mConversas">0</div>
+          <div class="kpi-sub" id="mConversasD"></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-rot">Custo por conversa</div>
+          <div class="kpi-val" id="mCusto">—</div>
+          <div class="kpi-sub" id="mCustoD"></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-rot"><i style="background:var(--s-visitas)"></i>Pessoas alcançadas</div>
+          <div class="kpi-val" id="mAlcance">0</div>
+          <div class="kpi-sub" id="mAlcanceD"></div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+          <h2>Investimento e conversas por dia</h2>
+          <p class="sub" id="subMetaDia"></p>
+          <div class="legenda">
+            <span><i style="background:var(--s-visitas)"></i>Investido (R$)</span>
+            <span><i style="background:var(--s-cliques)"></i>Conversas no WhatsApp</span>
+          </div>
+          <div class="chart-box"><canvas id="grafMeta" aria-label="Gráfico de investimento e conversas por dia" role="img"></canvas></div>
+          <details>
+            <summary>Ver em tabela</summary>
+            <div class="tabela-scroll"><table id="tabMetaDia"><thead><tr><th>Dia</th><th class="n">Investido</th><th class="n">Conversas</th><th class="n">Cliques</th></tr></thead><tbody></tbody></table></div>
+          </details>
+        </div>
+
+        <div class="card">
+          <h2>Qual anúncio traz mais conversas</h2>
+          <p class="sub">Conversas no WhatsApp e custo de cada uma</p>
+          <ul class="ranking" id="rankAnuncios"></ul>
+        </div>
+
+        <div class="card">
+          <h2>Idade</h2>
+          <p class="sub" id="subIdade">Quem conversou, por faixa de idade</p>
+          <ul class="ranking" id="rankIdade"></ul>
+        </div>
+
+        <div class="card">
+          <h2>Sexo</h2>
+          <p class="sub" id="subSexo">Quem conversou</p>
+          <div class="aparelhos">
+            <div class="ap"><b id="sxF">—</b><span>Mulheres · <span id="sxFN">0</span></span></div>
+            <div class="ap"><b id="sxM">—</b><span>Homens · <span id="sxMN">0</span></span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Região</h2>
+          <p class="sub" id="subRegiao">Onde estão as pessoas que viram os anúncios</p>
+          <ul class="ranking" id="rankRegiao"></ul>
+        </div>
+
+        <div class="card">
+          <h2>Campanhas</h2>
+          <p class="sub">Situação e orçamento por dia</p>
+          <div class="tabela-scroll"><table id="tabCampanhas"><thead><tr><th>Campanha</th><th>Situação</th><th class="n">Por dia</th></tr></thead><tbody></tbody></table></div>
+        </div>
+      </section>
+
+      <h2 class="secao">Instagram <small id="igUsuario"></small></h2>
+      <section class="kpis" aria-label="Resumo do Instagram">
+        <div class="kpi">
+          <div class="kpi-rot">Seguidores</div>
+          <div class="kpi-val" id="igSeg">0</div>
+          <div class="kpi-sub" id="igPosts"></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-rot"><i style="background:var(--s-visitas)"></i>Alcance da conta</div>
+          <div class="kpi-val" id="igAlcance">0</div>
+          <div class="kpi-sub">soma do alcance diário no período</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-rot">Visitas ao perfil</div>
+          <div class="kpi-val" id="igVisitas">0</div>
+          <div class="kpi-sub" id="igEngajadas"></div>
+        </div>
+        <div class="kpi destaque">
+          <div class="kpi-rot"><i style="background:var(--s-cliques)"></i>Cliques no link da bio</div>
+          <div class="kpi-val" id="igLink">0</div>
+          <div class="kpi-sub">levam para o site / WhatsApp</div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card full">
+          <h2>Alcance do Instagram por dia</h2>
+          <p class="sub">Contas diferentes que viram algum conteúdo do perfil (posts, stories e anúncios)</p>
+          <div class="chart-box"><canvas id="grafIg" aria-label="Gráfico de alcance do Instagram por dia" role="img"></canvas></div>
+        </div>
+
+        <div class="card full">
+          <h2>Posts do período</h2>
+          <p class="sub" id="subPosts">Do maior para o menor alcance · o destaque mostra o que mais funcionou</p>
+          <div class="tabela-scroll">
+            <table class="posts" id="tabPosts"><thead><tr><th></th><th>Post</th><th class="n">Alcance</th><th class="n">Curtidas</th><th class="n">Coment.</th><th class="n">Salvos</th><th class="n">Compart.</th></tr></thead><tbody></tbody></table>
+          </div>
+        </div>
+      </section>
+      <p class="rodape" style="margin-top:20px">Dados da Meta atualizados a cada 15 minutos · <button class="remover" type="button" id="btnMetaSair">desconectar a Meta</button></p>
+    </div>
+  </div>
 </main>
 
-<footer class="wrap rodape">Localização por IP: <a href="https://db-ip.com" target="_blank" rel="noopener">IP Geolocation by DB-IP</a> (CC BY 4.0)</footer>
+<footer class="wrap rodape" id="rodapeSite">Localização por IP: <a href="https://db-ip.com" target="_blank" rel="noopener">IP Geolocation by DB-IP</a> (CC BY 4.0)</footer>
 
 <script>
 (() => {
@@ -325,6 +484,10 @@
   let eventos = [];
   let grafico = null, graficoH = null;
   let cadastros = [];
+  let aba = (location.hash === '#meta' || (location.hash !== '#site' && le('painelAba') === 'meta')) ? 'meta' : 'site';
+  let metaDados = null;
+  let graficoM = null, graficoI = null;
+  const moeda = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 
   const NOMES_ORIGEM = {
     google_ads: 'Google Ads', google_organico: 'Google (orgânico)', instagram: 'Instagram',
@@ -396,8 +559,11 @@
           cadastros = rc.ok ? ((await rc.json()).cadastros || []) : [];
         } catch (e) { cadastros = []; }
       }
+      if (aba !== 'site') return;
       $('login').hidden = true;
+      $('conteudoMeta').hidden = true;
       $('conteudo').hidden = false;
+      $('rodapeSite').hidden = false;
       $('btnSair').hidden = DEMO;
       $('atualizado').textContent = 'Atualizado às ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
       desenhar();
@@ -412,6 +578,7 @@
   function mostrarLogin(msg) {
     $('carregando').hidden = true;
     $('conteudo').hidden = true;
+    $('conteudoMeta').hidden = true;
     $('login').hidden = false;
     $('erroLogin').textContent = msg || '';
     $('senha').focus();
@@ -607,28 +774,271 @@
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]); }
 
+  // ---------- Meta (anúncios e Instagram) ----------
+  function gerarMetaDemo() {
+    const hoje = new Date(); hoje.setHours(12, 0, 0, 0);
+    const diario = [], igDia = [];
+    for (let i = dias - 1; i >= 0; i--) {
+      const d = new Date(hoje.getTime() - i * 86400000).toISOString().slice(0, 10);
+      const gasto = 4.4 + Math.random() * 1.2, conv = Math.max(0, Math.round(1.4 + Math.random() * 2.2 - (i % 6 === 0 ? 1 : 0)));
+      diario.push({ d, gasto, conversas: conv, impressoes: Math.round(900 + Math.random() * 500), cliques: Math.round(14 + Math.random() * 12) });
+      igDia.push({ d, alcance: Math.round(420 + Math.random() * 380 + (i < 9 ? 250 : 0)) });
+    }
+    const soma = (k) => diario.reduce((a, x) => a + x[k], 0);
+    const total = { gasto: soma('gasto'), conversas: soma('conversas'), impressoes: soma('impressoes'), alcance: Math.round(soma('impressoes') / 2.3), cliques: soma('cliques') };
+    const anterior = { gasto: total.gasto * .97, conversas: Math.round(total.conversas * .8), impressoes: total.impressoes * .9, alcance: total.alcance * .85 };
+    const c = total.conversas;
+    const porAnuncio = [['A · Antes e depois labial', .46], ['C · Testa e olhar', .33], ['B · Mandíbula', .21]].map(([nome, p]) => ({ nome, campanha: 'Mensagens no WhatsApp', gasto: total.gasto / 3, conversas: Math.round(c * p), impressoes: Math.round(total.impressoes / 3), cliques: Math.round(total.cliques / 3) }));
+    const idades = [['18-24', .08], ['25-34', .34], ['35-44', .33], ['45-54', .17], ['55-64', .06], ['65+', .02]];
+    const idadeSexo = [];
+    idades.forEach(([idade, p]) => { idadeSexo.push({ idade, sexo: 'female', conversas: Math.round(c * p * .88), impressoes: Math.round(total.impressoes * p * .8), gasto: 0 }); idadeSexo.push({ idade, sexo: 'male', conversas: Math.round(c * p * .12), impressoes: Math.round(total.impressoes * p * .2), gasto: 0 }); });
+    const regiao = [['São Paulo', 1]].map(([r]) => ({ regiao: r, conversas: c, impressoes: total.impressoes }));
+    const legendas = ['Resultado real ✨ Harmonização labial: contorno, definição e volume natural', '🖤 Black Friday Juliana Felix Beauté! Novembro inteiro com condições especiais', '🔥 Promoção do dia: Lipo de Papada ou Lipo Enzimática por R$ 149,00', 'Mito ou verdade? 🤔 Harmonização facial deixa o rosto artificial?', 'Resultado real ✨ Testa e olhar com expressão mais leve e natural', '3 coisas que ninguém te conta sobre preenchimento labial 💋'];
+    const tipos = ['Foto', 'Carrossel', 'Foto', 'Carrossel', 'Foto', 'Reel'];
+    const posts = legendas.map((legenda, i) => ({ legenda, tipo: tipos[i], data: new Date(hoje.getTime() - i * 1.6 * 86400000).toISOString(), link: '#', imagem: '', alcance: Math.round(300 + Math.random() * 900), curtidas: Math.round(10 + Math.random() * 60), comentarios: Math.round(Math.random() * 8), salvos: Math.round(Math.random() * 15), compart: Math.round(Math.random() * 10) }));
+    return {
+      configurado: true, contaNome: 'Juliana Felix Beauté (exemplo)',
+      anuncios: { diario, total, anterior, porAnuncio, idadeSexo, regiao, campanhas: [{ nome: 'Mensagens no WhatsApp', status: 'ACTIVE', orcamentoDia: 5 }] },
+      instagram: { perfil: { usuario: 'drajuliannafelix', seguidores: 1873, posts: 214 }, diario: igDia, totais: { profile_views: 412, website_clicks: 58, accounts_engaged: 236 }, posts }
+    };
+  }
+
+  async function carregarMeta() {
+    $('carregando').hidden = false;
+    try {
+      if (DEMO) metaDados = gerarMetaDemo();
+      else {
+        const senha = le('painelSenha');
+        if (!senha) { mostrarLogin(); return; }
+        const r = await fetch(ENDPOINT + '/meta?dias=' + dias, { headers: { Authorization: 'Bearer ' + senha }, cache: 'no-store' });
+        const j = await r.json();
+        if (j.erro === 'senha') { guarda('painelSenha', null); mostrarLogin('Senha incorreta.'); return; }
+        if (!r.ok) throw new Error(j.erro || 'erro');
+        metaDados = j;
+      }
+      if (aba !== 'meta') return;
+      $('login').hidden = true;
+      $('conteudo').hidden = true;
+      $('rodapeSite').hidden = true;
+      $('conteudoMeta').hidden = false;
+      $('btnSair').hidden = DEMO;
+      $('atualizado').textContent = 'Atualizado às ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      $('metaErro').hidden = true;
+      $('metaConfig').hidden = metaDados.configurado;
+      $('metaDados').hidden = !metaDados.configurado;
+      if (metaDados.configurado) desenharMeta();
+    } catch (e) {
+      $('conteudo').hidden = true;
+      $('conteudoMeta').hidden = false;
+      $('metaDados').hidden = true;
+      $('metaErro').hidden = false;
+      $('metaErro').textContent = 'Não foi possível buscar os dados da Meta agora. Tente de novo em alguns minutos.';
+    } finally {
+      $('carregando').hidden = true;
+    }
+  }
+
+  // Parte que veio com erro da Meta (ex.: falta permissão): mostra o motivo no lugar
+  const falhou = (x) => x && x.erro;
+  const avisoParcial = (id, x, colunas) => {
+    const html = '<span class="parcial">Sem dados: ' + esc(x.erro) + '</span>';
+    const el = $(id);
+    if (el.tagName === 'TABLE') el.querySelector('tbody').innerHTML = '<tr><td colspan="' + (colunas || 3) + '">' + html + '</td></tr>';
+    else el.innerHTML = '<li>' + html + '</li>';
+  };
+
+  function desenharMeta() {
+    const m = metaDados;
+    const a = m.anuncios, ig = m.instagram;
+    $('metaConta').textContent = m.contaNome || '';
+
+    if (a) {
+      const t = falhou(a.total) ? {} : a.total, ant = falhou(a.anterior) ? {} : a.anterior;
+      const custo = t.conversas ? t.gasto / t.conversas : 0, custoA = ant.conversas ? ant.gasto / ant.conversas : 0;
+      $('mGasto').textContent = moeda.format(t.gasto || 0);
+      $('mGastoD').innerHTML = delta(t.gasto || 0, ant.gasto || 0);
+      $('mConversas').textContent = fmt.format(t.conversas || 0);
+      $('mConversasD').innerHTML = delta(t.conversas || 0, ant.conversas || 0);
+      $('mCusto').textContent = custo ? moeda.format(custo) : '—';
+      $('mCustoD').innerHTML = custo && custoA ? deltaInvertido(custo, custoA) : 'quanto menor, melhor';
+      $('mAlcance').textContent = fmt.format(t.alcance || 0);
+      $('mAlcanceD').textContent = t.impressoes ? fmt.format(t.impressoes) + ' exibições · ' + fmt.format(t.cliques || 0) + ' cliques' : '';
+
+      // Por dia
+      if (falhou(a.diario)) { $('subMetaDia').textContent = 'Sem dados: ' + a.diario.erro; }
+      else {
+        const porDia = Object.fromEntries(a.diario.map((x) => [x.d, x]));
+        const hoje = new Date(); hoje.setHours(12, 0, 0, 0);
+        const chaves = [];
+        for (let i = dias - 1; i >= 0; i--) chaves.push(diaChave(hoje.getTime() - i * 86400000));
+        const linha = (k) => porDia[k] || { gasto: 0, conversas: 0, cliques: 0 };
+        $('subMetaDia').textContent = 'Últimos ' + dias + ' dias · ' + moeda.format(t.gasto || 0) + ' investidos e ' + fmt.format(t.conversas || 0) + ' conversas';
+        graficoMeta(chaves, linha);
+        $('tabMetaDia').querySelector('tbody').innerHTML = chaves.slice().reverse().map((k) => '<tr><td>' + diaRotulo(k) + '</td><td class="n">' + moeda.format(linha(k).gasto) + '</td><td class="n">' + linha(k).conversas + '</td><td class="n">' + linha(k).cliques + '</td></tr>').join('');
+      }
+
+      // Anúncios
+      if (falhou(a.porAnuncio)) avisoParcial('rankAnuncios', a.porAnuncio);
+      else ranking('rankAnuncios', a.porAnuncio.filter((x) => x.gasto > 0 || x.conversas > 0).map((x) => ({ nome: x.nome, valor: x.conversas, extra: x.conversas ? moeda.format(x.gasto / x.conversas) + ' cada' : moeda.format(x.gasto) + ' investidos' })), css('--s-cliques'), 'Os anúncios aparecem aqui quando começarem a rodar.');
+
+      // Idade e sexo: por conversas; enquanto não houver conversas, por exibições
+      if (falhou(a.idadeSexo)) { avisoParcial('rankIdade', a.idadeSexo); $('subSexo').textContent = 'Sem dados'; }
+      else {
+        const temConv = a.idadeSexo.some((x) => x.conversas > 0);
+        const k = temConv ? 'conversas' : 'impressoes';
+        const rot = temConv ? 'Quem conversou' : 'Quem viu os anúncios (ainda sem conversas)';
+        const idade = {}, sexo = { female: 0, male: 0 };
+        a.idadeSexo.forEach((x) => { idade[x.idade] = (idade[x.idade] || 0) + x[k]; if (x.sexo in sexo) sexo[x.sexo] += x[k]; });
+        const totI = Object.values(idade).reduce((s, v) => s + v, 0);
+        $('subIdade').textContent = rot + ', por faixa de idade';
+        ranking('rankIdade', Object.entries(idade).filter(([, v]) => v > 0).map(([n, v]) => ({ nome: n.replace('65+', '65 ou mais') + ' anos', valor: v, extra: totI ? Math.round(v / totI * 100) + '%' : '' })), css('--s-visitas'), 'Aparece quando os anúncios começarem a rodar.');
+        const totS = sexo.female + sexo.male;
+        $('subSexo').textContent = rot;
+        $('sxF').textContent = totS ? Math.round(sexo.female / totS * 100) + '%' : '—';
+        $('sxM').textContent = totS ? Math.round(sexo.male / totS * 100) + '%' : '—';
+        $('sxFN').textContent = fmt.format(sexo.female) + (temConv ? ' conversas' : ' exibições');
+        $('sxMN').textContent = fmt.format(sexo.male) + (temConv ? ' conversas' : ' exibições');
+      }
+
+      // Região
+      if (falhou(a.regiao)) avisoParcial('rankRegiao', a.regiao);
+      else {
+        const totR = a.regiao.reduce((s, x) => s + x.impressoes, 0);
+        ranking('rankRegiao', a.regiao.filter((x) => x.impressoes > 0).map((x) => ({ nome: x.regiao || 'Desconhecida', valor: x.impressoes, extra: (totR ? Math.round(x.impressoes / totR * 100) + '% · ' : '') + x.conversas + (x.conversas === 1 ? ' conversa' : ' conversas') })), css('--s-visitas'), 'Aparece quando os anúncios começarem a rodar.');
+      }
+
+      // Campanhas
+      const NOMES_STATUS = { ACTIVE: 'Ativa', PAUSED: 'Pausada', CAMPAIGN_PAUSED: 'Pausada', ARCHIVED: 'Arquivada', DELETED: 'Excluída', IN_PROCESS: 'Em análise', WITH_ISSUES: 'Com problema', PENDING_REVIEW: 'Em análise', DISAPPROVED: 'Reprovada' };
+      if (falhou(a.campanhas)) avisoParcial('tabCampanhas', a.campanhas, 3);
+      else $('tabCampanhas').querySelector('tbody').innerHTML = a.campanhas.filter((c) => c.status !== 'DELETED' && c.status !== 'ARCHIVED').map((c) =>
+        '<tr><td>' + esc(c.nome) + '</td><td><span class="status' + (c.status === 'ACTIVE' ? ' ativo' : '') + '">' + esc(NOMES_STATUS[c.status] || c.status) + '</span></td><td class="n">' + (c.orcamentoDia ? moeda.format(c.orcamentoDia) : '—') + '</td></tr>').join('') ||
+        '<tr><td colspan="3" class="vazio">Nenhuma campanha ainda.</td></tr>';
+    }
+
+    if (ig) {
+      const p = falhou(ig.perfil) ? {} : ig.perfil, tt = falhou(ig.totais) ? {} : ig.totais;
+      $('igUsuario').textContent = p.usuario ? '@' + p.usuario : '';
+      $('igSeg').textContent = fmt.format(p.seguidores || 0);
+      $('igPosts').textContent = p.posts ? fmt.format(p.posts) + ' posts no perfil' : '';
+      $('igVisitas').textContent = fmt.format(tt.profile_views || 0);
+      $('igEngajadas').textContent = tt.accounts_engaged ? fmt.format(tt.accounts_engaged) + ' contas interagiram' : '';
+      $('igLink').textContent = fmt.format(tt.website_clicks || 0);
+      const dia = falhou(ig.diario) ? [] : ig.diario;
+      $('igAlcance').textContent = fmt.format(dia.reduce((s, x) => s + x.alcance, 0));
+      graficoIg(dia);
+
+      if (falhou(ig.posts)) avisoParcial('tabPosts', ig.posts, 7);
+      else {
+        const posts = ig.posts.slice().sort((x, y) => y.alcance - x.alcance);
+        $('subPosts').textContent = fmt.format(posts.length) + (posts.length === 1 ? ' post' : ' posts') + ' nos últimos ' + dias + ' dias · do maior para o menor alcance';
+        $('tabPosts').querySelector('tbody').innerHTML = posts.length ? posts.map((x, i) =>
+          '<tr' + (i < 3 && x.alcance ? ' class="top"' : '') + '><td>' + (x.imagem ? '<img src="' + esc(x.imagem) + '" alt="" loading="lazy" referrerpolicy="no-referrer">' : '<img alt="">') + '</td>' +
+          '<td><a class="zap" href="' + esc(x.link) + '" target="_blank" rel="noopener">' + esc(x.tipo) + ' · ' + new Date(x.data).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) + '</a><div class="leg" title="' + esc(x.legenda) + '">' + esc(x.legenda) + '</div></td>' +
+          '<td class="n">' + fmt.format(x.alcance) + '</td><td class="n">' + fmt.format(x.curtidas) + '</td><td class="n">' + fmt.format(x.comentarios) + '</td><td class="n">' + fmt.format(x.salvos) + '</td><td class="n">' + fmt.format(x.compart) + '</td></tr>').join('')
+          : '<tr><td colspan="7" class="vazio">Nenhum post neste período.</td></tr>';
+      }
+    }
+  }
+
+  // Para custo: subir é ruim
+  function deltaInvertido(atual, anterior) {
+    const p = Math.round((atual - anterior) / anterior * 100);
+    const cls = p < 0 ? 'up' : p > 0 ? 'down' : '';
+    return '<span class="delta ' + cls + '">' + (p > 0 ? '▲ +' : p < 0 ? '▼ ' : '') + p + '%</span> vs. ' + dias + ' dias anteriores';
+  }
+
+  const opcoesBase = (escalas) => ({
+    responsive: true, maintainAspectRatio: false, animation: { duration: 300 },
+    interaction: { mode: 'index', intersect: false },
+    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1B1B1B', padding: 10, boxPadding: 4, titleFont: { family: 'Manrope', weight: '700' }, bodyFont: { family: 'Manrope' } } },
+    scales: escalas
+  });
+  const eixo = (extra) => Object.assign({ beginAtZero: true, grid: { color: css('--line') }, border: { display: false }, ticks: { color: css('--ink-3'), font: { family: 'Manrope', size: 11 } } }, extra);
+  const eixoX = () => ({ grid: { display: false }, ticks: { color: css('--ink-3'), maxTicksLimit: 8, maxRotation: 0, font: { family: 'Manrope', size: 11 } }, border: { color: css('--line') } });
+
+  function graficoMeta(chaves, linha) {
+    if (!window.Chart) return;
+    const dados = {
+      labels: chaves.map(diaRotulo),
+      datasets: [
+        { type: 'line', label: 'Investido (R$)', data: chaves.map((k) => Math.round(linha(k).gasto * 100) / 100), borderColor: css('--s-visitas'), backgroundColor: css('--s-visitas'), tension: .3, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, yAxisID: 'y' },
+        { type: 'bar', label: 'Conversas no WhatsApp', data: chaves.map((k) => linha(k).conversas), backgroundColor: css('--s-cliques'), borderRadius: 3, yAxisID: 'y2' }
+      ]
+    };
+    if (graficoM) graficoM.destroy();
+    graficoM = new Chart($('grafMeta'), { data: dados, options: opcoesBase({
+      x: eixoX(),
+      y: eixo({ title: { display: true, text: 'R$', color: css('--ink-3') } }),
+      y2: eixo({ position: 'right', grid: { display: false }, ticks: { color: css('--ink-3'), precision: 0, font: { family: 'Manrope', size: 11 } }, title: { display: true, text: 'conversas', color: css('--ink-3') } })
+    }) });
+  }
+
+  function graficoIg(dia) {
+    if (!window.Chart) return;
+    const cor = css('--s-visitas');
+    if (graficoI) graficoI.destroy();
+    graficoI = new Chart($('grafIg'), { type: 'line', data: {
+      labels: dia.map((x) => diaRotulo(x.d)),
+      datasets: [{ label: 'Alcance', data: dia.map((x) => x.alcance), borderColor: cor, backgroundColor: cor + '22', fill: true, tension: .3, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5 }]
+    }, options: opcoesBase({ x: eixoX(), y: eixo({ ticks: { color: css('--ink-3'), precision: 0, font: { family: 'Manrope', size: 11 } } }) }) });
+  }
+
+  async function conectarMeta(e) {
+    e.preventDefault();
+    $('erroMeta').textContent = 'Conectando…';
+    try {
+      const r = await fetch(ENDPOINT + '/meta/config', { method: 'POST', headers: { Authorization: 'Bearer ' + le('painelSenha') }, body: JSON.stringify({ token: $('metaToken').value.trim() }) });
+      const j = await r.json();
+      if (!j.ok) { $('erroMeta').textContent = j.erro || 'Não foi possível conectar.'; return; }
+      $('metaToken').value = '';
+      $('erroMeta').textContent = '';
+      carregarMeta();
+    } catch (err) { $('erroMeta').textContent = 'Não foi possível conectar. Verifique a internet.'; }
+  }
+
+  async function desconectarMeta() {
+    if (DEMO || !confirm('Desconectar a Meta do painel? Os anúncios continuam rodando normalmente; só o painel deixa de mostrar os dados.')) return;
+    await fetch(ENDPOINT + '/meta/config', { method: 'DELETE', headers: { Authorization: 'Bearer ' + le('painelSenha') } });
+    carregarMeta();
+  }
+
+  const atualizar = () => (aba === 'meta' ? carregarMeta() : carregar());
+  function trocarAba(nova) {
+    aba = nova;
+    guarda('painelAba', aba);
+    history.replaceState(null, '', location.pathname + location.search + '#' + aba);
+    document.querySelectorAll('.abas button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.aba === aba)));
+    atualizar();
+  }
+
   // ---------- Controles ----------
+  document.querySelectorAll('.abas button').forEach((b) => {
+    b.setAttribute('aria-selected', String(b.dataset.aba === aba));
+    b.addEventListener('click', () => { if (b.dataset.aba !== aba) trocarAba(b.dataset.aba); });
+  });
+  $('formMeta').addEventListener('submit', conectarMeta);
+  $('btnMetaSair').addEventListener('click', desconectarMeta);
   document.querySelectorAll('.periodo button').forEach((b) => {
     b.setAttribute('aria-pressed', String(Number(b.dataset.dias) === dias));
     b.addEventListener('click', () => {
       dias = Number(b.dataset.dias);
       guarda('painelDias', String(dias));
       document.querySelectorAll('.periodo button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-      DEMO ? desenhar() : carregar();
+      DEMO && aba === 'site' ? desenhar() : atualizar();
     });
   });
-  $('btnAtualizar').addEventListener('click', carregar);
+  $('btnAtualizar').addEventListener('click', atualizar);
   $('btnCsv').addEventListener('click', baixarCsv);
   $('tabCadastros').addEventListener('click', (e) => { const b = e.target.closest('.remover'); if (b) removerCadastro(b.dataset.tel); });
   $('btnSair').addEventListener('click', () => { guarda('painelSenha', null); eventos = []; mostrarLogin(); });
-  $('formLogin').addEventListener('submit', (e) => { e.preventDefault(); guarda('painelSenha', $('senha').value); $('senha').value = ''; carregar(); });
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (eventos.length) desenhar(); });
-  setInterval(() => { if (!DEMO && !document.hidden && le('painelSenha')) carregar(); }, 5 * 60 * 1000);
+  $('formLogin').addEventListener('submit', (e) => { e.preventDefault(); guarda('painelSenha', $('senha').value); $('senha').value = ''; atualizar(); });
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (aba === 'meta' && metaDados && metaDados.configurado) desenharMeta(); else if (eventos.length) desenhar(); });
+  setInterval(() => { if (!DEMO && !document.hidden && le('painelSenha')) atualizar(); }, 5 * 60 * 1000);
 
   // ---------- Início ----------
-  if (DEMO) { $('avisoDemo').hidden = false; carregar(); }
+  if (DEMO) { $('avisoDemo').hidden = false; atualizar(); }
   else if (!ENDPOINT) { $('avisoConfig').hidden = false; }
-  else carregar();
+  else atualizar();
 })();
 </script>
 </body>

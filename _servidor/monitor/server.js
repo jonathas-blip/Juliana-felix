@@ -5,6 +5,8 @@
 //   POST /api/lead       ← cadastro feito antes de abrir o WhatsApp (nome + WhatsApp)
 //   GET  /api/leads      → o painel lê os cadastros (com senha)
 //   DELETE /api/leads?tel= → remove um cadastro (pedido de exclusão, LGPD)
+//   GET  /api/meta?dias=   → anúncios da Meta e Instagram (com senha; ver meta.js)
+//   POST/DELETE /api/meta/config → conecta (token) ou desconecta a Meta (com senha)
 //   GET  /adm            → o painel
 //   GET  /saude          → verificação simples ("ok")
 //
@@ -25,6 +27,7 @@ const PAINEL = path.join(__dirname, 'public', 'adm.html');
 const CADASTROS = path.join(DATA_DIR, 'cadastros.ndjson');
 const TIPOS = new Set(['visita', 'clique_whatsapp', 'lead', 'whatsapp_aberto']);
 const localDoIp = require('./geo')(process.env.GEO_DB || path.join(__dirname, 'geo', 'dbip-city-lite.mmdb'));
+const meta = require('./meta')(DATA_DIR);
 
 // Arquivos do "app" do painel (ícone na tela inicial do celular)
 const ESTATICOS = {
@@ -173,6 +176,26 @@ const servidor = http.createServer((req, res) => {
     }
     return json(res, 200, { gerado: Date.now(), cadastros: lerLinhas(CADASTROS) });
   }
+  // Meta (anúncios e Instagram): o servidor consulta a Graph API com o token guardado aqui
+  if (url.pathname === '/api/meta' || url.pathname === '/api/meta/config') {
+    if (!senhaConfere(req)) return setTimeout(() => json(res, 401, { erro: 'senha' }), 800);
+    if (url.pathname === '/api/meta' && req.method === 'GET') {
+      const dias = Math.min(Math.max(Number(url.searchParams.get('dias')) || 30, 1), 90);
+      meta.dados(dias).then((d) => json(res, 200, d), (err) => json(res, 502, { erro: String(err.message || err).slice(0, 200) }));
+      return;
+    }
+    if (url.pathname === '/api/meta/config' && req.method === 'POST') {
+      lerCorpo(req, (d) => {
+        const token = String((d && d.token) || '').trim();
+        if (!/^[A-Za-z0-9_-]{40,1000}$/.test(token)) return json(res, 400, { ok: false, erro: 'Token inválido.' });
+        meta.configurar(token).then((r) => json(res, 200, Object.assign({ ok: true }, r)), (err) => json(res, 400, { ok: false, erro: String(err.message || err).slice(0, 200) }));
+      });
+      return;
+    }
+    if (url.pathname === '/api/meta/config' && req.method === 'DELETE') { meta.desconectar(); return json(res, 200, { ok: true }); }
+    res.writeHead(405); return res.end();
+  }
+
   if (url.pathname === '/api' && req.method === 'GET') {
     if (!senhaConfere(req)) {
       // pequena espera para dificultar tentativa e erro
