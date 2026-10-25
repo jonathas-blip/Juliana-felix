@@ -39,8 +39,10 @@ module.exports = (DATA_DIR) => {
 
   // Descobre a conta de anúncios e o Instagram que o token enxerga e guarda tudo no servidor
   async function configurar(token) {
-    const contas = await graph('me/adaccounts', { fields: 'id,name,account_status', limit: 50 }, token);
-    const conta = (contas.data || []).find((c) => c.account_status === 1) || (contas.data || [])[0];
+    // Só conta de anúncios que já gastou algo: a conta pessoal vazia não deve aparecer como "R$ 0" no painel
+    const contas = await graph('me/adaccounts', { fields: 'id,name,account_status,amount_spent', limit: 50 }, token);
+    const conta = process.env.META_CONTA ? { id: process.env.META_CONTA, name: '' }
+      : (contas.data || []).filter((c) => num(c.amount_spent) > 0).sort((a, b) => num(b.amount_spent) - num(a.amount_spent))[0];
     let ig = null;
     const paginas = await tenta(() => graph('me/accounts', { fields: 'name,instagram_business_account{id,username}', limit: 50 }, token));
     for (const p of paginas.data || []) if (p.instagram_business_account) { ig = p.instagram_business_account; break; }

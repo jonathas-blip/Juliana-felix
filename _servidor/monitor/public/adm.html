@@ -352,6 +352,8 @@
     <p class="aviso" id="metaErro" hidden></p>
 
     <div id="metaDados" hidden>
+      <p class="aviso" id="metaSemAnuncios" hidden>Os números dos anúncios aparecem aqui quando a conta de anúncios for liberada para este painel. Por enquanto, veja o Instagram abaixo.</p>
+      <div id="metaAnuncios">
       <h2 class="secao">Anúncios no Facebook e Instagram <small id="metaConta"></small></h2>
       <section class="kpis" aria-label="Resumo dos anúncios">
         <div class="kpi">
@@ -424,6 +426,7 @@
           <div class="tabela-scroll"><table id="tabCampanhas"><thead><tr><th>Campanha</th><th>Situação</th><th class="n">Por dia</th></tr></thead><tbody></tbody></table></div>
         </div>
       </section>
+      </div>
 
       <h2 class="secao">Instagram <small id="igUsuario"></small></h2>
       <section class="kpis" aria-label="Resumo do Instagram">
@@ -851,6 +854,8 @@
     const m = metaDados;
     const a = m.anuncios, ig = m.instagram;
     $('metaConta').textContent = m.contaNome || '';
+    $('metaAnuncios').hidden = !a;
+    $('metaSemAnuncios').hidden = !!a;
 
     if (a) {
       const t = falhou(a.total) ? {} : a.total, ant = falhou(a.anterior) ? {} : a.anterior;
