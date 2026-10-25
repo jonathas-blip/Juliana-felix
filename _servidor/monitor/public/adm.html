@@ -335,6 +335,32 @@
   </div>
 
   <div id="conteudoMeta" hidden>
+    <div id="metaManual" hidden>
+      <h2 class="secao">Anúncio no Instagram · conta atual <small id="manualQuando"></small></h2>
+      <p class="sub" style="margin:4px 0 0">Temporário: números lidos no Gerenciador de Anúncios até o saldo desta conta acabar. <span id="manualCampanha"></span></p>
+      <section class="kpis" aria-label="Anúncio na conta atual">
+        <div class="kpi">
+          <div class="kpi-rot">Investido</div>
+          <div class="kpi-val" id="manGasto">—</div>
+          <div class="kpi-sub" id="manSaldo"></div>
+        </div>
+        <div class="kpi destaque">
+          <div class="kpi-rot"><i style="background:var(--s-cliques)"></i>Conversas no WhatsApp</div>
+          <div class="kpi-val" id="manConversas">—</div>
+          <div class="kpi-sub" id="manCusto"></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-rot"><i style="background:var(--s-visitas)"></i>Pessoas alcançadas</div>
+          <div class="kpi-val" id="manAlcance">—</div>
+          <div class="kpi-sub" id="manImpr"></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-rot">Situação</div>
+          <div class="kpi-val" id="manStatus" style="font-size:1.4rem">—</div>
+          <div class="kpi-sub" id="manCliques"></div>
+        </div>
+      </section>
+    </div>
     <section class="card meta-config" id="metaConfig" hidden>
       <h2>Conectar a Meta (anúncios e Instagram)</h2>
       <p class="sub">É feito uma vez só. O token fica guardado apenas no servidor do painel.</p>
@@ -801,6 +827,7 @@
     const posts = legendas.map((legenda, i) => ({ legenda, tipo: tipos[i], data: new Date(hoje.getTime() - i * 1.6 * 86400000).toISOString(), link: '#', imagem: '', alcance: Math.round(300 + Math.random() * 900), curtidas: Math.round(10 + Math.random() * 60), comentarios: Math.round(Math.random() * 8), salvos: Math.round(Math.random() * 15), compart: Math.round(Math.random() * 10) }));
     return {
       configurado: true, contaNome: 'Juliana Felix Beauté (exemplo)',
+      manual: { em: Date.now() - 2 * 3600000, campanha: 'Mensagens no WhatsApp - Labial Hidralips', status: 'Ativo', gasto: 15.39, limite: 114.2, alcance: 2140, impressoes: 3380, cliques: 41, conversas: 6 },
       anuncios: { diario, total, anterior, porAnuncio, idadeSexo, regiao, campanhas: [{ nome: 'Mensagens no WhatsApp', status: 'ACTIVE', orcamentoDia: 5 }] },
       instagram: { perfil: { usuario: 'drajuliannafelix', seguidores: 1873, posts: 214 }, diario: igDia, totais: { profile_views: 412, website_clicks: 58, accounts_engaged: 236 }, posts }
     };
@@ -827,6 +854,7 @@
       $('btnSair').hidden = DEMO;
       $('atualizado').textContent = 'Atualizado às ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
       $('metaErro').hidden = true;
+      desenharManual(metaDados.manual);
       $('metaConfig').hidden = metaDados.configurado;
       $('metaDados').hidden = !metaDados.configurado;
       if (metaDados.configurado) desenharMeta();
@@ -943,6 +971,23 @@
           : '<tr><td colspan="7" class="vazio">Nenhum post neste período.</td></tr>';
       }
     }
+  }
+
+  // Bloco temporário: conta de anúncios que a API não lê (números gravados pelo coletor)
+  function desenharManual(m) {
+    $('metaManual').hidden = !m;
+    if (!m) return;
+    const v = (x) => (x == null ? '—' : fmt.format(x));
+    $('manualQuando').textContent = 'atualizado ' + new Date(m.em).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+    $('manualCampanha').textContent = m.campanha ? 'Campanha: ' + m.campanha + '.' : '';
+    $('manGasto').textContent = m.gasto == null ? '—' : moeda.format(m.gasto);
+    $('manSaldo').textContent = m.limite != null && m.gasto != null ? 'Restam ' + moeda.format(Math.max(0, m.limite - m.gasto)) + ' do limite de ' + moeda.format(m.limite) : '';
+    $('manConversas').textContent = v(m.conversas);
+    $('manCusto').textContent = m.conversas ? moeda.format(m.gasto / m.conversas) + ' por conversa' : 'custo por conversa aparece com a 1ª conversa';
+    $('manAlcance').textContent = v(m.alcance);
+    $('manImpr').textContent = m.impressoes != null ? fmt.format(m.impressoes) + ' exibições' : '';
+    $('manStatus').textContent = m.status || '—';
+    $('manCliques').textContent = m.cliques != null ? fmt.format(m.cliques) + ' cliques' : '';
   }
 
   // Para custo: subir é ruim

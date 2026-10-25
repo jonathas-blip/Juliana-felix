@@ -7,6 +7,7 @@
 //   DELETE /api/leads?tel= → remove um cadastro (pedido de exclusão, LGPD)
 //   GET  /api/meta?dias=   → anúncios da Meta e Instagram (com senha; ver meta.js)
 //   POST/DELETE /api/meta/config → conecta (token) ou desconecta a Meta (com senha)
+//   POST /api/meta/manual  ← números da conta de anúncios lidos no Gerenciador (senha ou COLETOR_TOKEN)
 //   GET  /adm            → o painel
 //   GET  /saude          → verificação simples ("ok")
 //
@@ -25,6 +26,8 @@ const ORIGENS = (process.env.ORIGENS_PERMITIDAS || 'https://julianafelix.com.br,
 const ARQUIVO = path.join(DATA_DIR, 'eventos.ndjson');
 const PAINEL = path.join(__dirname, 'public', 'adm.html');
 const CADASTROS = path.join(DATA_DIR, 'cadastros.ndjson');
+const MANUAL = path.join(DATA_DIR, 'meta-manual.json');
+const COLETOR = process.env.COLETOR_TOKEN || '';
 const TIPOS = new Set(['visita', 'clique_whatsapp', 'lead', 'whatsapp_aberto']);
 const localDoIp = require('./geo')(process.env.GEO_DB || path.join(__dirname, 'geo', 'dbip-city-lite.mmdb'));
 const meta = require('./meta')(DATA_DIR);
@@ -176,12 +179,30 @@ const servidor = http.createServer((req, res) => {
     }
     return json(res, 200, { gerado: Date.now(), cadastros: lerLinhas(CADASTROS) });
   }
+  // Números da conta de anúncios que a API não alcança, lidos no Gerenciador e gravados aqui (bloco temporário).
+  // Aceita a senha do painel ou a chave do coletor (COLETOR_TOKEN), que só serve para esta rota.
+  if (url.pathname === '/api/meta/manual' && req.method === 'POST') {
+    const m = /^Bearer (.+)$/.exec(req.headers.authorization || '');
+    const chaveOk = COLETOR && m && crypto.timingSafeEqual(crypto.createHash('sha256').update(m[1]).digest(), crypto.createHash('sha256').update(COLETOR).digest());
+    if (!chaveOk && !senhaConfere(req)) return setTimeout(() => json(res, 401, { erro: 'senha' }), 800);
+    lerCorpo(req, (d) => {
+      if (!d || typeof d !== 'object') return json(res, 400, { ok: false });
+      const n = (v) => (Number.isFinite(Number(v)) ? Number(v) : null);
+      const reg = { em: Date.now(), campanha: corta(d.campanha, 80), status: corta(d.status, 30), gasto: n(d.gasto), limite: n(d.limite),
+        alcance: n(d.alcance), impressoes: n(d.impressoes), cliques: n(d.cliques), conversas: n(d.conversas), lidoEm: corta(d.lidoEm, 30) };
+      fs.writeFile(MANUAL, JSON.stringify(reg), (err) => json(res, err ? 500 : 200, { ok: !err }));
+    });
+    return;
+  }
+
   // Meta (anúncios e Instagram): o servidor consulta a Graph API com o token guardado aqui
   if (url.pathname === '/api/meta' || url.pathname === '/api/meta/config') {
     if (!senhaConfere(req)) return setTimeout(() => json(res, 401, { erro: 'senha' }), 800);
     if (url.pathname === '/api/meta' && req.method === 'GET') {
       const dias = Math.min(Math.max(Number(url.searchParams.get('dias')) || 30, 1), 90);
-      meta.dados(dias).then((d) => json(res, 200, d), (err) => json(res, 502, { erro: String(err.message || err).slice(0, 200) }));
+      let manual = null;
+      try { manual = JSON.parse(fs.readFileSync(MANUAL, 'utf8')); } catch (err) { /* ainda não gravado */ }
+      meta.dados(dias).then((d) => json(res, 200, Object.assign({}, d, { manual })), (err) => json(res, 502, { erro: String(err.message || err).slice(0, 200), manual }));
       return;
     }
     if (url.pathname === '/api/meta/config' && req.method === 'POST') {
