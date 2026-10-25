@@ -192,6 +192,7 @@
     <div class="abas" role="tablist" aria-label="O que ver">
       <button type="button" role="tab" data-aba="site" aria-selected="true">Site</button>
       <button type="button" role="tab" data-aba="meta" aria-selected="false">Meta</button>
+      <button type="button" role="tab" data-aba="anuncio" aria-selected="false">Anúncio atual</button>
     </div>
     <div class="periodo" role="group" aria-label="Período">
       <button type="button" data-dias="7" aria-pressed="false">7 dias</button>
@@ -334,7 +335,8 @@
     </section>
   </div>
 
-  <div id="conteudoMeta" hidden>
+  <div id="conteudoAnuncio" hidden>
+    <p class="aviso" id="manualVazio" hidden>Os números do anúncio aparecem aqui depois da primeira leitura automática do Gerenciador de Anúncios.</p>
     <div id="metaManual" hidden>
       <h2 class="secao">Anúncio no Instagram · conta atual <small id="manualQuando"></small></h2>
       <p class="sub" style="margin:4px 0 0">Temporário: números lidos no Gerenciador de Anúncios até o saldo desta conta acabar. <span id="manualCampanha"></span></p>
@@ -360,7 +362,11 @@
           <div class="kpi-sub" id="manCliques"></div>
         </div>
       </section>
+      <p class="rodape" style="margin-top:16px">Atualiza sozinho às 8h, 11h, 14h, 17h e 20h (ou quando o computador for ligado). A Meta leva algumas horas para consolidar os números.</p>
     </div>
+  </div>
+
+  <div id="conteudoMeta" hidden>
     <section class="card meta-config" id="metaConfig" hidden>
       <h2>Conectar a Meta (anúncios e Instagram)</h2>
       <p class="sub">É feito uma vez só. O token fica guardado apenas no servidor do painel.</p>
@@ -513,7 +519,8 @@
   let eventos = [];
   let grafico = null, graficoH = null;
   let cadastros = [];
-  let aba = (location.hash === '#meta' || (location.hash !== '#site' && le('painelAba') === 'meta')) ? 'meta' : 'site';
+  const ABAS = ['site', 'meta', 'anuncio'];
+  let aba = ABAS.includes(location.hash.slice(1)) ? location.hash.slice(1) : (ABAS.includes(le('painelAba')) ? le('painelAba') : 'site');
   let metaDados = null;
   let graficoM = null, graficoI = null;
   const moeda = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -591,6 +598,7 @@
       if (aba !== 'site') return;
       $('login').hidden = true;
       $('conteudoMeta').hidden = true;
+      $('conteudoAnuncio').hidden = true;
       $('conteudo').hidden = false;
       $('rodapeSite').hidden = false;
       $('btnSair').hidden = DEMO;
@@ -608,6 +616,7 @@
     $('carregando').hidden = true;
     $('conteudo').hidden = true;
     $('conteudoMeta').hidden = true;
+    $('conteudoAnuncio').hidden = true;
     $('login').hidden = false;
     $('erroLogin').textContent = msg || '';
     $('senha').focus();
@@ -843,18 +852,19 @@
         const r = await fetch(ENDPOINT + '/meta?dias=' + dias, { headers: { Authorization: 'Bearer ' + senha }, cache: 'no-store' });
         const j = await r.json();
         if (j.erro === 'senha') { guarda('painelSenha', null); mostrarLogin('Senha incorreta.'); return; }
-        if (!r.ok) throw new Error(j.erro || 'erro');
+        if (!r.ok && !(aba === 'anuncio' && j.manual)) throw new Error(j.erro || 'erro');
         metaDados = j;
       }
-      if (aba !== 'meta') return;
+      if (aba === 'site') return;
       $('login').hidden = true;
       $('conteudo').hidden = true;
       $('rodapeSite').hidden = true;
-      $('conteudoMeta').hidden = false;
+      $('conteudoMeta').hidden = aba !== 'meta';
+      $('conteudoAnuncio').hidden = aba !== 'anuncio';
       $('btnSair').hidden = DEMO;
       $('atualizado').textContent = 'Atualizado às ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
       $('metaErro').hidden = true;
-      desenharManual(metaDados.manual);
+      if (aba === 'anuncio') { desenharManual(metaDados.manual); $('manualVazio').hidden = !!metaDados.manual; return; }
       $('metaConfig').hidden = metaDados.configurado;
       $('metaDados').hidden = !metaDados.configurado;
       if (metaDados.configurado) desenharMeta();
@@ -1052,7 +1062,7 @@
     carregarMeta();
   }
 
-  const atualizar = () => (aba === 'meta' ? carregarMeta() : carregar());
+  const atualizar = () => (aba === 'site' ? carregar() : carregarMeta());
   function trocarAba(nova) {
     aba = nova;
     guarda('painelAba', aba);
