@@ -91,7 +91,7 @@ function lerLinhas(arquivo) {
 // Corpo pequeno em texto (sendBeacon manda text/plain)
 function lerCorpo(req, cb) {
   let corpo = '';
-  req.on('data', (c) => { corpo += c; if (corpo.length > 2048) req.destroy(); });
+  req.on('data', (c) => { corpo += c; if (corpo.length > 8192) req.destroy(); });
   req.on('end', () => { try { cb(JSON.parse(corpo || '{}')); } catch (err) { cb(null); } });
 }
 
@@ -188,8 +188,12 @@ const servidor = http.createServer((req, res) => {
     lerCorpo(req, (d) => {
       if (!d || typeof d !== 'object') return json(res, 400, { ok: false });
       const n = (v) => (Number.isFinite(Number(v)) ? Number(v) : null);
+      // Quebras (sexo, região): até 20 linhas de {nome, cliques, impressoes}
+      const lista = (l) => (Array.isArray(l) ? l.slice(0, 20).filter((i) => i && typeof i === 'object')
+        .map((i) => ({ nome: corta(i.nome, 60), cliques: n(i.cliques), impressoes: n(i.impressoes) })).filter((i) => i.nome) : []);
       const reg = { em: Date.now(), campanha: corta(d.campanha, 80), status: corta(d.status, 30), gasto: n(d.gasto), limite: n(d.limite),
-        alcance: n(d.alcance), impressoes: n(d.impressoes), cliques: n(d.cliques), conversas: n(d.conversas), lidoEm: corta(d.lidoEm, 30) };
+        alcance: n(d.alcance), impressoes: n(d.impressoes), cliques: n(d.cliques), conversas: n(d.conversas), lidoEm: corta(d.lidoEm, 30),
+        sexo: lista(d.sexo), regiao: lista(d.regiao) };
       fs.writeFile(MANUAL, JSON.stringify(reg), (err) => json(res, err ? 500 : 200, { ok: !err }));
     });
     return;

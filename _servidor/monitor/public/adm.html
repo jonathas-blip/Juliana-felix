@@ -100,6 +100,7 @@
 
   /* Cartões */
   .grid{ display:grid; grid-template-columns:1.6fr 1fr; gap:16px; margin-top:16px; }
+  .grid.metades{ grid-template-columns:1fr 1fr; }
   .card{ background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:20px; box-shadow:var(--shadow); min-width:0; }
   .card h2{ font-size:1rem; }
   .card .sub{ font-size:.8rem; color:var(--ink-3); margin:2px 0 14px; }
@@ -171,7 +172,7 @@
 
   @media (max-width:900px){
     .kpis{ grid-template-columns:repeat(2, 1fr); }
-    .grid{ grid-template-columns:1fr; }
+    .grid, .grid.metades{ grid-template-columns:1fr; }
   }
   @media (max-width:520px){
     .wrap{ padding:0 16px 40px; }
@@ -352,14 +353,26 @@
           <div class="kpi-sub" id="manCusto"></div>
         </div>
         <div class="kpi">
-          <div class="kpi-rot"><i style="background:var(--s-visitas)"></i>Pessoas alcançadas</div>
-          <div class="kpi-val" id="manAlcance">—</div>
-          <div class="kpi-sub" id="manImpr"></div>
+          <div class="kpi-rot"><i style="background:var(--s-visitas)"></i>Impressões</div>
+          <div class="kpi-val" id="manImpr">—</div>
+          <div class="kpi-sub" id="manAlcance"></div>
         </div>
         <div class="kpi">
-          <div class="kpi-rot">Situação</div>
-          <div class="kpi-val" id="manStatus" style="font-size:1.4rem">—</div>
-          <div class="kpi-sub" id="manCliques"></div>
+          <div class="kpi-rot">Cliques no anúncio</div>
+          <div class="kpi-val" id="manCliques">—</div>
+          <div class="kpi-sub" id="manStatus"></div>
+        </div>
+      </section>
+      <section class="grid metades" aria-label="Quem viu e clicou">
+        <div class="card">
+          <h2>Sexo</h2>
+          <p class="sub" id="manSexoSub">Cliques no anúncio por sexo</p>
+          <ul class="ranking" id="manSexo"></ul>
+        </div>
+        <div class="card">
+          <h2>Região</h2>
+          <p class="sub" id="manRegiaoSub">Cliques no anúncio por região</p>
+          <ul class="ranking" id="manRegiao"></ul>
         </div>
       </section>
       <p class="rodape" style="margin-top:16px">Atualiza sozinho às 8h, 11h, 14h, 17h e 20h (ou quando o computador for ligado). A Meta leva algumas horas para consolidar os números.</p>
@@ -836,7 +849,9 @@
     const posts = legendas.map((legenda, i) => ({ legenda, tipo: tipos[i], data: new Date(hoje.getTime() - i * 1.6 * 86400000).toISOString(), link: '#', imagem: '', alcance: Math.round(300 + Math.random() * 900), curtidas: Math.round(10 + Math.random() * 60), comentarios: Math.round(Math.random() * 8), salvos: Math.round(Math.random() * 15), compart: Math.round(Math.random() * 10) }));
     return {
       configurado: true, contaNome: 'Juliana Felix Beauté (exemplo)',
-      manual: { em: Date.now() - 2 * 3600000, campanha: 'Mensagens no WhatsApp - Labial Hidralips', status: 'Ativo', gasto: 15.39, limite: 114.2, alcance: 2140, impressoes: 3380, cliques: 41, conversas: 6 },
+      manual: { em: Date.now() - 2 * 3600000, campanha: 'Mensagens no WhatsApp - Labial Hidralips', status: 'Ativo', gasto: 15.39, limite: 114.2, alcance: 2140, impressoes: 3380, cliques: 41, conversas: 6,
+        sexo: [{ nome: 'Mulheres', cliques: 35, impressoes: 2900 }, { nome: 'Homens', cliques: 6, impressoes: 480 }],
+        regiao: [{ nome: 'São Paulo', cliques: 38, impressoes: 3100 }, { nome: 'Guarulhos', cliques: 3, impressoes: 280 }] },
       anuncios: { diario, total, anterior, porAnuncio, idadeSexo, regiao, campanhas: [{ nome: 'Mensagens no WhatsApp', status: 'ACTIVE', orcamentoDia: 5 }] },
       instagram: { perfil: { usuario: 'drajuliannafelix', seguidores: 1873, posts: 214 }, diario: igDia, totais: { profile_views: 412, website_clicks: 58, accounts_engaged: 236 }, posts }
     };
@@ -994,10 +1009,23 @@
     $('manSaldo').textContent = m.limite != null && m.gasto != null ? 'Restam ' + moeda.format(Math.max(0, m.limite - m.gasto)) + ' do limite de ' + moeda.format(m.limite) : '';
     $('manConversas').textContent = v(m.conversas);
     $('manCusto').textContent = m.conversas ? moeda.format(m.gasto / m.conversas) + ' por conversa' : 'custo por conversa aparece com a 1ª conversa';
-    $('manAlcance').textContent = v(m.alcance);
-    $('manImpr').textContent = m.impressoes != null ? fmt.format(m.impressoes) + ' exibições' : '';
-    $('manStatus').textContent = m.status || '—';
-    $('manCliques').textContent = m.cliques != null ? fmt.format(m.cliques) + ' cliques' : '';
+    $('manImpr').textContent = v(m.impressoes);
+    $('manAlcance').textContent = m.alcance != null ? fmt.format(m.alcance) + ' pessoas alcançadas' : '';
+    $('manCliques').textContent = v(m.cliques);
+    $('manStatus').textContent = m.status ? 'Situação: ' + m.status : '';
+    manualQuebra('manSexo', 'manSexoSub', m.sexo, 'sexo');
+    manualQuebra('manRegiao', 'manRegiaoSub', m.regiao, 'região');
+  }
+
+  // Lista de {nome, cliques, impressoes}: ordena por cliques; sem cliques ainda, por impressões
+  function manualQuebra(id, idSub, lista, rotulo) {
+    lista = Array.isArray(lista) ? lista : [];
+    const porClique = lista.some((i) => i.cliques > 0);
+    const campo = porClique ? 'cliques' : 'impressoes';
+    const total = lista.reduce((s, i) => s + (i[campo] || 0), 0);
+    $(idSub).textContent = (porClique ? 'Cliques no anúncio' : 'Impressões (ainda sem cliques)') + ' por ' + rotulo;
+    ranking(id, lista.filter((i) => i[campo] > 0).map((i) => ({ nome: i.nome, valor: i[campo], extra: total ? Math.round(i[campo] / total * 100) + '%' : '' })),
+      css(porClique ? '--s-cliques' : '--s-visitas'), 'Aparece depois da próxima leitura do Gerenciador de Anúncios.');
   }
 
   // Para custo: subir é ruim
