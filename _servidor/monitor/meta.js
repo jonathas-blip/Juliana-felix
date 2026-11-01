@@ -92,9 +92,15 @@ module.exports = (DATA_DIR) => {
         const porDia = {};
         for (const [a, b] of pedacos) {
           const r = await graph(ig + '/insights', { metric: 'reach', period: 'day', since: seg(a), until: seg(b) });
-          for (const v of ((r.data || [])[0] || {}).values || []) porDia[v.end_time.slice(0, 10)] = num(v.value);
+          for (const v of ((r.data || [])[0] || {}).values || []) porDia[v.end_time.slice(0, 10)] = { alcance: num(v.value), novos: null };
+          // Novos seguidores por dia: a Meta só entrega os últimos 30 dias (sem hoje); fora disso fica null
+          const f = await tenta(() => graph(ig + '/insights', { metric: 'follower_count', period: 'day', since: seg(a), until: seg(b) }));
+          for (const v of ((f.data || [])[0] || {}).values || []) {
+            const d = v.end_time.slice(0, 10);
+            porDia[d] = Object.assign(porDia[d] || { alcance: 0 }, { novos: num(v.value) });
+          }
         }
-        return Object.entries(porDia).sort().map(([d, alcance]) => ({ d, alcance }));
+        return Object.entries(porDia).sort().map(([d, v]) => ({ d, alcance: v.alcance, novos: v.novos }));
       }),
       tenta(async () => {
         const soma = {};
@@ -112,10 +118,14 @@ module.exports = (DATA_DIR) => {
           const ins = await tenta(() => graph(m.id + '/insights', { metric: 'reach,saved,shares,views,total_interactions' }));
           const ins2 = ins.erro ? await tenta(() => graph(m.id + '/insights', { metric: 'reach,saved,shares' })) : ins;
           for (const x of ins2.data || []) met[x.name] = num(((x.values || [])[0] || {}).value);
+          // Seguidores ganhos e visitas ao perfil vindos do post (a Meta não entrega para todo tipo de mídia)
+          const seg2 = await tenta(() => graph(m.id + '/insights', { metric: 'follows,profile_visits' }));
+          for (const x of seg2.data || []) met[x.name] = num(((x.values || [])[0] || {}).value);
           return {
             legenda: String(m.caption || '').slice(0, 140), tipo: m.media_product_type === 'REELS' ? 'Reel' : m.media_type === 'CAROUSEL_ALBUM' ? 'Carrossel' : m.media_type === 'VIDEO' ? 'Vídeo' : 'Foto',
             data: m.timestamp, link: m.permalink, imagem: m.thumbnail_url || m.media_url || '',
-            curtidas: num(m.like_count), comentarios: num(m.comments_count), alcance: met.reach || 0, salvos: met.saved || 0, compart: met.shares || 0, views: met.views || 0
+            curtidas: num(m.like_count), comentarios: num(m.comments_count), alcance: met.reach || 0, salvos: met.saved || 0, compart: met.shares || 0, views: met.views || 0,
+            seguiu: met.follows == null ? null : met.follows, visitasPerfil: met.profile_visits == null ? null : met.profile_visits
           };
         }));
       })

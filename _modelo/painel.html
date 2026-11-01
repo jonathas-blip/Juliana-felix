@@ -505,10 +505,16 @@
         </div>
 
         <div class="card full">
+          <h2>Novos seguidores por dia</h2>
+          <p class="sub" id="subSeg">Barras douradas = dias em que saiu post · a Meta informa só os últimos 30 dias</p>
+          <div class="chart-box"><canvas id="grafSeg" aria-label="Gráfico de novos seguidores por dia" role="img"></canvas></div>
+        </div>
+
+        <div class="card full">
           <h2>Posts do período</h2>
           <p class="sub" id="subPosts">Do maior para o menor alcance · o destaque mostra o que mais funcionou</p>
           <div class="tabela-scroll">
-            <table class="posts" id="tabPosts"><thead><tr><th></th><th>Post</th><th class="n">Alcance</th><th class="n">Curtidas</th><th class="n">Coment.</th><th class="n">Salvos</th><th class="n">Compart.</th></tr></thead><tbody></tbody></table>
+            <table class="posts" id="tabPosts"><thead><tr><th></th><th>Post</th><th class="n">Alcance</th><th class="n">Curtidas</th><th class="n">Coment.</th><th class="n">Salvos</th><th class="n">Compart.</th><th class="n">Visitas ao perfil</th><th class="n">Seguiram</th></tr></thead><tbody></tbody></table>
           </div>
         </div>
       </section>
@@ -535,7 +541,7 @@
   const ABAS = ['site', 'meta', 'anuncio'];
   let aba = ABAS.includes(location.hash.slice(1)) ? location.hash.slice(1) : (ABAS.includes(le('painelAba')) ? le('painelAba') : 'site');
   let metaDados = null;
-  let graficoM = null, graficoI = null;
+  let graficoM = null, graficoI = null, graficoS = null;
   const moeda = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
 
   const NOMES_ORIGEM = {
@@ -833,7 +839,7 @@
       const d = new Date(hoje.getTime() - i * 86400000).toISOString().slice(0, 10);
       const gasto = 4.4 + Math.random() * 1.2, conv = Math.max(0, Math.round(1.4 + Math.random() * 2.2 - (i % 6 === 0 ? 1 : 0)));
       diario.push({ d, gasto, conversas: conv, impressoes: Math.round(900 + Math.random() * 500), cliques: Math.round(14 + Math.random() * 12) });
-      igDia.push({ d, alcance: Math.round(420 + Math.random() * 380 + (i < 9 ? 250 : 0)) });
+      igDia.push({ d, alcance: Math.round(420 + Math.random() * 380 + (i < 9 ? 250 : 0)), novos: i === 0 ? null : Math.round(Math.random() * 3 + (i % 3 === 0 ? 3 : 0)) });
     }
     const soma = (k) => diario.reduce((a, x) => a + x[k], 0);
     const total = { gasto: soma('gasto'), conversas: soma('conversas'), impressoes: soma('impressoes'), alcance: Math.round(soma('impressoes') / 2.3), cliques: soma('cliques') };
@@ -846,7 +852,7 @@
     const regiao = [['São Paulo', 1]].map(([r]) => ({ regiao: r, conversas: c, impressoes: total.impressoes }));
     const legendas = ['Resultado real ✨ Harmonização labial: contorno, definição e volume natural', '🖤 Black Friday Juliana Felix Beauté! Novembro inteiro com condições especiais', '🔥 Promoção do dia: Lipo de Papada ou Lipo Enzimática por R$ 149,00', 'Mito ou verdade? 🤔 Harmonização facial deixa o rosto artificial?', 'Resultado real ✨ Testa e olhar com expressão mais leve e natural', '3 coisas que ninguém te conta sobre preenchimento labial 💋'];
     const tipos = ['Foto', 'Carrossel', 'Foto', 'Carrossel', 'Foto', 'Reel'];
-    const posts = legendas.map((legenda, i) => ({ legenda, tipo: tipos[i], data: new Date(hoje.getTime() - i * 1.6 * 86400000).toISOString(), link: '#', imagem: '', alcance: Math.round(300 + Math.random() * 900), curtidas: Math.round(10 + Math.random() * 60), comentarios: Math.round(Math.random() * 8), salvos: Math.round(Math.random() * 15), compart: Math.round(Math.random() * 10) }));
+    const posts = legendas.map((legenda, i) => ({ legenda, tipo: tipos[i], data: new Date(hoje.getTime() - i * 1.6 * 86400000).toISOString(), link: '#', imagem: '', alcance: Math.round(300 + Math.random() * 900), curtidas: Math.round(10 + Math.random() * 60), comentarios: Math.round(Math.random() * 8), salvos: Math.round(Math.random() * 15), compart: Math.round(Math.random() * 10), visitasPerfil: Math.round(Math.random() * 30), seguiu: Math.round(Math.random() * 4) }));
     return {
       configurado: true, contaNome: 'Juliana Felix Beauté (exemplo)',
       manual: { em: Date.now() - 2 * 3600000, campanha: 'Mensagens no WhatsApp - Labial Hidralips', status: 'Ativo', gasto: 15.39, limite: 114.2, alcance: 2140, impressoes: 3380, cliques: 41, conversas: 6,
@@ -977,13 +983,16 @@
       const p = falhou(ig.perfil) ? {} : ig.perfil, tt = falhou(ig.totais) ? {} : ig.totais;
       $('igUsuario').textContent = p.usuario ? '@' + p.usuario : '';
       $('igSeg').textContent = fmt.format(p.seguidores || 0);
-      $('igPosts').textContent = p.posts ? fmt.format(p.posts) + ' posts no perfil' : '';
+      const comNovos = falhou(ig.diario) ? [] : ig.diario.filter((x) => x.novos != null);
+      const novos = comNovos.reduce((s, x) => s + x.novos, 0);
+      $('igPosts').textContent = comNovos.length ? '+' + fmt.format(novos) + ' novos em ' + comNovos.length + ' dias' : (p.posts ? fmt.format(p.posts) + ' posts no perfil' : '');
       $('igVisitas').textContent = fmt.format(tt.profile_views || 0);
       $('igEngajadas').textContent = tt.accounts_engaged ? fmt.format(tt.accounts_engaged) + ' contas interagiram' : '';
       $('igLink').textContent = fmt.format(tt.website_clicks || 0);
       const dia = falhou(ig.diario) ? [] : ig.diario;
       $('igAlcance').textContent = fmt.format(dia.reduce((s, x) => s + x.alcance, 0));
       graficoIg(dia);
+      graficoSeg(dia, falhou(ig.posts) ? [] : ig.posts);
 
       if (falhou(ig.posts)) avisoParcial('tabPosts', ig.posts, 7);
       else {
@@ -992,8 +1001,9 @@
         $('tabPosts').querySelector('tbody').innerHTML = posts.length ? posts.map((x, i) =>
           '<tr' + (i < 3 && x.alcance ? ' class="top"' : '') + '><td>' + (x.imagem ? '<img src="' + esc(x.imagem) + '" alt="" loading="lazy" referrerpolicy="no-referrer">' : '<img alt="">') + '</td>' +
           '<td><a class="zap" href="' + esc(x.link) + '" target="_blank" rel="noopener">' + esc(x.tipo) + ' · ' + new Date(x.data).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) + '</a><div class="leg" title="' + esc(x.legenda) + '">' + esc(x.legenda) + '</div></td>' +
-          '<td class="n">' + fmt.format(x.alcance) + '</td><td class="n">' + fmt.format(x.curtidas) + '</td><td class="n">' + fmt.format(x.comentarios) + '</td><td class="n">' + fmt.format(x.salvos) + '</td><td class="n">' + fmt.format(x.compart) + '</td></tr>').join('')
-          : '<tr><td colspan="7" class="vazio">Nenhum post neste período.</td></tr>';
+          '<td class="n">' + fmt.format(x.alcance) + '</td><td class="n">' + fmt.format(x.curtidas) + '</td><td class="n">' + fmt.format(x.comentarios) + '</td><td class="n">' + fmt.format(x.salvos) + '</td><td class="n">' + fmt.format(x.compart) + '</td>' +
+          '<td class="n">' + (x.visitasPerfil == null ? '—' : fmt.format(x.visitasPerfil)) + '</td><td class="n">' + (x.seguiu == null ? '—' : fmt.format(x.seguiu)) + '</td></tr>').join('')
+          : '<tr><td colspan="9" class="vazio">Nenhum post neste período.</td></tr>';
       }
     }
   }
@@ -1068,6 +1078,24 @@
     graficoI = new Chart($('grafIg'), { type: 'line', data: {
       labels: dia.map((x) => diaRotulo(x.d)),
       datasets: [{ label: 'Alcance', data: dia.map((x) => x.alcance), borderColor: cor, backgroundColor: cor + '22', fill: true, tension: .3, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5 }]
+    }, options: opcoesBase({ x: eixoX(), y: eixo({ ticks: { color: css('--ink-3'), precision: 0, font: { family: 'Manrope', size: 11 } } }) }) });
+  }
+
+  // Novos seguidores por dia; dias com post em dourado, para ver se o conteúdo traz seguidores
+  function graficoSeg(dia, posts) {
+    if (!window.Chart) return;
+    const comDado = dia.filter((x) => x.novos != null);
+    const diasPost = new Set(posts.map((x) => new Date(x.data).toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' })));
+    const media = (l) => (l.length ? l.reduce((s, x) => s + x.novos, 0) / l.length : null);
+    const mPost = media(comDado.filter((x) => diasPost.has(x.d))), mSem = media(comDado.filter((x) => !diasPost.has(x.d)));
+    const f1 = (n) => n.toLocaleString('pt-BR', { maximumFractionDigits: 1 });
+    $('subSeg').textContent = !comDado.length ? 'A Meta ainda não informou novos seguidores para este período.'
+      : 'Barras douradas = dias em que saiu post' + (mPost != null && mSem != null ? ' · média de ' + f1(mPost) + ' novos por dia com post e ' + f1(mSem) + ' sem post' : '') + ' · a Meta informa só os últimos 30 dias';
+    if (graficoS) graficoS.destroy();
+    graficoS = new Chart($('grafSeg'), { type: 'bar', data: {
+      labels: comDado.map((x) => diaRotulo(x.d)),
+      datasets: [{ label: 'Novos seguidores', data: comDado.map((x) => x.novos), borderRadius: 4,
+        backgroundColor: comDado.map((x) => (diasPost.has(x.d) ? css('--s-cliques') : css('--s-visitas') + '88')) }]
     }, options: opcoesBase({ x: eixoX(), y: eixo({ ticks: { color: css('--ink-3'), precision: 0, font: { family: 'Manrope', size: 11 } } }) }) });
   }
 
