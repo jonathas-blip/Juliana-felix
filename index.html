@@ -37,7 +37,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/img/juliana-hero.jpg" fetchpriority="high">
-<link rel="stylesheet" href="assets/css/style.css?v=202610212118">
+<link rel="stylesheet" href="assets/css/style.css?v=202611071252">
 <script>document.documentElement.classList.add('js');</script>
 <style>
   :root{
@@ -617,7 +617,7 @@
 
 <!-- POP-UP DE PROMOÇÃO (abre ao entrar no site; desligue com promocao.ativa = false) -->
 
-<dialog class="promo" id="promo" aria-labelledby="promoTitulo" data-ate="2026-10-31">
+<dialog class="promo" id="promo" aria-labelledby="promoTitulo" data-ate="2026-11-30">
   <!-- fundo acetinado e linhas douradas (decorativo) -->
   <svg class="promo-fundo" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
     <defs>
@@ -637,17 +637,8 @@
   </svg>
   <button class="promo-close" type="button" aria-label="Fechar e ir para o site"><svg aria-hidden="true"><use href="#i-fechar"/></svg></button>
   <div class="promo-box" tabindex="-1" autofocus>
-    <!-- laço de cetim (decorativo) -->
-    <svg class="promo-laco" viewBox="0 0 220 340" aria-hidden="true">
-      <defs>
-        <linearGradient id="plSeda" gradientUnits="userSpaceOnUse" x1="20" y1="0" x2="200" y2="0"><stop offset="0" stop-color="#8F5059"/><stop offset=".26" stop-color="#B9747D"/><stop offset=".46" stop-color="#E8C3C5"/><stop offset=".6" stop-color="#C08088"/><stop offset=".8" stop-color="#A35F68"/><stop offset="1" stop-color="#7E434C"/></linearGradient>
-      </defs>
-      <path d="M28 335 C60 280 95 225 118 180 C140 135 162 95 151 61 C143 38 127 27 110 27 C93 27 77 38 69 61 C66 70 65 80 66 90" fill="none" stroke="url(#plSeda)" stroke-width="38"/>
-      <path d="M69 61 C58 95 80 135 102 180 C125 225 160 280 192 335" fill="none" stroke="#23483D" stroke-width="40" opacity=".22" transform="translate(4 5)"/>
-      <path d="M69 61 C58 95 80 135 102 180 C125 225 160 280 192 335" fill="none" stroke="url(#plSeda)" stroke-width="38"/>
-      <path d="M78 64 C72 92 88 128 108 170" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".4"/>
-      <path d="M128 40 C140 48 146 60 145 74" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".35"/>
-    </svg>
+    <!-- laço de cetim (decorativo; só em campanhas com promocao.laco = true, ex.: Outubro Rosa) -->
+    
 
     <div class="promo-marca">
       <img src="assets/img/logo-nome.png" alt="Juliana Felix Beauté" width="333" height="88">
@@ -655,53 +646,53 @@
     </div>
 
     <h2 class="promo-titulo" id="promoTitulo">
-      <span class="promo-t1">Outubro</span>
-      <span class="promo-t2">Rosa<svg class="promo-coracao" viewBox="0 0 150 60" aria-hidden="true"><path d="M2 50 C40 54 74 50 92 40 C84 34 79 26 83 20 C87 15 94 17 96 23 C99 17 106 16 109 21 C113 28 104 36 92 40 C108 44 128 44 150 38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="promo-t1">Black</span>
+      <span class="promo-t2">Friday<svg class="promo-coracao" viewBox="0 0 150 60" aria-hidden="true"><path d="M2 50 C40 54 74 50 92 40 C84 34 79 26 83 20 C87 15 94 17 96 23 C99 17 106 16 109 21 C113 28 104 36 92 40 C108 44 128 44 150 38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </h2>
-    <p class="promo-sub"><span>Neste mês, temos um</span> <em>presente para você</em></p>
+    <p class="promo-sub"><span>Preços que só valem</span> <em>em novembro</em></p>
 
     <ul class="promo-grid">
       
       <li class="promo-card">
         <span class="promo-icon"><svg aria-hidden="true"><use href="#i-labios"/></svg></span>
-        <h3>Preenchimento Labial ou Linhas de Expressão</h3>
+        <h3>Preenchimento Labial</h3>
         <p class="promo-oferta">
-          <span class="promo-rotulo">Ganhe uma</span>
-          <strong class="promo-destaque">Limpeza de pele com extração</strong>
           
+          
+          <span class="promo-preco"><span class="promo-rs">R$</span><span class="promo-valor">649</span><span class="promo-cent">,00</span></span>
+          <span class="promo-comp">+ Spa Labial de brinde</span>
+        </p>
+      </li>
+      
+      <li class="promo-card">
+        <span class="promo-icon"><svg aria-hidden="true"><use href="#i-perfil"/></svg></span>
+        <h3>Preenchimento de Mandíbula</h3>
+        <p class="promo-oferta">
+          
+          
+          <span class="promo-preco"><span class="promo-rs">R$</span><span class="promo-valor">649</span><span class="promo-cent">,00</span></span>
           
         </p>
       </li>
       
       <li class="promo-card">
-        <span class="promo-icon"><svg aria-hidden="true"><use href="#i-papada"/></svg></span>
-        <h3>Lipo Enzimática ou Lipo de Papada</h3>
+        <span class="promo-icon"><svg aria-hidden="true"><use href="#i-colageno"/></svg></span>
+        <h3>Bioestimulador de Colágeno</h3>
         <p class="promo-oferta">
           
           
-          <span class="promo-preco"><span class="promo-rs">R$</span><span class="promo-valor">149</span><span class="promo-cent">,00</span></span>
-          <span class="promo-comp">a sessão</span>
+          <span class="promo-preco"><span class="promo-rs">R$</span><span class="promo-valor">899</span><span class="promo-cent">,00</span></span>
+          
         </p>
       </li>
       
       <li class="promo-card">
         <span class="promo-icon"><svg aria-hidden="true"><use href="#i-rolo"/></svg></span>
-        <h3>Microagulhamento + Ana Pegova</h3>
+        <h3>Limpeza de Pele + Microagulhamento</h3>
         <p class="promo-oferta">
           
           
-          <span class="promo-preco"><span class="promo-rs">R$</span><span class="promo-valor">249</span><span class="promo-cent">,90</span></span>
-          <span class="promo-comp">a sessão</span>
-        </p>
-      </li>
-      
-      <li class="promo-card">
-        <span class="promo-icon"><svg aria-hidden="true"><use href="#i-toalha"/></svg></span>
-        <h3>Fechou limpeza de pele?</h3>
-        <p class="promo-oferta">
-          <span class="promo-rotulo">Ganhe</span>
-          <strong class="promo-destaque">Hidralips</strong>
-          <span class="promo-preco"><span class="promo-prefixo">por</span><span class="promo-rs">R$</span><span class="promo-valor">129</span><span class="promo-cent">,90</span></span>
+          <span class="promo-preco"><span class="promo-rs">R$</span><span class="promo-valor">249</span><span class="promo-cent">,00</span></span>
           
         </p>
       </li>
@@ -710,8 +701,8 @@
 
     <div class="promo-foot">
       <div class="promo-sep" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></div>
-      <p class="promo-aviso">Consulte condições e agende sua avaliação. Válido até 31/10.</p>
-      <a href="https://wa.me/5511927274120?text=Ol%C3%A1%2C%20Juliana!%20Vi%20a%20promo%C3%A7%C3%A3o%20de%20Outubro%20Rosa%20no%20site%20e%20gostaria%20de%20aproveitar." class="btn btn-primary" target="_blank" rel="noopener">
+      <p class="promo-aviso">Vagas limitadas. Consulte condições e agende sua avaliação. Válido até 30/11.</p>
+      <a href="https://wa.me/5511927274120?text=Ol%C3%A1%2C%20Juliana!%20Vi%20a%20Black%20Friday%20no%20site%20e%20quero%20aproveitar%20os%20pre%C3%A7os%20de%20novembro." class="btn btn-primary" target="_blank" rel="noopener">
         <svg class="ic" aria-hidden="true"><use href="#i-whatsapp"/></svg> Quero aproveitar
       </a>
       <button class="promo-skip" type="button">Ver o site</button>
@@ -720,6 +711,6 @@
 </dialog>
 
 
-<script src="assets/js/main.js?v=202610212118" defer></script>
+<script src="assets/js/main.js?v=202611071252" defer></script>
 </body>
 </html>

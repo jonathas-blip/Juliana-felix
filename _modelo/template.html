@@ -498,7 +498,8 @@
   </svg>
   <button class="promo-close" type="button" aria-label="Fechar e ir para o site"><svg aria-hidden="true"><use href="#i-fechar"/></svg></button>
   <div class="promo-box" tabindex="-1" autofocus>
-    <!-- laço de cetim (decorativo) -->
+    <!-- laço de cetim (decorativo; só em campanhas com promocao.laco = true, ex.: Outubro Rosa) -->
+    {{#promocao.laco}}
     <svg class="promo-laco" viewBox="0 0 220 340" aria-hidden="true">
       <defs>
         <linearGradient id="plSeda" gradientUnits="userSpaceOnUse" x1="20" y1="0" x2="200" y2="0"><stop offset="0" stop-color="#8F5059"/><stop offset=".26" stop-color="#B9747D"/><stop offset=".46" stop-color="#E8C3C5"/><stop offset=".6" stop-color="#C08088"/><stop offset=".8" stop-color="#A35F68"/><stop offset="1" stop-color="#7E434C"/></linearGradient>
@@ -509,6 +510,7 @@
       <path d="M78 64 C72 92 88 128 108 170" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".4"/>
       <path d="M128 40 C140 48 146 60 145 74" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".35"/>
     </svg>
+    {{/promocao.laco}}
 
     <div class="promo-marca">
       <img src="{{marca.logoNome}}" alt="{{marca.nomeCompleto}}" width="333" height="88">

@@ -126,20 +126,21 @@
 
   "promocao": {
     "ativa": true,
-    "ate": "2026-10-31",
-    "titulo": "Outubro",
-    "tituloDestaque": "Rosa",
-    "subtitulo": "Neste mês, temos um",
-    "subtituloDestaque": "presente para você",
+    "ate": "2026-11-30",
+    "laco": false,
+    "titulo": "Black",
+    "tituloDestaque": "Friday",
+    "subtitulo": "Preços que só valem",
+    "subtituloDestaque": "em novembro",
     "ofertas": [
-      { "icone": "labios",  "nome": "Preenchimento Labial ou Linhas de Expressão", "rotulo": "Ganhe uma", "destaque": "Limpeza de pele com extração" },
-      { "icone": "papada",  "nome": "Lipo Enzimática ou Lipo de Papada",    "preco": "149", "centavos": "00", "complemento": "a sessão" },
-      { "icone": "rolo",    "nome": "Microagulhamento + Ana Pegova",        "preco": "249", "centavos": "90", "complemento": "a sessão" },
-      { "icone": "toalha",  "nome": "Fechou limpeza de pele?",              "rotulo": "Ganhe", "destaque": "Hidralips", "prefixo": "por", "preco": "129", "centavos": "90" }
+      { "icone": "labios",   "nome": "Preenchimento Labial",               "preco": "649", "centavos": "00", "complemento": "+ Spa Labial de brinde" },
+      { "icone": "perfil",   "nome": "Preenchimento de Mandíbula",         "preco": "649", "centavos": "00" },
+      { "icone": "colageno", "nome": "Bioestimulador de Colágeno",         "preco": "899", "centavos": "00" },
+      { "icone": "rolo",     "nome": "Limpeza de Pele + Microagulhamento", "preco": "249", "centavos": "00" }
     ],
     "botao": "Quero aproveitar",
-    "mensagemWhatsapp": "Olá, Juliana! Vi a promoção de Outubro Rosa no site e gostaria de aproveitar.",
-    "aviso": "Consulte condições e agende sua avaliação. Válido até 31/10."
+    "mensagemWhatsapp": "Olá, Juliana! Vi a Black Friday no site e quero aproveitar os preços de novembro.",
+    "aviso": "Vagas limitadas. Consulte condições e agende sua avaliação. Válido até 30/11."
   },
 
   "_avisoCadastro": "Janela que pede nome e WhatsApp antes de abrir a conversa (lista de contatos no painel). ativo=false desliga; obrigatorio=true tira o link para pular o cadastro.",
