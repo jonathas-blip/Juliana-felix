@@ -513,11 +513,15 @@
     {{/promocao.laco}}
 
     <div class="promo-marca">
-      <img src="{{marca.logoNome}}" alt="{{marca.nomeCompleto}}" width="333" height="88">
-      <p>{{marca.segmento}}</p>
+      <img class="promo-simbolo" src="{{marca.logoSimbolo}}" alt="" width="232" height="238">
+      <div>
+        <img src="{{marca.logoNome}}" alt="{{marca.nomeCompleto}}" width="333" height="88">
+        <p>{{marca.segmento}}</p>
+      </div>
     </div>
 
     <h2 class="promo-titulo" id="promoTitulo">
+      {{#promocao.etiqueta}}<span class="promo-etiqueta">{{promocao.etiqueta}}</span>{{/promocao.etiqueta}}
       <span class="promo-t1">{{promocao.titulo}}</span>
       <span class="promo-t2">{{promocao.tituloDestaque}}<svg class="promo-coracao" viewBox="0 0 150 60" aria-hidden="true"><path d="M2 50 C40 54 74 50 92 40 C84 34 79 26 83 20 C87 15 94 17 96 23 C99 17 106 16 109 21 C113 28 104 36 92 40 C108 44 128 44 150 38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </h2>
