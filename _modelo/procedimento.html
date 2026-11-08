@@ -1,0 +1,112 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "Service", "name": "{{titulo}}", "description": "{{seoDescricao}}", "url": "{{site.url}}/{{slug}}/", "areaServed": ["{{contato.bairro}}", "{{contato.municipio}}"], "provider": { "@id": "{{site.url}}/#negocio" } },
+    { "@type": "BreadcrumbList", "itemListElement": [ { "@type": "ListItem", "position": 1, "name": "Início", "item": "{{site.url}}/" }, { "@type": "ListItem", "position": 2, "name": "{{titulo}}", "item": "{{site.url}}/{{slug}}/" } ] },
+    { "@type": "FAQPage", "mainEntity": [{{#perguntasPagina}}{{@sep}}{ "@type": "Question", "name": "{{pergunta}}", "acceptedAnswer": { "@type": "Answer", "text": "{{resposta}}" } }{{/perguntasPagina}}] }
+  ]
+}
+</script>
+<!--CORPO-->
+<main id="conteudo" class="pg">
+  <section class="pg-topo">
+    <div class="container pg-topo-grade">
+      <div>
+        <nav class="pg-migalha" aria-label="Você está em"><a href="/">Início</a> <span aria-hidden="true">/</span> <span>{{titulo}}</span></nav>
+        <p class="eyebrow">{{contato.bairro}} · {{contato.municipio}}</p>
+        <h1>{{h1}}</h1>
+        <p class="pg-intro">{{intro}}</p>
+        <a href="{{whatsappLink}}" class="btn btn-primary" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-whatsapp"/></svg> Agendar avaliação pelo WhatsApp</a>
+      </div>
+      <div class="pg-icone" aria-hidden="true"><svg><use href="#i-{{icone}}"/></svg></div>
+    </div>
+  </section>
+
+  {{#oferta}}
+  <aside class="pg-oferta" data-ate="{{promocao.ate}}">
+    <div class="container pg-oferta-grade">
+      <span class="promo-etiqueta">{{promocao.etiqueta}}</span>
+      <p><strong>{{nome}}</strong> por <strong class="pg-preco">R$ {{preco}},{{centavos}}</strong>{{#complemento}} <span>{{complemento}}</span>{{/complemento}}</p>
+      <a href="{{promoLink}}" class="btn btn-primary btn-sm" target="_blank" rel="noopener">{{promocao.botao}}</a>
+      <p class="pg-oferta-aviso">{{promocao.aviso}}</p>
+    </div>
+  </aside>
+  {{/oferta}}
+
+  <section class="block">
+    <div class="container pg-duas">
+      <div class="reveal">
+        <p class="eyebrow">Indicação</p>
+        <h2>Para quem costuma ser indicado</h2>
+        <ul class="pg-lista">
+          {{#paraQuem}}<li><svg aria-hidden="true"><use href="#i-check"/></svg><span>{{.}}</span></li>{{/paraQuem}}
+        </ul>
+        <p class="pg-nota">A indicação é sempre confirmada na avaliação individual, considerando seu histórico de saúde e suas características.</p>
+      </div>
+      <div class="reveal">
+        <p class="eyebrow">Atendimento</p>
+        <h2>Como funciona</h2>
+        <ol class="pg-etapas">
+          {{#etapas}}<li><strong>{{titulo}}</strong><span>{{texto}}</span></li>{{/etapas}}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  {{#temResultados}}
+  <section class="block results">
+    <div class="container">
+      <div class="section-head reveal"><p class="eyebrow">Resultados</p><h2>Antes e depois</h2><p>Toque nas fotos para ampliar.</p></div>
+      <div class="results-grid">
+        {{#resultadosPagina}}
+        <figure class="result-card reveal">
+          <button class="result-zoom" type="button" data-full="/{{imagem}}" data-caption="{{titulo}} — {{texto}}" aria-label="Ampliar foto: {{titulo}}">
+            <img src="/{{imagem}}" alt="Antes e depois — {{titulo}}" width="{{largura}}" height="{{altura}}" loading="lazy">
+          </button>
+          <figcaption><h3>{{titulo}}</h3><p>{{texto}}</p></figcaption>
+        </figure>
+        {{/resultadosPagina}}
+      </div>
+      <p class="results-note">Resultados individuais podem variar de acordo com as características de cada pessoa. Imagens publicadas com autorização das pacientes.</p>
+    </div>
+  </section>
+  {{/temResultados}}
+
+  {{#depoimentosPagina}}
+  <section class="block pg-depo">
+    <div class="container faq-container reveal">
+      <blockquote><p>“{{texto}}”</p><footer>{{nome}} · {{procedimento}}</footer></blockquote>
+    </div>
+  </section>
+  {{/depoimentosPagina}}
+
+  <section class="block faq" id="duvidas">
+    <div class="container faq-container">
+      <div class="section-head reveal"><p class="eyebrow">Dúvidas frequentes</p><h2>{{titulo}}: o que as pacientes perguntam</h2></div>
+      <div class="faq-list reveal">
+        {{#perguntasPagina}}
+        <details class="faq-item"><summary>{{pergunta}}<span class="faq-mais" aria-hidden="true"></span></summary><p>{{resposta}}</p></details>
+        {{/perguntasPagina}}
+      </div>
+    </div>
+  </section>
+
+  <section class="block pg-outros">
+    <div class="container">
+      <div class="section-head reveal"><p class="eyebrow">Veja também</p><h2>Outros procedimentos</h2></div>
+      <div class="pg-outros-lista reveal">
+        {{#outros}}<a href="/{{slug}}/">{{titulo}} <svg aria-hidden="true"><use href="#i-seta"/></svg></a>{{/outros}}
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-block">
+    <div class="container reveal">
+      <h2>{{titulo}} no {{contato.bairro}}</h2>
+      <p>Tire suas dúvidas e agende sua avaliação com a {{marca.primeiroNome}}.</p>
+      <a href="{{whatsappLink}}" class="btn btn-primary btn-on-dark" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-whatsapp"/></svg> Agendar pelo WhatsApp</a>
+      <p class="fine">{{contato.endereco}} · {{contato.cidade}}</p>
+    </div>
+  </section>
+</main>

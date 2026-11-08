@@ -892,3 +892,44 @@ section.block{ padding:96px 0; }
 /* Navegadores sem <dialog>: a janela de cadastro vira uma camada fixa com fundo escurecido */
 .cad-modal.cad-fallback{ position:fixed; inset:0; margin:auto; height:fit-content; z-index:1000; box-shadow:0 0 0 100vmax rgba(20,30,26,.55), 0 30px 80px -20px rgba(0,0,0,.4); }
 
+
+/* ---------- Páginas de procedimento ---------- */
+.proc-card h3 a{ color:inherit; text-decoration:none; }
+.proc-card h3 a:hover{ color:var(--accent-text); }
+.pg-topo{ padding:150px 0 64px; background:var(--green-pale); }
+.pg-topo-grade{ display:grid; grid-template-columns:1fr 220px; gap:48px; align-items:center; }
+.pg-topo h1{ font-size:clamp(2.2rem, 5vw, 3.5rem); line-height:1.08; margin-bottom:18px; color:var(--green-deep); }
+.pg-intro{ max-width:640px; margin-bottom:28px; color:var(--text-soft); font-size:1.06rem; line-height:1.7; }
+.pg-migalha{ margin-bottom:22px; font-size:0.84rem; color:var(--text-soft); }
+.pg-migalha a{ color:var(--accent-text); }
+.pg-icone{ display:flex; align-items:center; justify-content:center; width:200px; height:200px; border-radius:50%; background:#fff; color:var(--green-deep); box-shadow:inset 0 0 0 2px var(--gold); }
+.pg-icone svg{ width:84px; height:84px; }
+.pg-oferta{ padding:22px 0; background:#111; color:#FBF9F5; }
+.pg-oferta[hidden]{ display:none; }
+.pg-oferta-grade{ display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px; }
+.pg-oferta .promo-etiqueta{ margin:0; align-self:center; background:#FBF9F5; color:#111; }
+.pg-oferta p{ margin:0; }
+.pg-preco{ color:var(--gold); font-size:1.2rem; }
+.pg-oferta-aviso{ flex-basis:100%; font-size:0.78rem; color:#C9C4BA; }
+.pg-duas{ display:grid; grid-template-columns:1fr 1fr; gap:64px; }
+.pg-duas h2{ font-size:clamp(1.6rem, 2.8vw, 2.15rem); margin-bottom:22px; }
+.pg-lista{ list-style:none; margin:0 0 20px; padding:0; }
+.pg-lista li{ display:flex; gap:12px; padding:9px 0; color:var(--text-soft); }
+.pg-lista svg{ flex-shrink:0; width:20px; height:20px; margin-top:3px; color:var(--green-deep); }
+.pg-nota{ font-size:0.86rem; color:var(--text-soft); }
+.pg-etapas{ margin:0; padding-left:22px; }
+.pg-etapas li{ padding:9px 0 9px 6px; color:var(--text-soft); }
+.pg-etapas strong{ display:block; color:var(--text); }
+.pg-depo{ padding-top:0; padding-bottom:40px; }
+.pg-depo blockquote{ margin:0; text-align:center; }
+.pg-depo p{ font-size:1.2rem; line-height:1.55; color:var(--green-deep); }
+.pg-depo footer{ margin-top:12px; font-size:0.86rem; color:var(--text-soft); }
+.pg-outros-lista{ display:flex; flex-wrap:wrap; justify-content:center; gap:12px; }
+.pg-outros-lista a{ display:inline-flex; align-items:center; gap:8px; padding:12px 20px; border:1px solid var(--line); border-radius:999px; color:var(--green-deep); font-weight:600; text-decoration:none; }
+.pg-outros-lista svg{ width:14px; height:14px; }
+@media (max-width:760px){
+  .pg-topo{ padding:116px 0 44px; }
+  .pg-topo-grade{ grid-template-columns:1fr; }
+  .pg-icone{ display:none; }
+  .pg-duas{ grid-template-columns:1fr; gap:40px; }
+}

@@ -108,8 +108,56 @@ Write-Host "Gerado: $Saida ($([math]::Round($html.Length / 1KB)) KB)"
 # robots.txt e sitemap.xml (para o Google encontrar e indexar o site)
 $raiz = Split-Path $Saida -Parent
 $utf8 = New-Object System.Text.UTF8Encoding $false
+
+# Paginas de procedimento (uma por servico, para a busca organica): usa a home como casca
+$urlsSitemap = @("$($dados.site.url)/")
+$tplPagina = Join-Path $PSScriptRoot 'procedimento.html'
+if (Test-Path $tplPagina) {
+  $partes = (Get-Content -LiteralPath $tplPagina -Raw -Encoding UTF8) -split '<!--CORPO-->', 2
+  $iMain = $html.IndexOf('<main id="conteudo">'); $fMain = $html.IndexOf('</main>') + 7
+  $comuns = @($dados.perguntas | Where-Object { $_.pergunta -match 'avalia.+antes|rotina|Quem realiza|Onde fica' })
+  foreach ($p in @($dados.procedimentos | Where-Object { $_.slug })) {
+    $of = @($dados.promocao.ofertas | Where-Object { $dados.promocao.ativa -and $_.nome -eq $p.ofertaNome })
+    if ($of.Count) {
+      $of[0] | Add-Member -NotePropertyName 'promoLink' -NotePropertyValue "$waBase`?text=$(UrlEnc $dados.promocao.mensagemWhatsapp)" -Force
+      $p | Add-Member -NotePropertyName 'oferta' -NotePropertyValue $of[0] -Force
+    }
+    $p | Add-Member -NotePropertyName 'resultadosPagina' -NotePropertyValue @($dados.resultados | Where-Object { $_.titulo -eq $p.titulo }) -Force
+    $p | Add-Member -NotePropertyName 'temResultados' -NotePropertyValue ($p.resultadosPagina.Count -gt 0) -Force
+    $p | Add-Member -NotePropertyName 'depoimentosPagina' -NotePropertyValue @($dados.depoimentos | Where-Object { $_.procedimento -eq $p.titulo }) -Force
+    $p | Add-Member -NotePropertyName 'perguntasPagina' -NotePropertyValue @(@($p.duvidas) + $comuns) -Force
+    $p | Add-Member -NotePropertyName 'outros' -NotePropertyValue @($dados.procedimentos | Where-Object { $_.slug -and $_.slug -ne $p.slug } | ForEach-Object { [pscustomobject]@{ slug = $_.slug; titulo = $_.titulo } }) -Force
+    $pilha = @($p, $dados)
+    $cabeca = Render $partes[0] $pilha
+    $corpo = Render $partes[1] $pilha
+    $pg = $html.Substring(0, $iMain) + $corpo.Trim() + $html.Substring($fMain)
+    $url = "$($dados.site.url)/$($p.slug)/"
+    $titulo = Esc $p.seoTitulo; $desc = Esc $p.seoDescricao
+    # sem pop-up nas paginas vindas da busca (a oferta aparece na faixa da propria pagina)
+    $pg = [regex]::Replace($pg, '(?s)<dialog class="promo" id="promo".*?</dialog>', '')
+    $pg = [regex]::Replace($pg, '(?s)<script type="application/ld\+json">\s*\{\s*"@context": "https://schema.org",\s*"@type": "FAQPage".*?</script>', { param($m) $cabeca.Trim() })
+    $pg = [regex]::Replace($pg, '<link rel="preload" as="image"[^>]*>\s*', '')
+    $pg = [regex]::Replace($pg, '<title>[^<]*</title>', { param($m) "<title>$titulo</title>" })
+    $pg = [regex]::Replace($pg, '<meta name="description" content="[^"]*">', { param($m) "<meta name=`"description`" content=`"$desc`">" })
+    $pg = [regex]::Replace($pg, '<link rel="canonical" href="[^"]*">', { param($m) "<link rel=`"canonical`" href=`"$url`">" })
+    $pg = [regex]::Replace($pg, '<meta property="og:title" content="[^"]*">', { param($m) "<meta property=`"og:title`" content=`"$titulo`">" })
+    $pg = [regex]::Replace($pg, '<meta property="og:description" content="[^"]*">', { param($m) "<meta property=`"og:description`" content=`"$desc`">" })
+    $pg = [regex]::Replace($pg, '<meta property="og:url" content="[^"]*">', { param($m) "<meta property=`"og:url`" content=`"$url`">" })
+    # caminhos relativos da home passam a partir da raiz
+    $pg = $pg.Replace('href="assets/', 'href="/assets/').Replace('src="assets/', 'src="/assets/')
+    $pg = [regex]::Replace($pg, '(<a\b[^>]*?\shref=")#', '$1/#')
+    $pasta = Join-Path $raiz $p.slug
+    New-Item -ItemType Directory -Force $pasta | Out-Null
+    [IO.File]::WriteAllText((Join-Path $pasta 'index.html'), $pg, $utf8)
+    $urlsSitemap += $url
+  }
+  Write-Host "Gerado: $($urlsSitemap.Count - 1) paginas de procedimento"
+}
+
 [IO.File]::WriteAllText((Join-Path $raiz 'robots.txt'), "User-agent: *`nAllow: /`n`nSitemap: $($dados.site.url)/sitemap.xml`n", $utf8)
-$sitemap = "<?xml version=`"1.0`" encoding=`"UTF-8`"?>`n<urlset xmlns=`"http://www.sitemaps.org/schemas/sitemap/0.9`">`n  <url>`n    <loc>$($dados.site.url)/</loc>`n    <lastmod>$(Get-Date -Format 'yyyy-MM-dd')</lastmod>`n  </url>`n</urlset>`n"
+$hoje = Get-Date -Format 'yyyy-MM-dd'
+$itens = ($urlsSitemap | ForEach-Object { "  <url>`n    <loc>$_</loc>`n    <lastmod>$hoje</lastmod>`n  </url>" }) -join "`n"
+$sitemap = "<?xml version=`"1.0`" encoding=`"UTF-8`"?>`n<urlset xmlns=`"http://www.sitemaps.org/schemas/sitemap/0.9`">`n$itens`n</urlset>`n"
 [IO.File]::WriteAllText((Join-Path $raiz 'sitemap.xml'), $sitemap, $utf8)
 Write-Host "Gerado: robots.txt e sitemap.xml"
 

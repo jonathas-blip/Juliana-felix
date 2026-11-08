@@ -16,6 +16,9 @@ const localDoBotao = (a) => {
   if (a.closest('#promo')) return 'Pop-up de promoção';
   const card = a.closest('.proc-card');
   if (card) return 'Procedimento: ' + ((card.querySelector('h3') || {}).textContent || '').trim();
+  if (a.closest('.pg-oferta')) return 'Página ' + location.pathname + ': oferta';
+  if (a.closest('.pg-topo')) return 'Página ' + location.pathname + ': topo';
+  if (a.closest('.pg .cta-block')) return 'Página ' + location.pathname + ': chamada final';
   if (a.closest('.site-header')) return 'Cabeçalho';
   if (a.closest('.mobile-panel')) return 'Menu do celular';
   if (a.closest('.hero')) return 'Topo do site';
@@ -227,7 +230,13 @@ if ('IntersectionObserver' in window) {
 }
 
 // ---------- Item ativo no menu ----------
-const navLinks = [...document.querySelectorAll('.main-nav a')];
+const navLinks = [...document.querySelectorAll('.main-nav a[href^="#"]')]; // nas páginas de procedimento os links apontam para a home
+
+// ---------- Faixa de oferta das páginas de procedimento: some após a data ----------
+document.querySelectorAll('.pg-oferta[data-ate]').forEach((el) => {
+  if (new Date() > new Date(el.dataset.ate + 'T23:59:59')) el.hidden = true;
+});
+
 const sections = navLinks.map((a) => document.querySelector(a.getAttribute('href'))).filter(Boolean);
 if ('IntersectionObserver' in window && sections.length) {
   const spy = new IntersectionObserver((entries) => {

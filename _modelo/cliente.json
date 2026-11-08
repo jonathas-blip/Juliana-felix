@@ -65,12 +65,75 @@
 
   "procedimentosIntro": "Cada pele possui necessidades diferentes. Por isso, os tratamentos são escolhidos de forma personalizada, respeitando suas características, objetivos e momento.",
   "procedimentos": [
-    { "icone": "rosto",    "titulo": "Harmonização Facial",          "texto": "Protocolos personalizados que equilibram traços e realçam a harmonia natural do rosto." },
-    { "icone": "labios",   "titulo": "Preenchimento Labial",         "texto": "Hidratação, definição e volume para lábios com resultado natural e sofisticado." },
-    { "icone": "brilho",   "titulo": "Linhas de Expressão",          "texto": "Suaviza linhas de expressão da testa e da região dos olhos, com aspecto descansado e natural." },
-    { "icone": "perfil",   "titulo": "Contorno de Mandíbula",        "texto": "Definição do ângulo mandibular para um perfil mais harmonioso e aspecto rejuvenescido." },
-    { "icone": "colageno", "titulo": "Bioestimuladores de Colágeno", "texto": "Estímulo gradual e natural de colágeno para firmeza e viço da pele ao longo do tempo." },
-    { "icone": "gota",     "titulo": "Skincare Avançado",            "texto": "Renove sua pele e recupere a sensação de frescor, luminosidade e cuidado contínuo." }
+    { "icone": "rosto", "titulo": "Harmonização Facial", "texto": "Protocolos personalizados que equilibram traços e realçam a harmonia natural do rosto.",
+      "slug": "harmonizacao-facial-tatuape",
+      "seoTitulo": "Harmonização Facial no Tatuapé | Juliana Felix Beauté",
+      "seoDescricao": "Harmonização facial no Tatuapé, zona leste de São Paulo, com avaliação individual e foco em resultado natural. Atendimento com a enfermeira Juliana Felix. Agende pelo WhatsApp.",
+      "h1": "Harmonização Facial no Tatuapé",
+      "intro": "Protocolos personalizados para equilibrar os traços e realçar a harmonia natural do rosto. O plano é definido depois de uma avaliação individual, respeitando suas características e o que você deseja realçar.",
+      "paraQuem": ["Quem deseja mais equilíbrio entre as regiões do rosto", "Quem quer realçar os próprios traços sem perder a identidade", "Quem prefere um plano personalizado, definido a partir dos seus objetivos"],
+      "duvidas": [
+        { "pergunta": "O que é feito na harmonização facial?", "resposta": "Depende de cada rosto. Na avaliação, analisamos seus traços e seus objetivos e, a partir disso, indicamos o protocolo mais adequado para você." },
+        { "pergunta": "A harmonização facial fica natural?", "resposta": "Esse é o nosso principal cuidado. A proposta é realçar a sua beleza respeitando os seus traços, sem exageros, para que você se reconheça no espelho." },
+        { "pergunta": "Quanto custa a harmonização facial?", "resposta": "O valor depende do protocolo indicado para você, por isso é passado na avaliação. Chame no WhatsApp contando o que você deseja tratar para receber uma orientação inicial." }
+      ] },
+    { "icone": "labios", "titulo": "Preenchimento Labial", "texto": "Hidratação, definição e volume para lábios com resultado natural e sofisticado.",
+      "slug": "preenchimento-labial-tatuape", "ofertaNome": "Preenchimento Labial",
+      "seoTitulo": "Preenchimento Labial no Tatuapé | Juliana Felix Beauté",
+      "seoDescricao": "Preenchimento labial no Tatuapé, zona leste de São Paulo: hidratação, definição e volume com foco em resultado natural. Atendimento com a enfermeira Juliana Felix. Agende pelo WhatsApp.",
+      "h1": "Preenchimento Labial no Tatuapé",
+      "intro": "Hidratação, definição e volume para os lábios, com resultado natural e respeitando o formato original da sua boca. Tudo começa com uma avaliação individual.",
+      "paraQuem": ["Quem deseja mais volume ou contorno nos lábios", "Quem busca mais hidratação e definição", "Quem quer um resultado natural, sem exageros"],
+      "duvidas": [
+        { "pergunta": "Quanto tempo dura o preenchimento labial?", "resposta": "Em geral, de 6 a 12 meses. A duração muda conforme o produto indicado, a região tratada, o metabolismo e os cuidados de cada pessoa." },
+        { "pergunta": "O preenchimento labial dói?", "resposta": "A sensação varia de pessoa para pessoa. Usamos técnicas para deixar o atendimento o mais confortável possível, e a maioria das pacientes relata apenas um leve desconforto." },
+        { "pergunta": "O resultado do preenchimento labial fica natural?", "resposta": "Esse é o nosso principal cuidado. A proposta é realçar a sua beleza respeitando os seus traços, sem exageros, para que você se reconheça no espelho." }
+      ] },
+    { "icone": "brilho", "titulo": "Linhas de Expressão", "texto": "Suaviza linhas de expressão da testa e da região dos olhos, com aspecto descansado e natural.",
+      "slug": "linhas-de-expressao-tatuape",
+      "seoTitulo": "Tratamento de Linhas de Expressão no Tatuapé | Juliana Felix Beauté",
+      "seoDescricao": "Tratamento de linhas de expressão da testa e da região dos olhos no Tatuapé, zona leste de São Paulo, com aspecto descansado e natural. Agende sua avaliação pelo WhatsApp.",
+      "h1": "Tratamento de Linhas de Expressão no Tatuapé",
+      "intro": "Suaviza as linhas de expressão da testa e da região dos olhos, com aspecto descansado e natural. A indicação é feita depois de uma avaliação individual.",
+      "paraQuem": ["Quem se incomoda com linhas na testa", "Quem deseja suavizar as linhas da região dos olhos", "Quem busca um aspecto descansado e natural"],
+      "duvidas": [
+        { "pergunta": "Quando aparece o efeito do tratamento de linhas de expressão?", "resposta": "O efeito costuma aparecer entre 7 e 15 dias, variando de pessoa para pessoa." },
+        { "pergunta": "Quanto tempo dura o tratamento de linhas de expressão?", "resposta": "Dura, em média, de 4 a 6 meses, variando de pessoa para pessoa. Com a manutenção regular, as linhas tendem a ficar mais suaves ao longo do tempo." },
+        { "pergunta": "Quanto custa o tratamento de linhas de expressão?", "resposta": "O valor depende do protocolo indicado para você, por isso é passado na avaliação. Chame no WhatsApp contando o que você deseja tratar para receber uma orientação inicial." }
+      ] },
+    { "icone": "perfil", "titulo": "Contorno de Mandíbula", "texto": "Definição do ângulo mandibular para um perfil mais harmonioso e aspecto rejuvenescido.",
+      "slug": "contorno-de-mandibula-tatuape", "ofertaNome": "Preenchimento de Mandíbula",
+      "seoTitulo": "Contorno de Mandíbula no Tatuapé | Juliana Felix Beauté",
+      "seoDescricao": "Contorno de mandíbula no Tatuapé, zona leste de São Paulo: definição do ângulo mandibular para um perfil mais harmonioso. Atendimento com a enfermeira Juliana Felix. Agende pelo WhatsApp.",
+      "h1": "Contorno de Mandíbula no Tatuapé",
+      "intro": "Definição do ângulo mandibular para um perfil mais harmonioso e aspecto rejuvenescido, sempre a partir de uma avaliação individual dos seus traços.",
+      "paraQuem": ["Quem deseja um perfil mais definido", "Quem busca mais harmonia entre rosto e pescoço", "Quem quer um aspecto rejuvenescido e natural"],
+      "duvidas": [
+        { "pergunta": "O contorno de mandíbula fica natural?", "resposta": "Esse é o nosso principal cuidado. A proposta é realçar a sua beleza respeitando os seus traços, sem exageros, para que você se reconheça no espelho." },
+        { "pergunta": "O contorno de mandíbula dói?", "resposta": "A sensação varia de pessoa para pessoa. Usamos técnicas para deixar o atendimento o mais confortável possível, e a maioria das pacientes relata apenas um leve desconforto." }
+      ] },
+    { "icone": "colageno", "titulo": "Bioestimuladores de Colágeno", "texto": "Estímulo gradual e natural de colágeno para firmeza e viço da pele ao longo do tempo.",
+      "slug": "bioestimulador-de-colageno-tatuape", "ofertaNome": "Bioestimulador de Colágeno",
+      "seoTitulo": "Bioestimulador de Colágeno no Tatuapé | Juliana Felix Beauté",
+      "seoDescricao": "Bioestimulador de colágeno no Tatuapé, zona leste de São Paulo: estímulo gradual de colágeno para firmeza e viço da pele. Agende sua avaliação pelo WhatsApp.",
+      "h1": "Bioestimulador de Colágeno no Tatuapé",
+      "intro": "Estímulo gradual e natural de colágeno para dar firmeza e viço à pele ao longo do tempo. O protocolo é definido em uma avaliação individual.",
+      "paraQuem": ["Quem deseja mais firmeza na pele", "Quem busca viço e qualidade de pele", "Quem prefere uma melhora gradual e natural"],
+      "duvidas": [
+        { "pergunta": "Quando aparecem os resultados do bioestimulador de colágeno?", "resposta": "O resultado é gradual: a pele vai ganhando firmeza ao longo de semanas, com melhora mais visível entre 60 e 90 dias." },
+        { "pergunta": "Quantas sessões de bioestimulador são necessárias?", "resposta": "Normalmente o protocolo tem mais de uma sessão. A quantidade é definida na avaliação, de acordo com as características da sua pele." }
+      ] },
+    { "icone": "gota", "titulo": "Skincare Avançado", "texto": "Renove sua pele e recupere a sensação de frescor, luminosidade e cuidado contínuo.",
+      "slug": "skincare-avancado-tatuape", "ofertaNome": "Limpeza de Pele + Microagulhamento",
+      "seoTitulo": "Skincare Avançado no Tatuapé | Juliana Felix Beauté",
+      "seoDescricao": "Skincare avançado no Tatuapé, zona leste de São Paulo: renove sua pele e recupere a sensação de frescor e luminosidade. Agende sua avaliação pelo WhatsApp.",
+      "h1": "Skincare Avançado no Tatuapé",
+      "intro": "Renove sua pele e recupere a sensação de frescor, luminosidade e cuidado contínuo, com um protocolo escolhido para as necessidades da sua pele.",
+      "paraQuem": ["Quem deseja renovar a pele", "Quem busca mais frescor e luminosidade", "Quem quer manter um cuidado contínuo e acompanhado"],
+      "duvidas": [
+        { "pergunta": "Qual tratamento de pele é o ideal para mim?", "resposta": "Cada pele possui necessidades diferentes. Por isso, o tratamento é escolhido na avaliação, respeitando suas características, seus objetivos e o seu momento." },
+        { "pergunta": "Quanto custa o skincare avançado?", "resposta": "O valor depende do protocolo indicado para você, por isso é passado na avaliação. Chame no WhatsApp contando o que você deseja tratar para receber uma orientação inicial." }
+      ] }
   ],
 
   "resultados": [
