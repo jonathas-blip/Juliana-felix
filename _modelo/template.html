@@ -228,6 +228,30 @@
     </div>
   </section>
 
+  <!-- CATÁLOGO DA CAMPANHA (some sozinho após promocao.ate) -->
+  {{#promocao.catalogo}}
+  <section class="block catalogo pg-oferta-home" id="catalogo" data-ate="{{promocao.ate}}">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">{{promocao.etiqueta}} · até 30/11</p>
+        <h2>Catálogo de ofertas</h2>
+        <p>Preços especiais em todos os procedimentos e Hidra Lips de brinde. Toque nas páginas para ampliar.</p>
+      </div>
+      <div class="cat-trilho">
+        {{#promocao.paginas}}
+        <button class="result-zoom cat-zoom" type="button" data-full="{{imagem}}" data-caption="{{titulo}}" aria-label="Ampliar: {{titulo}}">
+          <img src="{{imagem}}" alt="Catálogo Black Friday — {{titulo}}" width="1200" height="800" loading="lazy">
+        </button>
+        {{/promocao.paginas}}
+      </div>
+      <div class="cat-acoes">
+        <a href="{{calc.whatsappBase}}?text={{url:promocao.mensagemWhatsapp}}" class="btn btn-primary" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-whatsapp"/></svg> {{promocao.botao}}</a>
+        <a href="{{promocao.catalogo}}" class="btn btn-outline" target="_blank" rel="noopener">Baixar o catálogo (PDF)</a>
+      </div>
+    </div>
+  </section>
+  {{/promocao.catalogo}}
+
   <!-- RESULTADOS -->
   <section class="block results" id="resultados">
     <div class="container">
@@ -548,6 +572,7 @@
       <a href="{{calc.whatsappBase}}?text={{url:promocao.mensagemWhatsapp}}" class="btn btn-primary" target="_blank" rel="noopener">
         <svg class="ic" aria-hidden="true"><use href="#i-whatsapp"/></svg> {{promocao.botao}}
       </a>
+      {{#promocao.catalogo}}<a class="promo-catalogo" href="#catalogo">Ver o catálogo completo</a>{{/promocao.catalogo}}
       <button class="promo-skip" type="button">Ver o site</button>
     </div>
   </div>

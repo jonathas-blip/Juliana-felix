@@ -30,9 +30,34 @@
       <p><strong>{{nome}}</strong> por <strong class="pg-preco">R$ {{preco}},{{centavos}}</strong>{{#complemento}} <span>{{complemento}}</span>{{/complemento}}</p>
       <a href="{{promoLink}}" class="btn btn-primary btn-sm" target="_blank" rel="noopener">{{promocao.botao}}</a>
       <p class="pg-oferta-aviso">{{promocao.aviso}}</p>
+      {{#catalogo}}<div class="pg-oferta-arte">
+        <button class="result-zoom cat-zoom" type="button" data-full="/{{catalogo}}" data-caption="{{titulo}} — Black Friday" aria-label="Ampliar a oferta de {{titulo}}">
+          <img src="/{{catalogo}}" alt="Oferta de Black Friday: {{titulo}}" width="1200" height="800" loading="lazy">
+        </button>
+        <a class="pg-oferta-pdf" href="/{{promocao.catalogo}}" target="_blank" rel="noopener">Ver o catálogo completo (PDF)</a>
+      </div>{{/catalogo}}
     </div>
   </aside>
   {{/oferta}}
+
+  {{#resumo}}
+  <section class="block pg-resumo">
+    <div class="container">
+      <div class="section-head reveal"><p class="eyebrow">Em resumo</p><h2>{{faz}}</h2></div>
+      <ul class="pg-fatos reveal">
+        <li><svg aria-hidden="true"><use href="#i-brilho"/></svg><span>{{efeito}}</span></li>
+        <li><svg aria-hidden="true"><use href="#i-relogio"/></svg><span>{{duracao}}</span></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span>{{rotina}}</span></li>
+      </ul>
+      {{#especialista}}<blockquote class="pg-especialista reveal">
+        <p class="pg-especialista-rotulo">Palavra da especialista</p>
+        <p>{{especialista}}</p>
+        <footer>{{marca.profissional}} · {{marca.titulo}}</footer>
+      </blockquote>{{/especialista}}
+      <p class="pg-nota pg-resumo-nota">Prazos médios, que variam de pessoa para pessoa e são confirmados na avaliação.</p>
+    </div>
+  </section>
+  {{/resumo}}
 
   <section class="block">
     <div class="container pg-duas">

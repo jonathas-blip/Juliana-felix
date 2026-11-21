@@ -78,7 +78,10 @@
         { "pergunta": "Quanto custa a harmonização facial?", "resposta": "O valor depende do protocolo indicado para você, por isso é passado na avaliação. Chame no WhatsApp contando o que você deseja tratar para receber uma orientação inicial." }
       ] },
     { "icone": "labios", "titulo": "Preenchimento Labial", "texto": "Hidratação, definição e volume para lábios com resultado natural e sofisticado.",
-      "slug": "preenchimento-labial-tatuape", "ofertaNome": "Preenchimento Labial",
+      "slug": "preenchimento-labial-tatuape",
+      "catalogo": "assets/img/catalogo/02-labial.jpg",
+      "resumo": { "faz": "Contorno, volume e hidratação", "efeito": "Efeito imediato", "duracao": "Dura de 6 a 12 meses", "rotina": "Rotina no mesmo dia" },
+      "especialista": "Uso ácido hialurônico, a mesma substância que o seu corpo produz para manter a pele hidratada. Com técnica delicada, aplico em pontos estratégicos para dar volume na medida certa, desenhar o contorno e hidratar os lábios de dentro para fora. O resultado aparece na hora e fica natural.", "ofertaNome": "Preenchimento Labial",
       "seoTitulo": "Preenchimento Labial no Tatuapé | Juliana Felix Beauté",
       "seoDescricao": "Preenchimento labial no Tatuapé, zona leste de São Paulo: hidratação, definição e volume com foco em resultado natural. Atendimento com a enfermeira Juliana Felix. Agende pelo WhatsApp.",
       "h1": "Preenchimento Labial no Tatuapé",
@@ -91,6 +94,9 @@
       ] },
     { "icone": "brilho", "titulo": "Linhas de Expressão", "texto": "Suaviza linhas de expressão da testa e da região dos olhos, com aspecto descansado e natural.",
       "slug": "linhas-de-expressao-tatuape",
+      "catalogo": "assets/img/catalogo/03-linhas.jpg",
+      "resumo": { "faz": "Suaviza rugas e previne novas linhas", "efeito": "Efeito em 7 a 15 dias", "duracao": "Dura de 4 a 6 meses", "rotina": "Rotina no mesmo dia" },
+      "especialista": "A aplicação é feita em microdoses, com agulhas bem finas, nos músculos da testa, entre as sobrancelhas e ao redor dos olhos. Ela relaxa a contração que marca a pele, suaviza as rugas e evita que novas linhas se aprofundem. Você mantém a sua expressão, agora com o olhar descansado.", "ofertaNome": "Linhas de Expressão",
       "seoTitulo": "Tratamento de Linhas de Expressão no Tatuapé | Juliana Felix Beauté",
       "seoDescricao": "Tratamento de linhas de expressão da testa e da região dos olhos no Tatuapé, zona leste de São Paulo, com aspecto descansado e natural. Agende sua avaliação pelo WhatsApp.",
       "h1": "Tratamento de Linhas de Expressão no Tatuapé",
@@ -102,7 +108,7 @@
         { "pergunta": "Quanto custa o tratamento de linhas de expressão?", "resposta": "O valor depende do protocolo indicado para você, por isso é passado na avaliação. Chame no WhatsApp contando o que você deseja tratar para receber uma orientação inicial." }
       ] },
     { "icone": "perfil", "titulo": "Contorno de Mandíbula", "texto": "Definição do ângulo mandibular para um perfil mais harmonioso e aspecto rejuvenescido.",
-      "slug": "contorno-de-mandibula-tatuape", "ofertaNome": "Preenchimento de Mandíbula",
+      "slug": "contorno-de-mandibula-tatuape",
       "seoTitulo": "Contorno de Mandíbula no Tatuapé | Juliana Felix Beauté",
       "seoDescricao": "Contorno de mandíbula no Tatuapé, zona leste de São Paulo: definição do ângulo mandibular para um perfil mais harmonioso. Atendimento com a enfermeira Juliana Felix. Agende pelo WhatsApp.",
       "h1": "Contorno de Mandíbula no Tatuapé",
@@ -113,7 +119,10 @@
         { "pergunta": "O contorno de mandíbula dói?", "resposta": "A sensação varia de pessoa para pessoa. Usamos técnicas para deixar o atendimento o mais confortável possível, e a maioria das pacientes relata apenas um leve desconforto." }
       ] },
     { "icone": "colageno", "titulo": "Bioestimuladores de Colágeno", "texto": "Estímulo gradual e natural de colágeno para firmeza e viço da pele ao longo do tempo.",
-      "slug": "bioestimulador-de-colageno-tatuape", "ofertaNome": "Bioestimulador de Colágeno",
+      "slug": "bioestimulador-de-colageno-tatuape",
+      "catalogo": "assets/img/catalogo/04-bioestimulador.jpg",
+      "resumo": { "faz": "Estimula o seu próprio colágeno", "efeito": "Efeito em 60 a 90 dias", "duracao": "Dura até 18 meses", "rotina": "Rotina no mesmo dia" },
+      "especialista": "O bioestimulador não preenche: ele ativa os fibroblastos, as células da pele que produzem colágeno. Aplicado em pontos estratégicos da face, devolve firmeza, sustentação e viço de forma gradual, sem mudar os seus traços. A melhora fica visível entre 60 e 90 dias.", "ofertaNome": "Bioestimulador de Colágeno",
       "seoTitulo": "Bioestimulador de Colágeno no Tatuapé | Juliana Felix Beauté",
       "seoDescricao": "Bioestimulador de colágeno no Tatuapé, zona leste de São Paulo: estímulo gradual de colágeno para firmeza e viço da pele. Agende sua avaliação pelo WhatsApp.",
       "h1": "Bioestimulador de Colágeno no Tatuapé",
@@ -124,7 +133,10 @@
         { "pergunta": "Quantas sessões de bioestimulador são necessárias?", "resposta": "Normalmente o protocolo tem mais de uma sessão. A quantidade é definida na avaliação, de acordo com as características da sua pele." }
       ] },
     { "icone": "gota", "titulo": "Skincare Avançado", "texto": "Renove sua pele e recupere a sensação de frescor, luminosidade e cuidado contínuo.",
-      "slug": "skincare-avancado-tatuape", "ofertaNome": "Limpeza de Pele + Microagulhamento",
+      "slug": "skincare-avancado-tatuape",
+      "catalogo": "assets/img/catalogo/05-limpeza.jpg",
+      "resumo": { "faz": "Pele limpa, renovada e luminosa", "efeito": "Efeito imediato", "duracao": "Ideal repetir a cada 30 dias", "rotina": "Rotina no mesmo dia" },
+      "especialista": "Protocolo completo em quatro etapas: higienização, esfoliação para renovar a textura, extração cuidadosa de cravos e impurezas e máscara calmante para hidratar. Os poros ficam desobstruídos, a pele respira, ganha luminosidade e os seus cuidados em casa passam a render mais.", "ofertaNome": "Limpeza de Pele",
       "seoTitulo": "Skincare Avançado no Tatuapé | Juliana Felix Beauté",
       "seoDescricao": "Skincare avançado no Tatuapé, zona leste de São Paulo: renove sua pele e recupere a sensação de frescor e luminosidade. Agende sua avaliação pelo WhatsApp.",
       "h1": "Skincare Avançado no Tatuapé",
@@ -140,6 +152,7 @@
     { "imagem": "assets/img/resultado-labial-1.jpg",  "largura": 1012, "altura": 518, "titulo": "Preenchimento Labial",  "texto": "Mais volume, contorno definido e hidratação." },
     { "imagem": "assets/img/resultado-mandibula.jpg", "largura": 984,  "altura": 504, "titulo": "Contorno de Mandíbula", "texto": "Definição do perfil com aspecto natural e harmonioso." },
     { "imagem": "assets/img/resultado-labial-2.jpg",  "largura": 996,  "altura": 490, "titulo": "Preenchimento Labial",  "texto": "Resultado natural que respeita o formato original dos lábios." },
+    { "imagem": "assets/img/resultado-linhas.jpg",    "largura": 1004, "altura": 500, "titulo": "Linhas de Expressão",   "texto": "Testa lisa e olhar descansado, mantendo a expressão." },
     { "imagem": "assets/img/resultado-labial-3.jpg",  "largura": 1008, "altura": 526, "titulo": "Preenchimento Labial",  "texto": "Harmonia labial com hidratação e naturalidade." }
   ],
 
@@ -197,14 +210,26 @@
     "subtitulo": "Preços que só valem",
     "subtituloDestaque": "em novembro",
     "ofertas": [
-      { "icone": "labios",   "nome": "Preenchimento Labial",               "preco": "649", "centavos": "00", "complemento": "+ Spa Labial de brinde" },
-      { "icone": "perfil",   "nome": "Preenchimento de Mandíbula",         "preco": "649", "centavos": "00" },
-      { "icone": "colageno", "nome": "Bioestimulador de Colágeno",         "preco": "899", "centavos": "00" },
-      { "icone": "rolo",     "nome": "Limpeza de Pele + Microagulhamento", "preco": "249", "centavos": "00" }
+      { "icone": "labios",   "nome": "Preenchimento Labial",       "preco": "649", "centavos": "00", "complemento": "+ Hidra Lips de brinde" },
+      { "icone": "brilho",   "nome": "Linhas de Expressão",        "preco": "759", "centavos": "00", "complemento": "Combo com o Labial: R$ 1.199" },
+      { "icone": "colageno", "nome": "Bioestimulador de Colágeno", "preco": "899", "centavos": "00", "complemento": "Face completa + Hidra Lips" },
+      { "icone": "gota",     "nome": "Limpeza de Pele",            "preco": "135", "centavos": "00", "complemento": "Com Microagulhamento e PDRN: R$ 299" }
+    ],
+    "catalogo": "assets/catalogo-black-friday.pdf",
+    "paginas": [
+      { "imagem": "assets/img/catalogo/01-capa.jpg", "titulo": "Catálogo de Ofertas" },
+      { "imagem": "assets/img/catalogo/02-labial.jpg", "titulo": "Preenchimento Labial" },
+      { "imagem": "assets/img/catalogo/03-linhas.jpg", "titulo": "Linhas de Expressão" },
+      { "imagem": "assets/img/catalogo/04-bioestimulador.jpg", "titulo": "Bioestimulador de Colágeno" },
+      { "imagem": "assets/img/catalogo/05-limpeza.jpg", "titulo": "Limpeza de Pele" },
+      { "imagem": "assets/img/catalogo/06-hipro-day-evento.jpg", "titulo": "Hipro Day · somente 26/11" },
+      { "imagem": "assets/img/catalogo/07-hipro-procedimento.jpg", "titulo": "Hipro Day · lifting sem cortes" },
+      { "imagem": "assets/img/catalogo/08-combos.jpg", "titulo": "Combos" },
+      { "imagem": "assets/img/catalogo/09-garanta-sua-vaga.jpg", "titulo": "Garanta a sua vaga" }
     ],
     "botao": "Quero aproveitar",
     "mensagemWhatsapp": "Olá, Juliana! Vi a Black Friday no site e quero aproveitar os preços de novembro.",
-    "aviso": "Vagas limitadas. Consulte condições e agende sua avaliação. Válido até 30/11."
+    "aviso": "Vagas limitadas, 1 brinde por cliente. PIX ou cartão parcelado. Válido até 30/11."
   },
 
   "_avisoCadastro": "Janela que pede nome e WhatsApp antes de abrir a conversa (lista de contatos no painel). ativo=false desliga; obrigatorio=true tira o link para pular o cadastro.",

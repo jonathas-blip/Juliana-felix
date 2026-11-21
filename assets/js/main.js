@@ -233,7 +233,7 @@ if ('IntersectionObserver' in window) {
 const navLinks = [...document.querySelectorAll('.main-nav a[href^="#"]')]; // nas páginas de procedimento os links apontam para a home
 
 // ---------- Faixa de oferta das páginas de procedimento: some após a data ----------
-document.querySelectorAll('.pg-oferta[data-ate]').forEach((el) => {
+document.querySelectorAll('.pg-oferta[data-ate], #catalogo[data-ate]').forEach((el) => {
   if (new Date() > new Date(el.dataset.ate + 'T23:59:59')) el.hidden = true;
 });
 
@@ -317,7 +317,7 @@ if (promo) {
     else promo.setAttribute('open', ''), promo.classList.add('promo-fallback'); // navegadores antigos
     document.body.style.overflow = 'hidden';
   }
-  promo.querySelectorAll('.promo-close, .promo-skip').forEach((b) => b.addEventListener('click', fechar));
+  promo.querySelectorAll('.promo-close, .promo-skip, .promo-catalogo').forEach((b) => b.addEventListener('click', fechar));
   promo.addEventListener('click', (e) => { if (e.target === promo) fechar(); });
   promo.addEventListener('close', () => { document.body.style.overflow = ''; });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && promo.hasAttribute('open') && !nativo) fechar(); });
