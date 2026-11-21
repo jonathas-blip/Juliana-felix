@@ -152,7 +152,7 @@
     { "imagem": "assets/img/resultado-labial-1.jpg",  "largura": 1012, "altura": 518, "titulo": "Preenchimento Labial",  "texto": "Mais volume, contorno definido e hidratação." },
     { "imagem": "assets/img/resultado-mandibula.jpg", "largura": 984,  "altura": 504, "titulo": "Contorno de Mandíbula", "texto": "Definição do perfil com aspecto natural e harmonioso." },
     { "imagem": "assets/img/resultado-labial-2.jpg",  "largura": 996,  "altura": 490, "titulo": "Preenchimento Labial",  "texto": "Resultado natural que respeita o formato original dos lábios." },
-    { "imagem": "assets/img/resultado-linhas.jpg",    "largura": 1004, "altura": 500, "titulo": "Linhas de Expressão",   "texto": "Testa lisa e olhar descansado, mantendo a expressão." },
+    { "imagem": "assets/img/resultado-linhas.jpg",    "largura": 996, "altura": 490, "titulo": "Linhas de Expressão",   "texto": "Testa lisa e olhar descansado, mantendo a expressão." },
     { "imagem": "assets/img/resultado-labial-3.jpg",  "largura": 1008, "altura": 526, "titulo": "Preenchimento Labial",  "texto": "Harmonia labial com hidratação e naturalidade." }
   ],
 

@@ -193,7 +193,12 @@ const servidor = http.createServer((req, res) => {
         .map((i) => ({ nome: corta(i.nome, 60), cliques: n(i.cliques), impressoes: n(i.impressoes) })).filter((i) => i.nome) : []);
       const reg = { em: Date.now(), campanha: corta(d.campanha, 80), status: corta(d.status, 30), gasto: n(d.gasto), limite: n(d.limite),
         alcance: n(d.alcance), impressoes: n(d.impressoes), cliques: n(d.cliques), conversas: n(d.conversas), lidoEm: corta(d.lidoEm, 30),
-        sexo: lista(d.sexo), regiao: lista(d.regiao) };
+        sexo: lista(d.sexo), regiao: lista(d.regiao),
+        // Publicações turbinadas pelo app do Instagram (método que mais trouxe conversas): até 20
+        turbinados: (Array.isArray(d.turbinados) ? d.turbinados.slice(0, 20).filter((i) => i && typeof i === 'object') : []).map((i) => ({
+          nome: corta(i.nome, 80), conversas: n(i.conversas), gasto: n(i.gasto), orcamento: n(i.orcamento), alcance: n(i.alcance),
+          visualizacoes: n(i.visualizacoes), perfil: n(i.perfil), seguidores: n(i.seguidores), dias: n(i.dias),
+          status: corta(i.status, 40), publico: corta(i.publico, 80) })).filter((i) => i.nome) };
       fs.writeFile(MANUAL, JSON.stringify(reg), (err) => json(res, err ? 500 : 200, { ok: !err }));
     });
     return;

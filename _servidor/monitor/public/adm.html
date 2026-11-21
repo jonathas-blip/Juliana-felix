@@ -193,7 +193,7 @@
     <div class="abas" role="tablist" aria-label="O que ver">
       <button type="button" role="tab" data-aba="site" aria-selected="true">Site</button>
       <button type="button" role="tab" data-aba="meta" aria-selected="false">Meta</button>
-      <button type="button" role="tab" data-aba="anuncio" aria-selected="false">Anúncio atual</button>
+      <button type="button" role="tab" data-aba="anuncio" aria-selected="false">Anúncios</button>
     </div>
     <div class="periodo" role="group" aria-label="Período">
       <button type="button" data-dias="7" aria-pressed="false">7 dias</button>
@@ -337,6 +337,21 @@
   </div>
 
   <div id="conteudoAnuncio" hidden>
+    <div id="turboBloco" hidden>
+      <h2 class="secao">Publicações turbinadas no Instagram <small id="turboQuando"></small></h2>
+      <p class="sub" style="margin:4px 0 0">O método que mais trouxe conversas: post turbinado pelo app, meta “Mais mensagens”, público Estética 24–65 perto do studio, R$ 12 por dia por 2 a 4 dias.</p>
+      <section class="kpis" aria-label="Resumo das publicações turbinadas">
+        <div class="kpi"><div class="kpi-rot">Investido</div><div class="kpi-val" id="turGasto">—</div><div class="kpi-sub" id="turOrc"></div></div>
+        <div class="kpi destaque"><div class="kpi-rot"><i style="background:var(--s-cliques)"></i>Conversas no Direct</div><div class="kpi-val" id="turConversas">—</div><div class="kpi-sub" id="turCusto"></div></div>
+        <div class="kpi"><div class="kpi-rot"><i style="background:var(--s-visitas)"></i>Pessoas alcançadas</div><div class="kpi-val" id="turAlcance">—</div><div class="kpi-sub" id="turVisu"></div></div>
+        <div class="kpi"><div class="kpi-rot">Visitas ao perfil</div><div class="kpi-val" id="turPerfil">—</div><div class="kpi-sub" id="turSeg"></div></div>
+      </section>
+      <div class="card" style="margin-top:16px">
+        <h2>Qual publicação traz mais conversas</h2>
+        <p class="sub">Custo por conversa de cada post turbinado · quanto menor, melhor</p>
+        <div class="tabela-scroll"><table id="tabTurbo"><thead><tr><th>Publicação</th><th class="n">Conversas</th><th class="n">Custo/conversa</th><th class="n">Investido</th><th class="n">Alcance</th><th>Situação</th></tr></thead><tbody></tbody></table></div>
+      </div>
+    </div>
     <p class="aviso" id="manualVazio" hidden>Os números do anúncio aparecem aqui depois da primeira leitura automática do Gerenciador de Anúncios.</p>
     <div id="metaManual" hidden>
       <h2 class="secao">Anúncio no Instagram · conta atual <small id="manualQuando"></small></h2>
@@ -885,7 +900,7 @@
       $('btnSair').hidden = DEMO;
       $('atualizado').textContent = 'Atualizado às ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
       $('metaErro').hidden = true;
-      if (aba === 'anuncio') { desenharManual(metaDados.manual); $('manualVazio').hidden = !!metaDados.manual; return; }
+      if (aba === 'anuncio') { desenharTurbo(metaDados.manual); desenharManual(metaDados.manual && metaDados.manual.campanha ? metaDados.manual : null); $('manualVazio').hidden = !!metaDados.manual; return; }
       $('metaConfig').hidden = metaDados.configurado;
       $('metaDados').hidden = !metaDados.configurado;
       if (metaDados.configurado) desenharMeta();
@@ -1009,6 +1024,29 @@
   }
 
   // Bloco temporário: conta de anúncios que a API não lê (números gravados pelo coletor)
+  // Publicações turbinadas pelo app do Instagram (lidas em Ferramentas para anúncios)
+  function desenharTurbo(m) {
+    const l = m && Array.isArray(m.turbinados) ? m.turbinados : [];
+    $('turboBloco').hidden = !l.length;
+    if (!l.length) return;
+    const soma = (k) => l.reduce((t, i) => t + (i[k] || 0), 0);
+    const gasto = soma('gasto'), conv = soma('conversas');
+    $('turboQuando').textContent = 'atualizado ' + new Date(m.em).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+    $('turGasto').textContent = moeda.format(gasto);
+    $('turOrc').textContent = soma('orcamento') ? 'de ' + moeda.format(soma('orcamento')) + ' programados' : '';
+    $('turConversas').textContent = fmt.format(conv);
+    $('turCusto').textContent = conv ? moeda.format(gasto / conv) + ' por conversa' : 'custo aparece com a 1ª conversa';
+    $('turAlcance').textContent = fmt.format(soma('alcance'));
+    $('turVisu').textContent = soma('visualizacoes') ? fmt.format(soma('visualizacoes')) + ' visualizações' : '';
+    $('turPerfil').textContent = fmt.format(soma('perfil'));
+    $('turSeg').textContent = soma('seguidores') ? '+' + fmt.format(soma('seguidores')) + ' seguidores' : '';
+    const esc = (t) => String(t == null ? '' : t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const ord = l.slice().sort((a, b) => (a.conversas ? a.gasto / a.conversas : 1e9) - (b.conversas ? b.gasto / b.conversas : 1e9));
+    document.querySelector('#tabTurbo tbody').innerHTML = ord.map((i) => '<tr><td>' + esc(i.nome) + '</td><td class="n">' + (i.conversas == null ? '—' : fmt.format(i.conversas)) +
+      '</td><td class="n">' + (i.conversas ? moeda.format(i.gasto / i.conversas) : '—') + '</td><td class="n">' + (i.gasto == null ? '—' : moeda.format(i.gasto)) +
+      '</td><td class="n">' + (i.alcance == null ? '—' : fmt.format(i.alcance)) + '</td><td>' + esc(i.status || '') + (i.dias ? ' · ' + i.dias + ' dias' : '') + '</td></tr>').join('');
+  }
+
   function desenharManual(m) {
     $('metaManual').hidden = !m;
     if (!m) return;
