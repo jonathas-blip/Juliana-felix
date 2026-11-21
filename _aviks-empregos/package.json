@@ -10,7 +10,9 @@
     "buscar": "node --no-warnings=ExperimentalWarning src/rodar.js --so-buscar",
     "emails": "node --no-warnings=ExperimentalWarning src/rodar.js --so-emails",
     "demo": "node --no-warnings=ExperimentalWarning src/demo.js",
-    "postinstall": "playwright install chromium"
+    "postinstall": "playwright install chromium",
+    "marca": "node scripts/marca.mjs",
+    "criar-senha": "node --no-warnings=ExperimentalWarning src/criar-senha.js"
   },
   "license": "UNLICENSED",
   "dependencies": {
@@ -22,12 +24,17 @@
     "mailparser": "^3.15.0",
     "node-cron": "^4.6.0",
     "nodemailer": "^10.6.1",
-    "zod": "^4.6.7",
-    "playwright": "^1.65.1"
+    "playwright": "^1.65.1",
+    "zod": "^4.6.7"
   },
   "type": "module",
   "engines": {
     "node": ">=22.13"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "@fontsource/manrope": "^5.3.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "opentype.js": "^2.0.0"
+  }
 }

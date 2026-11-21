@@ -1,0 +1,34 @@
+diff --git a/deploy/Caddyfile b/deploy/Caddyfile
+index ae13c3b..e741a18 100644
+--- a/deploy/Caddyfile
++++ b/deploy/Caddyfile
+@@ -15,6 +15,16 @@ painel.julianafelix.com.br {
+ 	reverse_proxy jf-monitor:8080
+ }
+ 
++# Aviks Empregos: agente de candidaturas (contêiner aviks-empregos, em /opt/aviks-empregos; repositório aviks-empregos).
++empregos.aviks.com.br {
++	encode zstd gzip
++	header {
++		Strict-Transport-Security "max-age=31536000; includeSubDomains"
++		-Server
++	}
++	reverse_proxy aviks-empregos:3900
++}
++
+ https:// {
+ 	tls {
+ 		on_demand
+diff --git a/packages/shared/src/platform.ts b/packages/shared/src/platform.ts
+index 7fda7cc..487cbc1 100644
+--- a/packages/shared/src/platform.ts
++++ b/packages/shared/src/platform.ts
+@@ -16,7 +16,7 @@ export const CLIENT_STATUS_LABELS: Record<ClientStatus, string> = {
+ };
+ 
+ /** Subdomínios reservados (não podem ser cliente). */
+-export const RESERVED_SLUGS = ['admin', 'www', 'api', 'app', 'portal', 'mail', 'smtp', 'ftp', 'status', 'suporte', 'ajuda', 'blog', 'docs', 'static', 'cdn', 'mcp'];
++export const RESERVED_SLUGS = ['admin', 'www', 'api', 'app', 'portal', 'mail', 'smtp', 'ftp', 'status', 'suporte', 'ajuda', 'blog', 'docs', 'static', 'cdn', 'mcp', 'empregos'];
+ 
+ export const slugSchema = z
+   .string()

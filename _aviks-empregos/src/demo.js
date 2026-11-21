@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const raiz = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 process.env.AVIKS_DEMO = '1';
 process.env.DATA_DIR = path.join(raiz, 'dados-demo');
-process.env.SENHA_PAINEL = '';
+process.env.PAINEL_USUARIO = process.env.PAINEL_USUARIO || '';
 fs.rmSync(process.env.DATA_DIR, { recursive: true, force: true });
 
 const { db } = await import('./db.js');

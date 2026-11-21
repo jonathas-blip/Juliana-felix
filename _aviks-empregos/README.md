@@ -1,5 +1,9 @@
 # Aviks Empregos
 
+![Aviks Empregos](public/marca/logo-horizontal.svg)
+
+**No ar em:** https://empregos.aviks.com.br (login com usuário e senha; instalável como app no celular)
+
 Agente que procura vagas, dá uma nota para cada uma, se candidata sozinho nas boas, acompanha os seus e-mails
 e só chama você para o que precisa de você: entrevista, teste, prazo, proposta ou uma pergunta que ele não pode responder.
 
@@ -32,7 +36,8 @@ e só chama você para o que precisa de você: entrevista, teste, prazo, propost
 Precisa do **Node.js 22.13 ou mais novo** (https://nodejs.org).
 
 ```powershell
-cd _aviks-empregos
+git clone https://github.com/jonathas-blip/aviks-empregos
+cd aviks-empregos
 npm install                       # instala tudo, inclusive o navegador Chromium
 copy .env.example .env            # e preencha (chave do Claude, senha do painel, tópico do ntfy)
 copy config\perfil.exemplo.json   config\perfil.json
@@ -50,8 +55,10 @@ copy config\emails.exemplo.json   config\emails.json
 5. **`config/emails.json`**: suas caixas de e-mail. Use **senha de app**, não a senha normal:
    - Gmail: ative a verificação em 2 etapas → https://myaccount.google.com/apppasswords
    - Outlook/Hotmail: https://account.microsoft.com/security → Senhas de app
-6. **Avisos no celular**: instale o app **ntfy** (Android/iPhone) e assine o tópico que você colocou em `NTFY_TOPICO`.
-7. **Login nos sites**: `npm run login` abre um navegador. Entre no LinkedIn, Gupy, Catho, Vagas.com e Indeed
+6. **Login do painel**: `npm run criar-senha` pergunta usuário e senha e mostra as duas linhas
+   (`PAINEL_USUARIO` e `PAINEL_SENHA_HASH`) para colar no `.env`. A senha nunca fica salva em texto.
+7. **Avisos no celular**: instale o app **ntfy** (Android/iPhone) e assine o tópico que você colocou em `NTFY_TOPICO`.
+8. **Login nos sites**: `npm run login` abre um navegador. Entre no LinkedIn, Gupy, Catho, Vagas.com e Indeed
    (e em sites de carreira que pedem cadastro), depois aperte ENTER no terminal. Refaça quando algum site deslogar
    (o painel mostra a pendência "faça login").
 
@@ -74,14 +81,41 @@ No painel: cartões de resumo, **Precisa de você** (responda ali mesmo), agenda
 lista de candidaturas com filtros (clique numa vaga para ver nota, motivo, texto enviado, e-mails e histórico, e mudar
 o status à mão), gráfico por dia e o registro de tudo que o agente fez. Botões **Rodar agora** e **Pausar**.
 
-## Rodar 24 h numa VPS (opcional)
+## Publicar em empregos.aviks.com.br (VPS do Aviks)
 
-```bash
-docker compose up -d --build
-```
+O DNS do `aviks.com.br` já tem o curinga `*` apontando para a VPS, então o subdomínio já chega no servidor.
+Falta só o Caddy do Aviks saber para onde mandar e o contêiner subir:
 
-Faça o `npm run login` no seu computador e copie `dados/sessao-navegador.json` para `dados/` na VPS (o servidor não
-tem tela para você logar). Publique o painel pelo Caddy com `SENHA_PAINEL` definida.
+1. **No repositório `estetic-pro`** aplique `deploy/estetic-pro.patch` (`git apply`), que faz duas coisas:
+   - adiciona o bloco `empregos.aviks.com.br → aviks-empregos:3900` no `deploy/Caddyfile` (HTTPS automático);
+   - reserva o subdomínio `empregos` em `RESERVED_SLUGS`, para nenhum cliente do Aviks pegar esse endereço.
+   Faça o deploy do Aviks como de costume. (Não edite o Caddyfile direto no servidor: ele é versionado e o próximo
+   deploy apagaria a mudança.)
+2. **Na VPS:**
+   ```bash
+   git clone https://github.com/jonathas-blip/aviks-empregos /opt/aviks-empregos
+   cd /opt/aviks-empregos && bash deploy/instalar.sh     # na 1ª vez cria o .env: preencha e rode de novo
+   ```
+   Copie para `/opt/aviks-empregos/config/` os seus arquivos de perfil, currículo, estilo e e-mails, e para
+   `/opt/aviks-empregos/dados/` o `sessao-navegador.json` gerado pelo `npm run login` no seu computador
+   (o servidor não tem tela para você entrar nos sites).
+3. Para atualizar depois: `cd /opt/aviks-empregos && bash deploy/instalar.sh`.
+
+O contêiner fica na rede `aviks_sites` (só o Caddy e os sites): ele **não** enxerga o banco nem a API do Aviks.
+
+## App no celular
+
+Abra https://empregos.aviks.com.br, entre com usuário e senha e:
+- **iPhone (Safari):** Compartilhar → **Adicionar à Tela de Início**.
+- **Android (Chrome):** menu ⋮ → **Instalar app**.
+
+Ele abre em tela cheia com o ícone cinza do Aviks Empregos e continua logado por 30 dias (botão **Sair** no topo).
+Os avisos de entrevista/teste chegam pelo app **ntfy**; tocar no aviso abre o painel.
+
+## Marca
+
+Mesmo símbolo e tipografia (Manrope) do Aviks, na paleta cinza: grafite `#2F3337` / `#3F4349`, prata `#AEB3BA`,
+fundo `#F5F6F7`. Tudo gerado por `npm run marca` (`scripts/marca.mjs`, adaptado do `brand.mjs` do Aviks) em `public/marca/`.
 
 ## Custos e riscos — leia antes de ligar
 
@@ -102,5 +136,8 @@ src/rodar.js       ciclo completo                  src/emails.js      leitura/re
 src/buscar.js      busca + nota                    src/ia.js          chamadas ao Claude
 src/fontes/        LinkedIn, Gupy, páginas         src/avisos.js      avisos no celular (ntfy)
 src/login.js       login manual nos sites          src/db.js          banco SQLite em dados/
-public/painel.html o painel                        config/            seu perfil (fora do Git)
+src/auth.js        login do painel (sessão)        src/criar-senha.js gera o hash da senha
+public/painel.html o painel                        public/entrar.html tela de login
+public/sw.js       app instalável (PWA)            public/marca/      logo e ícones cinza
+deploy/            Caddy, patch do Aviks, instalar config/            seu perfil (fora do Git)
 ```

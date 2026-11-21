@@ -2,31 +2,44 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Aviks Empregos</title>
+<meta name="theme-color" content="#2F3337">
+<meta name="color-scheme" content="light dark">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Empregos">
 <style>
-:root{--bg:#f5f6f8;--card:#fff;--txt:#17202b;--sub:#5d6b7a;--linha:#e3e7ec;--pri:#1f5fd1;--pri-s:#e7efff;
---ok:#1b8a5a;--ok-s:#e3f5ec;--alerta:#b26a00;--alerta-s:#fff3dc;--erro:#c23b3b;--erro-s:#fde8e8;--neutro-s:#eef1f4;--roxo:#6a45c9;--roxo-s:#efe9ff}
-@media (prefers-color-scheme:dark){:root{--bg:#0f1318;--card:#171c23;--txt:#e7ecf2;--sub:#97a3b1;--linha:#262e38;--pri:#6c9cff;--pri-s:#1b2740;
---ok:#4cc38a;--ok-s:#14291f;--alerta:#e9a23b;--alerta-s:#2c2312;--erro:#ef7a7a;--erro-s:#301a1a;--neutro-s:#20262e;--roxo:#a88bff;--roxo-s:#241d3a}}
+:root{--bg:#F2F3F5;--card:#FFFFFF;--txt:#202326;--sub:#646A72;--linha:#E1E3E7;--pri:#3F4349;--pri-txt:#FFFFFF;--pri-s:#E7E9EC;--topo:#2F3337;
+--ok:#2F7D57;--ok-s:#E4F1EA;--alerta:#9A6512;--alerta-s:#F7EEDD;--erro:#B53A3A;--erro-s:#F8E6E6;--neutro-s:#ECEEF0}
+@media (prefers-color-scheme:dark){:root{--bg:#141618;--card:#1C1F22;--txt:#E9EBEE;--sub:#9AA0A8;--linha:#2B2F34;--pri:#D3D7DC;--pri-txt:#1C1F22;--pri-s:#2B2F34;--topo:#1C1F22;
+--ok:#6CC79A;--ok-s:#17281F;--alerta:#E0B062;--alerta-s:#2B2416;--erro:#EE8686;--erro-s:#301B1B;--neutro-s:#24282C}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:16px;max-width:1200px;margin:auto}
-h1{font-size:20px;margin:0}h1 span{color:var(--pri)}h2{font-size:15px;margin:0 0 10px}
+header{background:var(--topo);color:#fff;padding:calc(12px + env(safe-area-inset-top)) 16px 12px;margin-bottom:14px}
+header .in{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;max-width:1200px;margin:auto}
+header .logo{height:38px;width:auto;display:block}header .sub{color:#C9CDD3}header .pill{color:#C9CDD3}
+header button{background:transparent;color:#fff;border-color:#5A5F66}header button.pri{background:#fff;color:#2F3337;border-color:#fff}
+h1{position:absolute;left:-9999px}h2{font-size:15px;margin:0 0 10px}
 .sub{color:var(--sub);font-size:13px}
-main{max-width:1200px;margin:auto;padding:0 16px 40px;display:grid;gap:14px}
+main{max-width:1200px;margin:auto;padding:0 16px calc(40px + env(safe-area-inset-bottom));display:grid;gap:14px}
 .card{background:var(--card);border:1px solid var(--linha);border-radius:12px;padding:14px}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
 .kpi b{display:block;font-size:26px;font-variant-numeric:tabular-nums}.kpi span{color:var(--sub);font-size:13px}
 .duas{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:820px){.duas{grid-template-columns:1fr}}
 button,.btn{font:inherit;border:1px solid var(--linha);background:var(--card);color:var(--txt);border-radius:8px;padding:7px 12px;cursor:pointer}
-button.pri{background:var(--pri);border-color:var(--pri);color:#fff}button:disabled{opacity:.5;cursor:default}
+button.pri{background:var(--pri);border-color:var(--pri);color:var(--pri-txt)}button:disabled{opacity:.5;cursor:default}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.chip{padding:4px 10px;border-radius:99px;font-size:13px}
-.chip.on{background:var(--pri-s);border-color:var(--pri);color:var(--pri)}
+.chip.on{background:var(--pri);border-color:var(--pri);color:var(--pri-txt)}
 input,textarea,select{font:inherit;color:var(--txt);background:var(--bg);border:1px solid var(--linha);border-radius:8px;padding:7px 10px;width:100%}
 .tabela{overflow:auto;max-height:640px}main>*,.duas>*{min-width:0}thead th{position:sticky;top:0;background:var(--card)}table{width:100%;min-width:760px;border-collapse:collapse;font-size:14px}th{text-align:left;color:var(--sub);font-weight:500;font-size:12px;padding:6px 8px;border-bottom:1px solid var(--linha)}
 td{padding:8px;border-bottom:1px solid var(--linha);vertical-align:top}tr.l{cursor:pointer}tr.l:hover td{background:var(--neutro-s)}
 .st{display:inline-block;padding:2px 8px;border-radius:99px;font-size:12px;white-space:nowrap;background:var(--neutro-s)}
-.st.candidatada,.st.em_processo{background:var(--pri-s);color:var(--pri)}.st.entrevista,.st.oferta{background:var(--ok-s);color:var(--ok)}
+.st.candidatada,.st.em_processo{background:var(--pri-s);color:var(--txt)}.st.entrevista,.st.oferta{background:var(--ok-s);color:var(--ok)}
 .st.teste,.st.precisa_de_voce,.st.aprovada{background:var(--alerta-s);color:var(--alerta)}.st.falhou,.st.reprovada{background:var(--erro-s);color:var(--erro)}
 .nota{font-variant-numeric:tabular-nums;font-weight:600}.nota.a{color:var(--ok)}.nota.m{color:var(--alerta)}.nota.b{color:var(--sub)}
 .motivo{color:var(--sub);font-size:13px;max-width:420px}
@@ -40,17 +53,19 @@ td{padding:8px;border-bottom:1px solid var(--linha);vertical-align:top}tr.l{curs
 dialog{border:0;border-radius:14px;padding:0;max-width:760px;width:calc(100% - 32px);background:var(--card);color:var(--txt)}dialog::backdrop{background:#0008}
 dialog .in{padding:18px;max-height:85vh;overflow:auto}pre{white-space:pre-wrap;font:inherit;font-size:14px;background:var(--bg);padding:10px;border-radius:8px;max-height:260px;overflow:auto}
 .vazio{color:var(--sub);font-size:14px;padding:8px 0}a{color:var(--pri)}
-.pill{display:inline-flex;gap:6px;align-items:center;font-size:13px;color:var(--sub)}.dot{width:8px;height:8px;border-radius:50%;background:var(--sub)}.dot.on{background:var(--ok)}.dot.pausa{background:var(--alerta)}
+.pill{display:inline-flex;gap:6px;align-items:center;font-size:13px;color:var(--sub)}.dot{width:8px;height:8px;border-radius:50%;background:var(--sub)}.dot.on{background:#6CC79A}.dot.pausa{background:var(--alerta)}
 </style>
 </head>
 <body>
-<header>
-  <div><h1>Aviks <span>Empregos</span></h1><div class="sub" id="estado">carregando…</div></div>
+<header><div class="in">
+  <div><h1>Aviks Empregos</h1><img class="logo" src="/marca/logo-horizontal-claro.svg" alt="Aviks Empregos" width="190" height="38">
+    <div class="sub" id="estado" style="margin-top:6px">carregando…</div></div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button id="bPausar">Pausar</button>
     <button class="pri" id="bRodar">Rodar agora</button>
+    <button id="bSair" title="Sair">Sair</button>
   </div>
-</header>
+</div></header>
 <main>
   <section class="kpis" id="kpis"></section>
 
@@ -85,16 +100,11 @@ dialog .in{padding:18px;max-height:85vh;overflow:auto}pre{white-space:pre-wrap;f
 <script>
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let senha = ''; try { senha = localStorage.getItem('aviks_senha') || ''; } catch {}
 let filtro = 'ativas', rotulos = {}, resumo = {};
 
 async function api(caminho, opcoes = {}) {
-  const r = await fetch(caminho, { ...opcoes, headers: { 'content-type': 'application/json', authorization: `Bearer ${senha}`, ...(opcoes.headers || {}) } });
-  if (r.status === 401) {
-    senha = prompt('Senha do painel') || '';
-    try { localStorage.setItem('aviks_senha', senha); } catch {}
-    return api(caminho, opcoes);
-  }
+  const r = await fetch(caminho, { ...opcoes, credentials: 'same-origin', headers: { 'content-type': 'application/json', ...(opcoes.headers || {}) } });
+  if (r.status === 401) { location.href = '/entrar'; throw new Error('Sessão expirada'); }
   const j = await r.json();
   if (!r.ok) throw new Error(j.erro || r.status);
   return j;
@@ -246,6 +256,8 @@ async function atualizar() {
   try { await carregarResumo(); await Promise.all([carregarPendencias(), carregarVagas(), carregarLog()]); }
   catch (e) { $('#estado').textContent = 'Erro: ' + e.message; }
 }
+$('#bSair').onclick = async () => { await fetch('/sair', { method: 'POST' }); location.href = '/entrar'; };
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
 desenharFiltros();
 atualizar();
 setInterval(atualizar, 30000);

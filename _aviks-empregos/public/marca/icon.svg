@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+  <linearGradient id="i-bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#F5F6F7"/>
+    <stop offset="1" stop-color="#E4E6E9"/>
+  </linearGradient>
+  <linearGradient id="i-gold" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#E6E8EB"/>
+    <stop offset=".5" stop-color="#AEB3BA"/>
+    <stop offset="1" stop-color="#848A92"/>
+  </linearGradient>
+  <linearGradient id="i-green" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#62676E"/>
+    <stop offset=".55" stop-color="#3F4349"/>
+    <stop offset="1" stop-color="#25282C"/>
+  </linearGradient>
+  <filter id="i-shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#25282C" flood-opacity=".18"/>
+  </filter></defs>
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#i-bg)"/>
+  <g transform="translate(256 262) scale(.9) translate(-256 -255)">
+  <g filter="url(#i-shadow)">
+    <path fill="url(#i-green)" d="M232 112 Q242 98 260 98 Q280 98 288 112 L449 398 Q454 408 466 410 L466 412 H362 L362 410 Q376 406 372 392 L276 190 Q256 148 236 190 L152 388 Q148 404 160 406 Q176 408 192 410 L192 412 H46 L46 410 Q58 408 62 398 Z"/>
+    <path fill="url(#i-gold)" stroke="#F5F6F7" stroke-width="6" stroke-linejoin="round" d="M114 250 Q160 243 240 246 L262 370 L344 262 Q372 247 412 248 Q392 255 380 268 L274 408 Q266 418 258 408 L178 274 Q164 256 114 250 Z"/>
+  </g></g>
+</svg>

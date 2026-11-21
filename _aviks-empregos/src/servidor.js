@@ -1,23 +1,26 @@
 // Painel + agendador. `npm start` deixa tudo rodando: busca/candidatura no horário do perfil e e-mails a cada N minutos.
 import path from 'node:path';
-import crypto from 'node:crypto';
 import express from 'express';
 import cron from 'node-cron';
 import { RAIZ, ENV, carregarPerfil } from './config.js';
 import { db, STATUS, atualizarVaga, registrar, lerEstado, gravarEstado, agora } from './db.js';
 import { cicloCompleto, cicloEmails, estaRodando } from './rodar.js';
 import { enviarRespostaPendencia } from './emails.js';
+import { rotasLogin, protegerApi, sessaoValida, loginAtivo, USUARIO } from './auth.js';
 
 const app = express();
 app.use(express.json({ limit: '200kb' }));
 
-const igual = (a, b) => a.length === b.length && crypto.timingSafeEqual(Buffer.from(a), Buffer.from(b));
-app.use('/api', (req, res, next) => {
-  if (!ENV.senhaPainel) return next();
-  const t = (req.get('authorization') || '').replace(/^Bearer\s+/i, '');
-  if (t && igual(t, ENV.senhaPainel)) return next();
-  res.status(401).json({ erro: 'senha' });
+// Atrás do Caddy (rede interna do Docker): confia no X-Forwarded-For/Proto dele para saber IP e HTTPS.
+app.set('trust proxy', 'loopback, uniquelocal');
+app.disable('x-powered-by');
+app.use((_req, res, next) => {
+  res.set({ 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'same-origin', 'X-Frame-Options': 'DENY' });
+  next();
 });
+
+rotasLogin(app);
+app.use('/api', protegerApi);
 
 app.get('/api/resumo', (_req, res) => {
   const porStatus = Object.fromEntries(db.prepare('SELECT status, COUNT(*) n FROM vagas GROUP BY status').all().map((r) => [r.status, r.n]));
@@ -116,8 +119,16 @@ app.post('/api/pausar', (req, res) => {
   res.json({ ok: true });
 });
 
-app.use(express.static(path.join(RAIZ, 'public')));
-app.get('/', (_req, res) => res.sendFile(path.join(RAIZ, 'public', 'painel.html')));
+app.get('/api/eu', (_req, res) => res.json({ usuario: USUARIO || null, login: loginAtivo }));
+
+// Páginas: o painel só abre com sessão; a tela de entrar, a marca, o manifesto e o service worker são públicos.
+const PUB = path.join(RAIZ, 'public');
+app.get('/', (req, res) => (sessaoValida(req) ? res.sendFile(path.join(PUB, 'painel.html')) : res.redirect(302, '/entrar')));
+app.get('/entrar', (req, res) => (loginAtivo && sessaoValida(req) ? res.redirect(302, '/') : res.sendFile(path.join(PUB, 'entrar.html'))));
+app.get('/sw.js', (_req, res) => res.set('Cache-Control', 'no-cache').sendFile(path.join(PUB, 'sw.js')));
+app.use(express.static(PUB, { index: false, maxAge: '7d', setHeaders: (res, arq) => {
+  if (arq.endsWith('.html') || arq.endsWith('.webmanifest')) res.set('Cache-Control', 'no-cache');
+} }));
 
 // ---------- agenda ----------
 const perfil = carregarPerfil();
@@ -126,9 +137,10 @@ if (!process.env.AVIKS_DEMO) {
   cron.schedule(`*/${Math.max(5, perfil.intervalo_emails_min)} * * * *`, () => { if (!estaRodando()) cicloEmails().catch(() => {}); }, { timezone: ENV.fusoHorario });
 }
 
-const host = ENV.senhaPainel ? '0.0.0.0' : '127.0.0.1';
+// Sem usuário/senha configurados, o painel só abre neste computador (nunca exposto na internet sem login).
+const host = loginAtivo || process.env.AVIKS_DEMO ? '0.0.0.0' : '127.0.0.1';
 app.listen(ENV.porta, host, () => {
   console.log(`Aviks Empregos no ar: http://${host === '127.0.0.1' ? 'localhost' : host}:${ENV.porta}`);
   console.log(`Busca e candidaturas: "${perfil.horario_busca}" (${ENV.fusoHorario}); e-mails a cada ${perfil.intervalo_emails_min} min.`);
-  if (!ENV.senhaPainel) console.log('Sem SENHA_PAINEL: o painel só abre neste computador. Defina uma senha no .env para abrir no celular.');
+  if (!loginAtivo) console.log('Sem PAINEL_USUARIO/PAINEL_SENHA_HASH: painel sem login, só neste computador. Rode `npm run criar-senha`.');
 });

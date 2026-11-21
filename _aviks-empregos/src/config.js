@@ -70,7 +70,6 @@ export function contasEmail() {
 export const ENV = {
   modelo: process.env.MODELO_CLAUDE || 'claude-opus-5-5',
   porta: Number(process.env.PORT) || 3900,
-  senhaPainel: process.env.SENHA_PAINEL || '',
   ntfyTopico: process.env.NTFY_TOPICO || '',
   ntfyServidor: process.env.NTFY_SERVIDOR || 'https://ntfy.sh',
   urlPainel: process.env.URL_PAINEL || '',
