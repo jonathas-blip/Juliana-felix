@@ -501,7 +501,7 @@ section.block{ padding:96px 0; }
 }
 .wa-tooltip{
   position:absolute; right:72px; top:50%; transform:translateY(-50%);
-  background:var(--ink); color:#fff;
+  background:var(--green-deep); color:#fff;
   padding:8px 14px; border-radius:6px; font-size:0.78rem;
   white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .25s ease;
 }
@@ -904,13 +904,13 @@ section.block{ padding:96px 0; }
 .pg-migalha a{ color:var(--accent-text); }
 .pg-icone{ display:flex; align-items:center; justify-content:center; width:200px; height:200px; border-radius:50%; background:#fff; color:var(--green-deep); box-shadow:inset 0 0 0 2px var(--gold); }
 .pg-icone svg{ width:84px; height:84px; }
-.pg-oferta{ padding:22px 0; background:#111; color:#FBF9F5; }
+.pg-oferta{ padding:30px 0; background:linear-gradient(180deg, var(--accent-light) 0%, #F8F5EF 100%); color:var(--green-deep); border-top:1px solid var(--gold); border-bottom:1px solid var(--gold); }
 .pg-oferta[hidden]{ display:none; }
 .pg-oferta-grade{ display:flex; flex-wrap:wrap; align-items:center; gap:14px 22px; }
-.pg-oferta .promo-etiqueta{ margin:0; align-self:center; background:#FBF9F5; color:#111; }
+.pg-oferta .promo-etiqueta{ margin:0; align-self:center; }
 .pg-oferta p{ margin:0; }
-.pg-preco{ color:var(--gold); font-size:1.2rem; }
-.pg-oferta-aviso{ flex-basis:100%; font-size:0.78rem; color:#C9C4BA; }
+.pg-preco{ color:var(--gold-text); font-size:1.3rem; }
+.pg-oferta-aviso{ flex-basis:100%; font-size:0.8rem; color:var(--text-soft); }
 .pg-duas{ display:grid; grid-template-columns:1fr 1fr; gap:64px; }
 .pg-duas h2{ font-size:clamp(1.6rem, 2.8vw, 2.15rem); margin-bottom:22px; }
 .pg-lista{ list-style:none; margin:0 0 20px; padding:0; }
@@ -944,7 +944,7 @@ section.block{ padding:96px 0; }
 .cat-acoes{ display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-top:18px; }
 .promo-catalogo{ display:inline-block; margin-top:10px; font-size:.86rem; color:inherit; text-decoration:underline; text-underline-offset:3px; }
 .pg-oferta-arte{ flex-basis:100%; display:grid; gap:10px; justify-items:start; max-width:760px; }
-.pg-oferta-pdf{ color:var(--gold); font-size:.88rem; }
+.pg-oferta-pdf{ color:var(--accent); font-size:.9rem; font-weight:600; text-underline-offset:3px; }
 .pg-resumo{ padding-bottom:20px; }
 .pg-resumo .section-head h2{ color:var(--green-deep); }
 .pg-fatos{ list-style:none; margin:0 auto 34px; padding:0; display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; max-width:880px; }
