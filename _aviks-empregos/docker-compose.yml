@@ -1,0 +1,15 @@
+# Uso na VPS, dentro desta pasta:  docker compose up -d --build
+# Antes: crie .env, config/perfil.json, curriculo.md, curriculo.pdf, estilo.md, emails.json
+# e copie dados/sessao-navegador.json gerado no seu computador com `npm run login`.
+services:
+  aviks-empregos:
+    build: .
+    container_name: aviks-empregos
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./config:/app/config:ro
+      - ./dados:/data
+    ports:
+      - "127.0.0.1:3900:3900"   # publique pelo Caddy (ex.: empregos.seudominio.com.br → aviks-empregos:3900)
+    shm_size: "1gb"

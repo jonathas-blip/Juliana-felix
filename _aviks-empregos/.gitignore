@@ -1,0 +1,9 @@
+node_modules/
+.env
+dados/
+dados-demo/
+config/perfil.json
+config/curriculo.md
+config/curriculo.pdf
+config/estilo.md
+config/emails.json

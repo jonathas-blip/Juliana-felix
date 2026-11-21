@@ -1,0 +1,20 @@
+[
+  {
+    "nome": "Gmail pessoal",
+    "usuario": "seu.email@gmail.com",
+    "senha_app": "xxxx xxxx xxxx xxxx",
+    "imap_host": "imap.gmail.com",
+    "imap_porta": 993,
+    "smtp_host": "smtp.gmail.com",
+    "smtp_porta": 465
+  },
+  {
+    "nome": "Outlook",
+    "usuario": "seu.email@outlook.com",
+    "senha_app": "senha-de-app-da-microsoft",
+    "imap_host": "outlook.office365.com",
+    "imap_porta": 993,
+    "smtp_host": "smtp.office365.com",
+    "smtp_porta": 587
+  }
+]
